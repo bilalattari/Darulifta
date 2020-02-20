@@ -1,33 +1,129 @@
-.App {
-  text-align: center;
+@font-face{
+  font-family: 'Jameel';
+  src: url('Jameel\ Noori\ Nastaleeq.ttf');
+}
+
+body {
+  font-family: 'Jameel';
+  padding: 41px;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.accounts{
+  text-align: left;
+  justify-content: left;
 }
-
+p{
+  text-align: center;
+  font-size: 32px;
+  margin: 12px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.tableHeading{
+  background-color: turquoise;
+}
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #000000;
 }
 
+.header{
+  display: flex;
+  color: white;
+  padding: 41px;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  background-color: blueviolet;
+}
+.inputHeading{
+  font-size: 18px;
+}
+.inputrow{
+  background-color: #ffffff;
+  color: black;
+  margin: 12px;
+  text-align: end;
+  align-items: center;
+}
+td > input{
+  width: 100%;
+}
+.input{
+  /* height: 38px; */
+  text-align: right;
+  width: 70%;
+  font-size: 22px;
+}
+.dropdown {
+  height: 35px;
+}
+.radio{
+  width: 10%;
+  height: 15px;
+}
+table{
+  width: 85%;
+  align-self: center;
+  border: 1px #cccc solid;
+  text-align: right;
+}
+td , th{
+  border: 1px #cccc solid;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin: 0px;
+}
+.tdSelect{
+  width: 90%;
+}
+.inputrowchild{
+  width:80%;
+  margin-right: 5%;
+}
+.formRow{
+  display: flex;
+  min-height: 40px;
+  align-items: flex-end;
+  text-align: end;
+  justify-content: center;
+}
+.first{
+  background-color: yellow;
+  width: 40%;
+  margin: 12px;
+}
+.skills{
+  width: 60%;
+}
+.second {
+  width: 40%;
+  margin: 12px;
+  background-color: yellowgreen;
+}
 .App-link {
   color: #61dafb;
 }
-
+.textArea{
+  display: flex;
+  justify-content: center;
+}
+.checkbox{
+  width: 70px;
+  height: 18px;
+}
+.table-div{
+  display: flex;
+  justify-content: center;
+  margin-top:25px ;
+  margin-bottom: 25px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
