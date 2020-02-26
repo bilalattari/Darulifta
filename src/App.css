@@ -5,9 +5,34 @@
 
 body {
   font-family: 'Jameel';
-  padding: 41px;
 }
 
+.steps{
+ font-size: 25px; 
+ font-weight: bold;
+}
+.container{
+  display: flex;
+  justify-content: flex-start;
+}
+.stepDiv{
+  padding: 12px;
+  float: left;
+  width: 25%;
+  border-right : 1px solid black
+}
+.rightDiv{
+  float: left;
+  width: 75%;
+}
+.checkbox{
+  font-size: 22px;
+}
+.buttonDiv{
+  margin: 12px;
+  display: flex;
+  justify-content: space-around;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -15,6 +40,9 @@ body {
 .accounts{
   text-align: left;
   justify-content: left;
+}
+.social{
+  text-align: left;
 }
 p{
   text-align: center;
@@ -57,8 +85,10 @@ td > input{
 .input{
   /* height: 38px; */
   text-align: right;
+  
   width: 70%;
-  font-size: 22px;
+  font-size: 18px;
+  margin-top: 5px;
 }
 .dropdown {
   height: 35px;
@@ -87,6 +117,11 @@ td , th{
   width:80%;
   margin-right: 5%;
 }
+.tableInput{
+  width:  95%;
+  text-align: right;
+  font-size: 18px;
+}
 .formRow{
   display: flex;
   min-height: 40px;
@@ -100,7 +135,8 @@ td , th{
   margin: 12px;
 }
 .skills{
-  width: 60%;
+  width: 90%;
+  margin: 0 auto;
 }
 .second {
   width: 40%;
@@ -112,11 +148,13 @@ td , th{
 }
 .textArea{
   display: flex;
+  margin: 0 auto;
+  width: 90%;
   justify-content: center;
 }
 .checkbox{
-  width: 70px;
-  height: 18px;
+  font-size: 22px;
+  margin-left: 12px;
 }
 .table-div{
   display: flex;
@@ -132,3 +170,34 @@ td , th{
     transform: rotate(360deg);
   }
 }
+
+@media screen and (max-width: 1000px) {
+ .input{
+   width: 100%;
+ }
+ .inputrowchild{
+  width: 100%;
+  margin-right: 2%;
+ }
+}
+@media screen and (max-width: 800px) {
+  .input{
+    width: 100%;
+  }
+  .inputrowchild{
+   width: 100%;
+   margin-right: 2%;
+  }
+  .rightDiv{
+ display: block;
+ width: 100%;
+ margin-right: auto;
+ margin-left: auto;
+  }
+  .skills{
+    width: 98%;
+  }
+  .stepDiv{
+   display: none; 
+  }
+ }
