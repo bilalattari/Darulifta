@@ -150,7 +150,7 @@ const YesnoDropDown = (props) =>
     <Option value="yes">جی ہاں</Option>
     <Option value="no">جی نہیں</Option>
   </Select>
-const lang = ['Urdu' , 'Arabic' , 'Farsi' , 'Sindhi' , 'English'];
+const lang = ['Urdu' , 'Arabic' , 'Farsi' , 'Sindhi' , 'English' , 'Siraiki' , 'Pashtun' , ];
 const children = []
 for (let i = 0; i < lang.length; i++) {
   children.push(<Option key={lang[i]}>{lang[i]}</Option>);
@@ -173,7 +173,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      countNumber: 8,
+      countNumber: 11,
       driving: false,
       license: false,
       name: "",
@@ -460,10 +460,6 @@ class App extends React.Component {
                 </div>
                 : null
             }
-
-
-
-
             {
               countNumber === 1 ?
                 <div className={'counter'}>
@@ -765,24 +761,37 @@ class App extends React.Component {
               <td rowSpan={'3'}> مہینے میں اوسطاً کتنے </td>
             </tr>
             <tr>
-              <td rowSpan={'2'}><input className={'input'} type={'text'} /></td>
+              <td rowSpan={'2'} style = {{width : 200}}>
+              <Select
+          mode="tags"
+          placeholder="Please select"
+          defaultValue={['Urdu',]}
+          onChange={()=> console.log()}
+          style={{ width: '100%' }}
+        >
+          {children}
+        </Select>
+              </td>
               <td> <YesnoDropDown /></td>
               <td> <YesnoDropDown /></td>
             </tr>
             <tr>
-              <td> <input className={'input'} type={'number'} /></td>
-              <td> <input className={'input'} type={'number'} /></td>
+              <td> <Input className={'tableInput'} type={'number'} /></td>
+              <td> <Input className={'tableInput'} type={'number'} /></td>
             </tr>
           </table>
         </div>
       </div> : null}
-            {/* <div className={"table-div"} >
+      {
+    countNumber == 9 ?
+    <div>
+            <div className={"table-div"} >
           <table>
             <tr>
               <td className={'tableHeading'} colSpan={'10'}>زبان میں مہارت</td>
             </tr>
             <tr>
-              <td colSpan={'6'}> <input className={'input'} /></td>
+              <td colSpan={'6'}> <Input className={'tableInput'} /></td>
               <td colSpan={'4'} >Mother Tongue - مادری زبان</td>
             </tr>
             <tr>
@@ -814,14 +823,14 @@ class App extends React.Component {
               languageArr.map((data, index) => {
                 return (
                   <tr key={index}>
-                    <td><input className={'input'} type={'text'} /></td>
-                    <td><input className={'input'} type={'text'} /></td>
-                    <td><input className={'input'} type={'text'} /></td>
-                    <td> <input className={'checkbox'} type="checkbox" /></td>
-                    <td> <input className={'checkbox'} type="checkbox" /></td>
-                    <td> <input className={'checkbox'} type="checkbox" /></td>
-                    <td> <input className={'checkbox'} type="checkbox" /></td>
-                    <td> <input className={'checkbox'} type="checkbox" /></td>
+                    <td><Input className={'tableInput'} type={'text'} /></td>
+                    <td><Input className={'tableInput'} type={'text'} /></td>
+                    <td><Input className={'tableInput'} type={'text'} /></td>
+                    <td> <Checkbox /></td>
+                    <td> <Checkbox /></td>
+                    <td> <Checkbox /></td>
+                    <td> <Checkbox /></td>
+                    <td> <Checkbox /></td>
                     <td>{data.name}</td>
                   </tr>
                 )
@@ -831,9 +840,12 @@ class App extends React.Component {
 
             </tr>
           </table>
-        </div> */}
-
-            {/* <div className={"table-div"}>
+        </div>
+      </div> : null
+      }
+      {
+        countNumber === 10 ?
+ <div className={"table-div"}>
           <table>
             <tr>
               <td className={'tableHeading'} colSpan={'6'}>مدنی چینل و سوشل میڈیا سلسلے</td>
@@ -846,22 +858,26 @@ class App extends React.Component {
               <td> </td>
             </tr>
             <tr>
-              <td> <input className={'checkbox'} type="checkbox" /></td>
-              <td> <input className={'checkbox'} type="checkbox" /></td>
-              <td> <input className={'checkbox'} type="checkbox" /></td>
+              <td> <Checkbox /></td>
+              <td> <Checkbox /></td>
+              <td> <Checkbox /></td>
               <td><YesnoDropDown /></td>
               <td>کیا آپ مدنی چینل پر سلسلے کرتےہیں؟ </td>
             </tr>
             <tr>
-              <td> <input className={'checkbox'} type="checkbox" /></td>
-              <td> <input className={'checkbox'} type="checkbox" /></td>
-              <td> <input className={'checkbox'} type="checkbox" /></td>
+              <td> <Checkbox /></td>
+              <td> <Checkbox /></td>
+              <td> <Checkbox /></td>
               <td><YesnoDropDown /></td>
               <td>کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟</td>
             </tr>
           </table>
-        </div> */}
-            {/* <div className={"table-div"}>
+        </div> : null
+      }
+      {
+        countNumber === 11 ?
+        <div>
+            <div className={"table-div"}>
           <table>
             <tr>
               <td className={'tableHeading'} colSpan={'4'}>تيظیمی ذمہ داری</td>
@@ -873,16 +889,16 @@ class App extends React.Component {
               <td rowSpan={'2'}>تنظیمی ذمہ داری</td>
             </tr>
             <tr>
-              <td><input className={'input'} type={'text'} /> </td>
-              <td> <input className={'input'} type={'number'} /> </td>
-              <td><select className={"tdSelect"} name="گروپ" >
-                <option value="ذیلی">ذیلی</option>
-                <option value="حلقہ">حلقہ</option>
-                <option value="علاقہ">علاقہ</option>
-                <option value="ڈویژن">ڈویژن</option>
-                <option value="کابینہ">کابینہ</option>
-                <option value="زون">زون</option>
-              </select></td>
+              <td><Input className={'tableInput'} type={'text'} /> </td>
+              <td> <Input className={'tableInput'} type={'number'} /> </td>
+              <td><Select className={"tdSelect"} name="گروپ" defaultValue = {'حلقہ'} >
+                <Option value="ذیلی">ذیلی</Option>
+                <Option value="حلقہ">حلقہ</Option>
+                <Option value="علاقہ">علاقہ</Option>
+                <Option value="ڈویژن">ڈویژن</Option>
+                <Option value="کابینہ">کابینہ</Option>
+                <Option value="زون">زون</Option>
+              </Select></td>
             </tr>
             <tr>
               <td >مقام</td>
@@ -891,13 +907,13 @@ class App extends React.Component {
               <td rowSpan={'2'}> شعبہ سطح کی ذمہ داری</td>
             </tr>
             <tr>
-              <td><input className={'input'} type={'text'} /> </td>
-              <td> <input className={'input'} type={'number'} /> </td>
-              <td><input className={'input'} type={'text'} /></td>
+              <td><Input className={'tableInput'} type={'text'} /> </td>
+              <td> <Input className={'tableInput'} type={'number'} /> </td>
+              <td><Input className={'tableInput'} type={'text'} /></td>
             </tr>
           </table>
-        </div> */}
-            {/* <div className={"table-div"}>
+        </div> 
+ <div className={"table-div"}>
           <table>
             <tr>
               <td className={'tableHeading'} colSpan={'6'}>بیرون ملک سفر</td>
@@ -911,104 +927,111 @@ class App extends React.Component {
               <th></th>
             </tr>
             <tr>
-              <td> <select className={"tdSelect"} name="گروپ" >
-                <option value="ذاتی">ذاتی</option>
-                <option value="تنظیمی">تنظیمی</option>
-                <option value=" اپنی طرف سے "> اپنی طرف سے </option>
-                <option value="دعوتِ اسلامی کی طرف سے ">دعوتِ اسلامی کی طرف سے </option>
-                <option value="کسی اور تنظیم کی طرف سے">کسی اور تنظیم کی طرف سے</option>
-              </select> </td>
-              <td> <input className={'input'} type={'text'} /></td>
-              <td> <input className={'input'} type={'text'} /></td>
-              <td> <input className={'input'} type={'text'} /></td>
-              <td>  <input className={'input'} type={'text'} /></td>
+              <td style = {{width : 120}}> <Select className={"tdSelect"} name="گروپ" defaultValue = {'ذاتی'} >
+                <Option value="ذاتی">ذاتی</Option>
+                <Option value="تنظیمی">تنظیمی</Option>
+                <Option value=" اپنی طرف سے "> اپنی طرف سے </Option>
+                <Option value="دعوتِ اسلامی کی طرف سے ">دعوتِ اسلامی کی طرف سے </Option>
+                <Option value="کسی اور تنظیم کی طرف سے">کسی اور تنظیم کی طرف سے</Option>
+              </Select> </td>
+              <td> <Input className={'tableInput'} type={'text'} /></td>
+              <td> <Input className={'tableInput'} type={'text'} /></td>
+              <td> <Input className={'tableInput'} type={'text'} /></td>
+              <td>  <Input className={'tableInput'} type={'text'} /></td>
               <td>1</td>
             </tr>
           </table>
-        </div> */}
-            {/* <div className={"table-div"}>
-          <table>
-            <tr>
-              <td className={'tableHeading'} colSpan={'6'}>صرف د فتری استعمال کے لیے</td>
-            </tr>
-            <tr>
-            <td><select className={"tdSelect"} name="گروپ" >
-                <option value="ہشاش بشاچ">ہشاش بشاچ</option>
-                <option value="درمیانہ">درمیانہ</option>
-                <option value="سست">سست</option>
-              </select></td>
-              <td>فریشنس</td>
-              <td><select className={"tdSelect"} name="گروپ" >
-                <option value="گھلنے ملنے والے">گھلنے ملنے والے</option>
-                <option value="تنہائی پسند">تنہائی پسند</option>
-              </select></td>
-              <td>گھلنے ملنی کی کوالٹی</td>
-              <td><select className={"tdSelect"} name="گروپ" >
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-              </select></td>
-              <td>اسلامی بھائی کا مزاج و انداز</td>
-            </tr>
-            <tr>
-            <td><select className={"tdSelect"} name="گروپ" >
-                <option value="ہشاش بشاچ">لمبا</option>
-                <option value="درمیانہ">درمیانہ</option>
-                <option value="سست">چہوٹا</option>
-              </select></td>
-              <td>قد</td>
-              <td><select className={"tdSelect"} name="گروپ" >
-                <option value="گھلنے ملنے والے">غیر وجیہ</option>
-                <option value="گھلنے ملنے والے">درمیانہ</option>
-                <option value="تنہائی پسند">وجیہ</option>
-              </select></td>
-              <td>شخصیت</td>
-              <td><select className={"tdSelect"} name="گروپ" >
-                <option value="6"> غیر مہزب </option>
-                <option value="6">مہزب</option>
-              </select></td>
-              <td>کھانا کھانے کا انداز</td>
-            </tr>
-            <tr>
-            <td><YesnoDropDown /></td>
-              <td>وقت کے پابند ہیں</td>
-              <td><YesnoDropDown /></td>
-              <td>کام آکے برھ چڑھ کے کرتے ہیں</td>
-              <td><select className={"tdSelect"} name="گروپ" >
-                <option value="6"> سادہ لباس </option>
-                <option value="6">خوش لباس</option>
-              </select></td>
-              <td>لباس</td>
-            </tr>
-            <tr>
-            <td>
-            <select className={"tdSelect"} name="گروپ" >
-                <option value="">محض معلومات کے لئے</option>
-                <option value="">غیر مناسب</option>
-                <option value="">دینی ضرورت کے پیش نظر</option>
-              </select>
-            </td>
-              <td>سوشل میڈیا بالخصوص فیس بک کے استعمال کا انداز</td>
-              <td>
-              <select className={"tdSelect"} name="گروپ" >
-                <option value="">اخلاقی</option>
-                <option value="">علمی</option>
-                <option value="">عملی</option>
-                <option value="">بالکل بھی نہیں</option>
-              </select>
-              </td>
-              <td>ان کے حوالے سے لوگوں سےشکایت وصول ہوتی ہے۔</td>
-              <td><YesnoDropDown /></td>
-              <td>بر وقت رپلائے دیتے ہیں</td>
-            </tr>
-          </table>
-        </div> */}
+        </div>
+        </div>
+         : null
+      }
+      {
+        countNumber === 12 ? 
+        <div className={"table-div"}>
+      <table>
+        <tr>
+          <td className={'tableHeading'} colSpan={'6'}>صرف د فتری استعمال کے لیے</td>
+        </tr>
+        <tr>
+        <td><Select className={"tdSelect"} name="گروپ" defaultValue = {"ہشاش بشاچ"} >
+            <Option value="ہشاش بشاچ">ہشاش بشاچ</Option>
+            <Option value="درمیانہ">درمیانہ</Option>
+            <Option value="سست">سست</Option>
+          </Select></td>
+          <td>فریشنس</td>
+          <td><Select className={"tdSelect"} name="گروپ" defaultValue = {"گھلنے ملنے والے"} >
+            <Option value="گھلنے ملنے والے">گھلنے ملنے والے</Option>
+            <Option value="تنہائی پسند">تنہائی پسند</Option>
+          </Select></td>
+          <td>گھلنے ملنی کی کوالٹی</td>
+          <td><Select className={"tdSelect"} name="گروپ" defaultValue = {"1"} >
+            <Option value="1">1</Option>
+            <Option value="2">2</Option>
+            <Option value="3">3</Option>
+            <Option value="4">4</Option>
+            <Option value="5">5</Option>
+            <Option value="6">6</Option>
+          </Select></td>
+          <td>اسلامی بھائی کا مزاج و انداز</td>
+        </tr>
+        <tr>
+        <td><Select className={"tdSelect"} name="گروپ"  defaultValue = {'لمبا'}>
+            <Option value="لمبا">لمبا</Option>
+            <Option value="درمیانہ">درمیانہ</Option>
+            <Option value="سست">چہوٹا</Option>
+          </Select></td>
+          <td>قد</td>
+          <td><Select className={"tdSelect"} name="گروپ"  defaultValue = {'لمبا'}>
+            <Option value="غیر وجیہ">غیر وجیہ</Option>
+            <Option value="گھلنے ملنے والے">درمیانہ</Option>
+            <Option value="تنہائی پسند">وجیہ</Option>
+          </Select></td>
+          <td>شخصیت</td>
+          <td><Select className={"tdSelect"} name="گروپ"  defaultValue = {'غیر مہزب'}>
+            <Option value="6"> غیر مہزب </Option>
+            <Option value="6">مہزب</Option>
+          </Select></td>
+          <td>کھانا کھانے کا انداز</td>
+        </tr>
+        <tr>
+        <td><YesnoDropDown /></td>
+          <td>وقت کے پابند ہیں</td>
+          <td><YesnoDropDown /></td>
+          <td>کام آکے برھ چڑھ کے کرتے ہیں</td>
+          <td><Select className={"tdSelect"} name="گروپ"  defaultValue = {'6'}>
+            <Option value="6"> سادہ لباس </Option>
+            <Option value="6">خوش لباس</Option>
+          </Select></td>
+          <td>لباس</td>
+        </tr>
+        <tr>
+        <td>
+        <Select className={"tdSelect"} name="گروپ" defaultValue = {'1'}>
+            <Option value="1">محض معلومات کے لئے</Option>
+            <Option value="12">غیر مناسب</Option>
+            <Option value="123">دینی ضرورت کے پیش نظر</Option>
+          </Select>
+        </td>
+          <td>سوشل میڈیا بالخصوص فیس بک کے استعمال کا انداز</td>
+          <td>
+          <Select className={"tdSelect"} name="گروپ"  defaultValue = {'1'}>
+            <Option value="1">اخلاقی</Option>
+            <Option value="21">علمی</Option>
+            <Option value="12">عملی</Option>
+            <Option value="12">بالکل بھی نہیں</Option>
+          </Select>
+          </td>
+          <td>ان کے حوالے سے لوگوں سےشکایت وصول ہوتی ہے۔</td>
+          <td><YesnoDropDown /></td>
+          <td>بر وقت رپلائے دیتے ہیں</td>
+        </tr>
+      </table>
+    </div> 
+          : null
+      }
             <div className={"buttonDiv"}>
               <Button size={'large'} type="primary" onClick={() => {
-                if (countNumber > 0) {
+                if (countNumber > 12) {
                   this.setState({ countNumber: countNumber - 1 })
                 } else { this.setState({ countNumber: 0 }) }
               }}>
@@ -1016,14 +1039,13 @@ class App extends React.Component {
             <Icon type="left" />
               </Button>
               <Button size={'large'} type="primary" onClick={() => {
-                if (countNumber < 10) {
+                if (countNumber < 12) {
                   this.setState({ countNumber: countNumber + 1 })
                 } else { this.setState({ countNumber: 0 }) }
               }}>
                 <Icon type="right" />
                 Next
           </Button>
-
             </div>
 
           </div>

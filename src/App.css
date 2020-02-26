@@ -106,8 +106,7 @@ table{
 td , th{
   border: 1px #cccc solid;
   text-align: center;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding: 5px;
   margin: 0px;
 }
 .tdSelect{
