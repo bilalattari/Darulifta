@@ -4,12 +4,16 @@ import 'antd/dist/antd.css';
 import './App.css';
 import { addUser } from './firebase'
 import { Steps, Input, Button, Icon, Select, Radio, Checkbox } from 'antd';
+import { Upload, Modal } from 'antd';
+import { PlusSquareOutline } from '@ant-design/icons';
 const { Step } = Steps;
 const { Option } = Select;
 const { TextArea } = Input;
 
 const YearDropDown = (props) =>
-  <Select onChange={(value) => props.onChange(value)} style={{ width: 80 }}
+  <Select
+    disabled={props.disabled}
+    onChange={(value) => props.onChange(value)} style={{ width: 80 }}
     defaultValue={"1999"} className={"tdSelect"} name="گریڈ" >
     <Option value='1990'>1990</Option>
     <Option value='1991'>1991</Option>
@@ -44,7 +48,9 @@ const YearDropDown = (props) =>
   </Select>
 
 const GradeDropDown = (props) =>
-  <Select onChange={(value) => props.onChange(value)} defaultValue={'A'} className={"tdSelect"} name="گریڈ" >
+  <Select
+    disabled={props.disabled}
+    onChange={(value) => props.onChange(value)} defaultValue={'A'} className={"tdSelect"} name="گریڈ" >
     <Option value="A*">A*</Option>
     <Option value="A">A</Option>
     <Option value="B">B</Option>
@@ -66,11 +72,12 @@ const Duration = (props) =>
 
 const YesnoDropDown = (props) =>
   <Select className={"tdSelect"}
+    disabled={props.disabled}
     onChange={(value) => props.onChange(value)}
     name="گروپ"
-    defaultValue={"جی ہاں"} >
-    <Option value="جی ہاں">جی ہاں</Option>
-    <Option value="جی نہیں">جی نہیں</Option>
+    defaultValue={true} >
+    <Option value={true}>جی ہاں</Option>
+    <Option value={false}>جی نہیں</Option>
   </Select>
 const lang = ['Urdu', 'Arabic', 'Farsi', 'Sindhi', 'English', 'Siraiki', 'Pashtun',];
 const children = []
@@ -117,6 +124,8 @@ class App extends React.Component {
       linkedIn: "",
       twitter: "",
       instagram: '',
+      previewImage: '',
+      previewVisible: false,
       allData: {},
       languageArr: [
         {
@@ -233,16 +242,19 @@ class App extends React.Component {
           'Blood Group - بلڈ گروپ': ''
         },
         {
-          'Marital Status - ازدواجی حیثیت': '',
+          'Marital Status - ازدواجی حیثیت': 'unmarried',
           'Emergency No - ایمرجنسی نمبر': ''
         },
         {
           'E-mail-ای میل': '',
         },
         {
-          'ڈرائیونگ آتی ہے': '',
-          'لائسنس بنا ہوا ہے': ''
+          'ڈرائیونگ آتی ہے': false,
+          'لائسنس بنا ہوا ہے': false
         },
+        {
+          image : ''
+        }
 
       ],
       socialMedia: [
@@ -265,12 +277,13 @@ class App extends React.Component {
           'شہر': ""
         },
         {
-          'سرکاری صوبہ': '',
-          'مکان کی حیثیت': '',
+          'سرکاری صوبہ': 'سندھ',
+          'مکان کی حیثیت': 'ذاتی',
         }],
       worldlyEducation: [
         {
           degree: 'میٹرک',
+          haveDone: false,
           grade: '',
           status: '',
           group: "",
@@ -281,6 +294,7 @@ class App extends React.Component {
         },
         {
           degree: 'انٹر',
+          haveDone: false,
           grade: '',
           status: '',
           group: "",
@@ -291,6 +305,7 @@ class App extends React.Component {
         },
         {
           degree: 'گریجویٹ',
+          haveDone: false,
           grade: '',
           status: '',
           group: "",
@@ -301,6 +316,7 @@ class App extends React.Component {
         },
         {
           degree: 'ماسٹر',
+          haveDone: false,
           grade: '',
           status: '',
           group: "",
@@ -311,6 +327,7 @@ class App extends React.Component {
         },
         {
           degree: 'ایم فل',
+          haveDone: false,
           grade: '',
           status: '',
           group: "",
@@ -321,6 +338,7 @@ class App extends React.Component {
         },
         {
           degree: 'پی ایچ ڈی',
+          haveDone: false,
           grade: '',
           status: '',
           group: "",
@@ -331,6 +349,7 @@ class App extends React.Component {
         },
         {
           degree: ' بی ایس',
+          haveDone: false,
           grade: '',
           status: '',
           group: "",
@@ -341,6 +360,7 @@ class App extends React.Component {
         },
         {
           degree: 'عالم فاضل عربی',
+          haveDone: false,
           grade: '',
           status: '',
           showGroup: false,
@@ -351,6 +371,7 @@ class App extends React.Component {
         },
         {
           degree: 'اس کے علاوہ وکوئی دوسرا کورس',
+          haveDone: false,
           grade: '',
           status: '',
           showGroup: false,
@@ -370,6 +391,7 @@ class App extends React.Component {
         },
         {
           degree: 'ناظرہ قرآن',
+          haveDone: false,
           grade: '',
           institution: "",
           city: "",
@@ -377,6 +399,7 @@ class App extends React.Component {
         },
         {
           degree: 'حفظِ قرآن',
+          haveDone: false,
           grade: '',
           institution: "",
           city: "",
@@ -384,6 +407,7 @@ class App extends React.Component {
         },
         {
           degree: 'درسِ نظامی',
+          haveDone: false,
           grade: '',
           institution: "",
           city: "",
@@ -391,6 +415,7 @@ class App extends React.Component {
         },
         {
           degree: 'حسنِ قرأت',
+          haveDone: false,
           grade: '',
           showDropDown: true,
           institution: "",
@@ -399,6 +424,7 @@ class App extends React.Component {
         },
         {
           degree: 'نعت شریف',
+          haveDone: false,
           grade: '',
           institution: "",
           showDropDown: true,
@@ -407,6 +433,7 @@ class App extends React.Component {
         },
         {
           degree: 'اس کے علاوہ وکوئی دوسرا کورس  ',
+          haveDone: false,
           grade: '',
           institution: "",
           city: "",
@@ -440,22 +467,22 @@ class App extends React.Component {
         },
       ],
       outOfDarulifta: [{
-        'امامت': "",
+        'امامت': true,
         'عرصہ': "",
         'جگہ': "",
       },
       {
-        'مؤذنی': "",
+        'مؤذنی': true,
         'عرصہ': "",
         'جگہ': "",
       },
       {
-        'جامعۃ المدینہ میں تدریس': "",
+        'جامعۃ المدینہ میں تدریس': true,
         'عرصہ': "",
         'جگہ': "",
       },
       {
-        'خطابت': "",
+        'خطابت': true,
         'عرصہ': "",
         'جگہ': "",
       },
@@ -471,7 +498,7 @@ class App extends React.Component {
           'کس علم میں خصوصی شغف ہے؟': '',
           'کن کن علوم کا مطالعہ کرتے ہیں؟': "",
           'ایک ہفتے میں کتنے صفحات اوسطا پڑھتے ہیں؟': "",
-          'مطالعہ کی عادت ہے؟': ''
+          'مطالعہ کی عادت ہے؟': true
         },
         {
           'کس علم میں خصوصی مہارت ہے؟': '',
@@ -481,8 +508,8 @@ class App extends React.Component {
       speeches: [
         {
           'مہینے میں اوسطاً کتنے': "",
-          'کیا بیانات کرتے ہیں؟': "",
-          'ہفتہ وار اجتماع میں بیان کرتے ہیں؟': '',
+          'کیا بیانات کرتے ہیں؟': true,
+          'ہفتہ وار اجتماع میں بیان کرتے ہیں؟': true,
           'کس زبان میں': ""
         },
         {
@@ -492,13 +519,13 @@ class App extends React.Component {
       ],
       socialMediaPrograms: [
         {
-          'کیا آپ مدنی چینل پر سلسلے کرتےہیں؟': "",
+          'کیا آپ مدنی چینل پر سلسلے کرتےہیں؟': true,
           'ذاتی سلسلہ': "",
           'سلسلہ دارالاافتاء اہلسنت': "",
           'دیگر سلسلوں میں شرکت': "",
         },
         {
-          'کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟': "",
+          'کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟': true,
           'ذاتی سلسلہ': "",
           'سلسلہ دارالاافتاء اہلسنت': "",
           'دیگر سلسلوں میں شرکت': "",
@@ -542,28 +569,28 @@ class App extends React.Component {
         }],
       officeDetail: [
         {
-          'گھلنے ملنی کی کوالٹی': '',
-          'اسلامی بھائی کا مزاج و انداز': ''
+          'گھلنے ملنی کی کوالٹی': '1',
+          'اسلامی بھائی کا مزاج و انداز': 'گھلنے ملنے والے'
         },
         {
-          'قد': '',
-          'فریشنس': ''
+          'قد': 'درمیانہ',
+          'فریشنس': 'ہشاش بشاش'
         },
         {
-          'کھانا کھانے کا انداز': '',
-          'شخصیت': ''
+          'کھانا کھانے کا انداز': 'مہزب',
+          'شخصیت': 'وجیہ'
         },
         {
-          'کام آگے برھ چڑھ کے کرتے ہیں': '',
-          'لباس': ''
+          'کام آگے برھ چڑھ کے کرتے ہیں': true,
+          'لباس': 'سادہ لباس'
         },
         {
-          'بر وقت رپلائے دیتے ہیں': '',
-          'وقت کے پابند ہیں': ''
+          'بر وقت رپلائے دیتے ہیں': true,
+          'وقت کے پابند ہیں': true
         },
         {
-          'ان کے حوالے سے لوگوں سےشکایت وصول ہوتی ہے۔': '',
-          'سوشل میڈیا بالخصوص فیس بک کے استعمال کا انداز': ''
+          'ان کے حوالے سے لوگوں سےشکایت وصول ہوتی ہے۔': 'بالکل بھی نہیں',
+          'سوشل میڈیا بالخصوص فیس بک کے استعمال کا انداز': 'دینی ضرورت کے پیش نظر'
         },
       ]
     }
@@ -584,9 +611,60 @@ class App extends React.Component {
     console.log(array, 'arayyyyyyyyyyyyyyyyyyyyyyyyy')
     this.setState({ [arr]: array })
   }
+  beforeUpload(file) {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      console.log('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      console.log('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+  }
+  getBase64 = async (img, callback)=> {
+    const reader = await new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+    let info = this.state.personalInfo
+    info[9]['image'] = reader
+    this.setState({personalInfo :info })
+  }
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await this.getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+    });
+  };
+
+  handleChange = info => {
+    if (info.file.status === 'uploading') {
+      this.setState({ loading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      this.getBase64(info.file.originFileObj, imageUrl =>
+        this.setState({
+          imageUrl,
+          loading: false,
+        }),
+      );
+    }
+  };
+
   render() {
     let { countNumber, driving, license, worldlyEducation, skillsArr, outOfCountry, address, outOfDarulifta, reading, speeches, personalInfo,
       islamicEducationArr, languageArr, socialMedia, tanzeemWork, officeDetail, allData, socialMediaPrograms } = this.state
+    const { previewVisible, previewImage, imageUrl } = this.state;
+
+
     return (
       <div className="App">
         <header className="App-header">
@@ -613,6 +691,28 @@ class App extends React.Component {
             {
               countNumber === 0 ?
                 <div className={'counter'}>
+                  <div style={{ display: "flex", justifyContent: "cenetr", marginLeft: "40%" }}>
+                    <Upload
+                      name="avatar"
+                      listType="picture-card"
+                      className="avatar-uploader"
+                      showUploadList={false}
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      beforeUpload={this.beforeUpload}
+                      onPreview={this.handlePreview}
+                      onChange={this.handleChange}
+                    >
+                      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ height: 150, width: 150 }} /> : <div>
+                        <div className="ant-upload-text"
+                          style={{ height: 150, width: 150, }}
+                        >Add Picture</div>
+                      </div>}
+                    </Upload>
+                  </div>
+                  <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                  </Modal>
+
                   <div className='header inputrow'>
                     <CustomInput onChange={(e) => this.onchangetext('موجودہ منصب', e.target.value, 'personalInfo', 0)} title={'موجودہ منصب'} />
                     <CustomInput onChange={(e) => this.onchangetext('تاریخ تقرری', e.target.value, 'personalInfo', 0)} type={'date'} title={'تاریخ تقرری'} />
@@ -653,7 +753,7 @@ class App extends React.Component {
                   <div className='header inputrow'>
                     <div className='inputrowchild' >
                       <span className={'inputHeading'}>Marital Status - ازدواجی حیثیت</span> <br />
-                      <Select className='input dropdown' defaultValue="Married" onChange={(value) => this.onchangetext('Marital Status - ازدواجی حیثیت', value, 'personalInfo', 6)}  >
+                      <Select className='input dropdown' defaultValue="unmarried" onChange={(value) => this.onchangetext('Marital Status - ازدواجی حیثیت', value, 'personalInfo', 6)}  >
                         <Option value="">Marital Status - ازدواجی حیثیت</Option>
                         <Option value="Married">شادی شدہ</Option>
                         <Option value="unmarried">غیر شادی شدہ</Option>
@@ -668,21 +768,18 @@ class App extends React.Component {
                   </div>
                   <div className='header inputrow'>
                     <div className='inputrowchild' >
-                      <Checkbox value={driving}
+                      <Checkbox value={personalInfo[8]['ڈرائیونگ آتی ہے۔']}
                         onChange={(value) => {
-                          this.onchangetext('ڈرائیونگ آتی ہے۔', driving, 'personalInfo', 8)
-                          this.setState({ driving: !driving })
+                          this.onchangetext('ڈرائیونگ آتی ہے', !personalInfo[8]['ڈرائیونگ آتی ہے'], 'personalInfo', 8)
                         }}
                       >
-
                       </Checkbox>
                       <span className={'checkbox'}>ڈرائیونگ آتی ہے۔ </span> <br />
                     </div>
                     <div className='inputrowchild' >
-                      <Checkbox value={license}
+                      <Checkbox value={personalInfo[8]['لائسنس بنا ہوا ہے']}
                         onChange={(value) => {
-                          this.onchangetext('لائسنس بنا ہوا ہے', license, 'personalInfo', 8)
-                          this.setState({ license: !license })
+                          this.onchangetext('لائسنس بنا ہوا ہے', !personalInfo[8]['لائسنس بنا ہوا ہے'], 'personalInfo', 8)
                         }}
                       ></Checkbox>
                       <span className={'checkbox'}> لائسنس بنا ہوا ہے</span> <br />
@@ -729,17 +826,17 @@ class App extends React.Component {
                         </Select>
                       </div>
                       <CustomInput width={true}
-                        onChange={(e) => this.onchangetext('مکان نمبر', e.target.value, 'address', 0)}
-                        title={'مکان نمبر'} />
-                      <CustomInput width={true}
-                        onChange={(e) => this.onchangetext('گلی نمبر', e.target.value, 'address', 0)}
-                        title={'گلی نمبر'} />
+                        onChange={(e) => this.onchangetext('شہر', e.target.value, 'address', 0)}
+                        title={'شہر '} />
                       <CustomInput width={true}
                         onChange={(e) => this.onchangetext('علاقہ-محلہ', e.target.value, 'address', 0)}
                         title={'علاقہ/محلہ'} />
                       <CustomInput width={true}
-                        onChange={(e) => this.onchangetext('شہر', e.target.value, 'address', 0)}
-                        title={'شہر '} />
+                        onChange={(e) => this.onchangetext('گلی نمبر', e.target.value, 'address', 0)}
+                        title={'گلی نمبر'} />
+                      <CustomInput width={true}
+                        onChange={(e) => this.onchangetext('مکان نمبر', e.target.value, 'address', 0)}
+                        title={'مکان نمبر'} />
                     </div>
 
                   </div>
@@ -766,7 +863,7 @@ class App extends React.Component {
                   <div className={"table-div"}>
                     <table>
                       <tr>
-                        <td className={'tableHeading'} colSpan={'7'}>دنیاوی  تعلیم</td>
+                        <td className={'tableHeading'} colSpan={'8'}>دنیاوی  تعلیم</td>
                       </tr>
                       <tr>
                         <td  >Passing Year</td>
@@ -775,42 +872,58 @@ class App extends React.Component {
                         <td  >Institution ادارہ</td>
                         <td  >ریگولر/پرائیوٹ</td>
                         <td  >گروپ (سائنس /آرٹس)</td>
+                        <td  ></td>
                         <td  >Degree سند</td>
                       </tr>
                       {
                         worldlyEducation.map((data, index) =>
                           <tr key={index}>
                             <td >
-                              <YearDropDown onChange={(value) => this.handleArrayChange(value, index, 'passingYear', 'worldlyEducation')} />
+                              <YearDropDown
+                                disabled={!data.haveDone}
+                                onChange={(value) => this.handleArrayChange(value, index, 'passingYear', 'worldlyEducation')} />
                             </td>
-                            <td ><GradeDropDown onChange={(value) => this.handleArrayChange(value, index, 'grade', 'worldlyEducation')} /></td>
+                            <td ><GradeDropDown
+                              disabled={!data.haveDone}
+                              onChange={(value) => this.handleArrayChange(value, index, 'grade', 'worldlyEducation')} /></td>
                             <td ><Input
+                              disabled={!data.haveDone}
                               onChange={(e) => this.handleArrayChange(e.target.value, index, 'city', 'worldlyEducation')}
                               className={'tableInput'} placeholder={'شہر'} /></td>
                             <td ><Input
+                              disabled={!data.haveDone}
                               onChange={(e) => this.handleArrayChange(e.target.value, index, 'institution', 'worldlyEducation')}
                               className={'tableInput'} placeholder={'ادارہ'} /> </td>
-                            <td >
+                            <td style={{ width: 100 }}>
                               <Select
+                                disabled={!data.haveDone}
                                 onChange={(value) => this.handleArrayChange(value, index, 'status', 'worldlyEducation')}
                                 className={"tdSelect"} name="گروپ" defaultValue={"ریگولر"} >
                                 <Option value="ریگولر">ریگولر</Option>
                                 <Option value="پرائیوٹ">پرائیوٹ</Option>
                               </Select>
                             </td>
-                            <td >
+                            <td style={{ width: 100 }}>
                               {
                                 data.showGroup ?
                                   <Select className={"tdSelect"} name="گروپ"
+                                    disabled={!data.haveDone}
                                     onChange={(value) => this.handleArrayChange(value, index, 'group', 'worldlyEducation')}
                                     defaultValue={"سائنس"}>
                                     <Option value="سائنس">سائنس</Option>
                                     <Option value="کامرس">کامرس</Option>
                                     <Option value="آرٹس">آرٹس</Option>
                                   </Select> :
-                                  <Input className={'tableInput'} placeholder={'Subject'} />
+                                  <Input
+                                    disabled={!data.haveDone}
+                                    className={'tableInput'} placeholder={'Subject'} />
                               }
                             </td>
+                            <td style={{ fontWeight: "bold" }}
+                            ><Checkbox
+                                defaultChecked={false}
+                                onChange={(value) => this.handleArrayChange(!data.haveDone, index, 'haveDone', 'worldlyEducation')}
+                              /></td>
                             <td style={{ fontWeight: "bold" }} >{data.degree}</td>
                           </tr>
                         )
@@ -823,45 +936,57 @@ class App extends React.Component {
               <div className={"table-div"}>
                 <table>
                   <tr>
-                    <td className={'tableHeading'} colSpan={'5'}>اسلامی  تعلیم</td>
+                    <td className={'tableHeading'} colSpan={'6'}>اسلامی  تعلیم</td>
                   </tr>
                   <tr>
                     <td  >Passing Year</td>
                     <td  >Grade/CGPA گریڈ</td>
                     <td  >City شہر</td>
                     <td  >Institution ادارہ</td>
+                    <td> </td>
                     <td  >Degree سند</td>
                   </tr>
                   {
                     islamicEducationArr.map((data, index) =>
-                      <tr>
-                        <td ><YearDropDown
-                          onChange={(value) => this.handleArrayChange(value, index + 1, 'passingYear', 'islamicEducationArr')} /></td>
-                        <td ><GradeDropDown
-                          onChange={(value) => this.handleArrayChange(value, index, 'grade', 'islamicEducationArr')} /></td>
-                        <td ><Input
-                          onChange={(e) => this.handleArrayChange(e.target.value, index, 'city', 'islamicEducationArr')}
-                          className={'tableInput'}
-                          placeholder={'شہر'} /></td>
-                        <td >
-                          {
-                            data.showDropDown ?
-                              <Select className={"tdSelect"} name="گروپ"
-                                onChange={(value) => this.handleArrayChange(value, index, 'institution', 'islamicEducationArr')}
-                                defaultValue={"عمدہ"}>
-                                <Option value="نارمل">نارمل</Option>
-                                <Option value="عمدہ">عمدہ</Option>
-                                <Option value="بہت عمدہ">بہت عمدہ</Option>
-                                <Option value="اصلا نہیں">اصلا نہیں</Option>
-                              </Select> :
-                              <Input
-                                onChange={(e) => this.handleArrayChange(e.target.value, index, 'institution', 'islamicEducationArr')}
-                                className={'tableInput'}
-                                placeholder={'ادارہ'} />
+                      index !== 0 ?
+                        <tr>
+                          <td ><YearDropDown
+                            disabled={!data.haveDone}
+                            onChange={(value) => this.handleArrayChange(value, index + 1, 'passingYear', 'islamicEducationArr')} /></td>
+                          <td ><GradeDropDown
+                            disabled={!data.haveDone}
+                            onChange={(value) => this.handleArrayChange(value, index, 'grade', 'islamicEducationArr')} /></td>
+                          <td ><Input
+                            disabled={!data.haveDone}
+                            onChange={(e) => this.handleArrayChange(e.target.value, index, 'city', 'islamicEducationArr')}
+                            className={'tableInput'}
+                            placeholder={'شہر'} /></td>
+                          <td >
+                            {
+                              data.showDropDown ?
+                                <Select className={"tdSelect"} name="گروپ"
+                                  disabled={!data.haveDone}
+                                  onChange={(value) => this.handleArrayChange(value, index, 'institution', 'islamicEducationArr')}
+                                  defaultValue={"عمدہ"}>
+                                  <Option value="نارمل">نارمل</Option>
+                                  <Option value="عمدہ">عمدہ</Option>
+                                  <Option value="بہت عمدہ">بہت عمدہ</Option>
+                                  <Option value="اصلا نہیں">اصلا نہیں</Option>
+                                </Select> :
+                                <Input
+                                  disabled={!data.haveDone}
+                                  onChange={(e) => this.handleArrayChange(e.target.value, index, 'institution', 'islamicEducationArr')}
+                                  className={'tableInput'}
+                                  placeholder={'ادارہ'} />
 
-                          }</td>
-                        <td style={{ fontWeight: "bold" }} >{data.degree}</td>
-                      </tr>
+                            }</td>
+                          <td style={{ fontWeight: "bold" }}
+                          ><Checkbox
+                              defaultChecked={false}
+                              onChange={(value) => this.handleArrayChange(!data.haveDone, index, 'haveDone', 'islamicEducationArr')}
+                            /></td>
+                          <td style={{ fontWeight: "bold" }} >{data.degree}</td>
+                        </tr> : null
                     )
                   }
                 </table>
@@ -910,6 +1035,19 @@ class App extends React.Component {
                       </tr>
                     )
                   }
+                  <td colSpan={'6'}><Button type="dashed" block onClick={() => {
+                    let arr = this.state.skillsArr
+                    arr.push({
+                      course: '',
+                      subjects: '',
+                      institution: '',
+                      city: '',
+                      grade: '',
+                      years: '',
+                    })
+                    this.setState({ skillsArr: arr })
+                  }}>Add More </Button>
+                  </td>
                 </table>
               </div> : null
             }
@@ -927,9 +1065,11 @@ class App extends React.Component {
                     </tr>
                     <tr>
                       <td><Input
+                        disabled={!outOfDarulifta[0]['امامت']}
                         onChange={(e) => this.onchangetext('عرصہ', e.target.value, 'outOfDarulifta', 0)}
-                        className={'tableInput'} type={'number'} /></td>
+                        className={'tableInput'} /></td>
                       <td><Input
+                        disabled={!outOfDarulifta[0]['امامت']}
                         onChange={(e) => this.onchangetext('جگہ', e.target.value, 'outOfDarulifta', 0)}
                         className={'tableInput'} type={'text'} /></td>
                       <td><YesnoDropDown
@@ -938,9 +1078,11 @@ class App extends React.Component {
                     </tr>
                     <tr>
                       <td><Input
+                        disabled={!outOfDarulifta[1]['مؤذنی']}
                         onChange={(e) => this.onchangetext('عرصہ', e.target.value, 'outOfDarulifta', 1)}
-                        className={'tableInput'} type={'number'} /></td>
+                        className={'tableInput'} /></td>
                       <td><Input
+                        disabled={!outOfDarulifta[1]['مؤذنی']}
                         onChange={(e) => this.onchangetext('جگہ', e.target.value, 'outOfDarulifta', 1)}
                         className={'tableInput'} type={'text'} /></td>
                       <td><YesnoDropDown
@@ -949,9 +1091,11 @@ class App extends React.Component {
                     </tr>
                     <tr>
                       <td><Input
+                        disabled={!outOfDarulifta[2]['جامعۃ المدینہ میں تدریس']}
                         onChange={(e) => this.onchangetext('عرصہ', e.target.value, 'outOfDarulifta', 2)}
                         className={'tableInput'} type={'number'} /></td>
                       <td><Input
+                        disabled={!outOfDarulifta[2]['جامعۃ المدینہ میں تدریس']}
                         onChange={(e) => this.onchangetext('جگہ', e.target.value, 'outOfDarulifta', 2)}
                         className={'tableInput'} type={'text'} /></td>
                       <td><YesnoDropDown
@@ -960,9 +1104,11 @@ class App extends React.Component {
                     </tr>
                     <tr>
                       <td><Input
+                        disabled={!outOfDarulifta[3]['خطابت']}
                         onChange={(e) => this.onchangetext('عرصہ', e.target.value, 'outOfDarulifta', 3)}
                         className={'tableInput'} type={'number'} /></td>
                       <td><Input
+                        disabled={!outOfDarulifta[3]['خطابت']}
                         onChange={(e) => this.onchangetext('جگہ', e.target.value, 'outOfDarulifta', 3)}
                         className={'tableInput'} type={'text'} /></td>
                       <td> <YesnoDropDown
@@ -1001,15 +1147,19 @@ class App extends React.Component {
                       </tr>
                       <tr>
                         <td><Input
+                          disabled={!reading[0]['مطالعہ کی عادت ہے؟']}
                           onChange={(e) => this.onchangetext('کس علم میں خصوصی مہارت ہے؟', e.target.value, 'reading', 1)}
                           className={'tableInput'} type={'text'} /></td>
                         <td><Input
+                          disabled={!reading[0]['مطالعہ کی عادت ہے؟']}
                           onChange={(e) => this.onchangetext('کس علم میں خصوصی شغف ہے؟', e.target.value, 'reading', 0)}
                           className={'tableInput'} type={'text'} /></td>
                         <td><Input
+                          disabled={!reading[0]['مطالعہ کی عادت ہے؟']}
                           onChange={(e) => this.onchangetext('کن کن علوم کا مطالعہ کرتے ہیں؟', e.target.value, 'reading', 0)}
                           className={'tableInput'} type={'text'} /></td>
                         <td><Input
+                          disabled={!reading[0]['مطالعہ کی عادت ہے؟']}
                           onChange={(e) => this.onchangetext('ایک ہفتے میں کتنے صفحات اوسطا پڑھتے ہیں؟', e.target.value, 'reading', 0)}
                           className={'tableInput'} type={'number'} /></td>
                         <td> <YesnoDropDown
@@ -1022,6 +1172,7 @@ class App extends React.Component {
                         <td colSpan={'3'}>
                           <Select
                             mode="tags"
+                            disabled={!reading[0]['مطالعہ کی عادت ہے؟']}
                             placeholder="Please select"
                             defaultValue={['Urdu',]}
                             onChange={(value) => {
@@ -1058,6 +1209,7 @@ class App extends React.Component {
                         <td rowSpan={'2'} style={{ width: 200 }}>
                           <Select
                             mode="tags"
+                            disabled={!speeches[0]['ہفتہ وار اجتماع میں بیان کرتے ہیں؟'] && !speeches[0]['کیا بیانات کرتے ہیں؟']}
                             placeholder="Please select"
                             defaultValue={['Urdu',]}
                             onChange={(value) => this.onchangetext('کس زبان میں', value, 'speeches', 0)}
@@ -1075,9 +1227,11 @@ class App extends React.Component {
                       </tr>
                       <tr>
                         <td> <Input
+                          disabled={!speeches[0]['ہفتہ وار اجتماع میں بیان کرتے ہیں؟']}
                           onChange={(e) => this.onchangetext('مہینے میں اوسطاً کتنے اجتماع', e.target.value, 'speeches', 1)}
                           className={'tableInput'} type={'number'} /></td>
                         <td> <Input
+                          disabled={!speeches[0]['کیا بیانات کرتے ہیں؟']}
                           onChange={(e) => this.onchangetext('مہینے میں اوسطاً کتنے بیان', e.target.value, 'speeches', 1)}
                           className={'tableInput'}
                           type={'number'} /></td>
@@ -1180,31 +1334,37 @@ class App extends React.Component {
                     </tr>
                     <tr>
                       <td> <Checkbox
+                        disabled={!socialMediaPrograms[1]['کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟']}
                         onChange={(value) => this.onchangetext('دیگر سلسلوں میں شرکت', !socialMediaPrograms[1]['دیگر سلسلوں میں شرکت'], 'socialMediaPrograms', 1)}
                       /></td>
                       <td> <Checkbox
+                        disabled={!socialMediaPrograms[1]['کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟']}
                         onChange={(value) => this.onchangetext('سلسلہ دارالاافتاء اہلسنت', !socialMediaPrograms[1]['سلسلہ دارالاافتاء اہلسنت'], 'socialMediaPrograms', 1)}
                       /></td>
                       <td> <Checkbox
+                        disabled={!socialMediaPrograms[1]['کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟']}
                         onChange={(value) => this.onchangetext('ذاتی سلسلہ', !socialMediaPrograms[1]['ذاتی سلسلہ'], 'socialMediaPrograms', 1)}
                       /></td>
                       <td><YesnoDropDown
                         onChange={(value) => this.onchangetext('کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟', value, 'socialMediaPrograms', 1)} /></td>
-                      <td>کیا آپ مدنی چینل پر سلسلے کرتےہیں؟ </td>
+                      <td>کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟ </td>
                     </tr>
                     <tr>
                       <td> <Checkbox
+                        disabled={!socialMediaPrograms[0]['کیا آپ مدنی چینل پر سلسلے کرتےہیں؟']}
                         onChange={(value) => this.onchangetext('دیگر سلسلوں میں شرکت', !socialMediaPrograms[0]['دیگر سلسلوں میں شرکت'], 'socialMediaPrograms', 0)}
                       /></td>
                       <td> <Checkbox
+                        disabled={!socialMediaPrograms[0]['کیا آپ مدنی چینل پر سلسلے کرتےہیں؟']}
                         onChange={(value) => this.onchangetext('سلسلہ دارالاافتاء اہلسنت', !socialMediaPrograms[0]['سلسلہ دارالاافتاء اہلسنت'], 'socialMediaPrograms', 0)}
                       /></td>
                       <td> <Checkbox
+                        disabled={!socialMediaPrograms[0]['کیا آپ مدنی چینل پر سلسلے کرتےہیں؟']}
                         onChange={(value) => this.onchangetext('ذاتی سلسلہ', !socialMediaPrograms[0]['ذاتی سلسلہ'], 'socialMediaPrograms', 0)}
                       /></td>
                       <td><YesnoDropDown
                         onChange={(value) => this.onchangetext('کیا آپ مدنی چینل پر سلسلے کرتےہیں؟', value, 'socialMediaPrograms', 0)} /></td>
-                      <td>  </td>
+                      <td>کیا آپ مدنی چینل پر سلسلے کرتےہیں؟ </td>
                     </tr>
                   </table>
                 </div> : null
@@ -1232,7 +1392,8 @@ class App extends React.Component {
                           className={'tableInput'} type={'number'} /> </td>
                         <td><Select
                           onChange={(value) => this.onchangetext('کس سطح پر؟', value, 'tanzeemWork', 0)}
-                          className={"tdSelect"} name="گروپ" defaultValue={'حلقہ'} >
+                          className={"tdSelect"} name="گروپ" defaultValue={''} >
+                          <Option value="">کس سطح پر؟</Option>
                           <Option value="ذیلی">ذیلی</Option>
                           <Option value="حلقہ">حلقہ</Option>
                           <Option value="علاقہ">علاقہ</Option>
@@ -1253,7 +1414,7 @@ class App extends React.Component {
                           className={'tableInput'} type={'text'} /> </td>
                         <td> <Input
                           onChange={(e) => this.onchangetext('عرصہ ذمہ داری', e.target.value, 'tanzeemWork', 1)}
-                          className={'tableInput'} type={'number'} /> </td>
+                          className={'tableInput'} /> </td>
                         <td><Input
                           onChange={(e) => this.onchangetext('شعبہ', e.target.value, 'tanzeemWork', 1)}
                           className={'tableInput'} type={'text'} /></td>
@@ -1280,7 +1441,8 @@ class App extends React.Component {
                             <tr>
                               <td style={{ width: 120 }}> <Select className={"tdSelect"}
                                 onChange={(value) => this.onchangetext(keys[4], value, 'outOfCountry', index)}
-                                name="گروپ" defaultValue={'ذاتی'} >
+                                name="گروپ" defaultValue={''} >
+                                <Option value="">سفر کا مقصد</Option>
                                 <Option value="ذاتی">ذاتی</Option>
                                 <Option value="تنظیمی">تنظیمی</Option>
                                 <Option value=" اپنی طرف سے "> اپنی طرف سے </Option>
@@ -1318,22 +1480,22 @@ class App extends React.Component {
                       <td className={'tableHeading'} colSpan={'6'}>صرف د فتری استعمال کے لیے</td>
                     </tr>
                     <tr>
-                      <td><Select
+                      <td style={{ width: 120 }}><Select
                         onChange={(value) => this.onchangetext('فریشنس', value, 'officeDetail', 1)}
-                        className={"tdSelect"} name="گروپ" defaultValue={"ہشاش بشاچ"} >
-                        <Option value="ہشاش بشاچ">ہشاش بشاچ</Option>
+                        className={"tdSelect"} name="گروپ" defaultValue={"ہشاش بشاش"} >
+                        <Option value="ہشاش بشاش">ہشاش بشاش</Option>
                         <Option value="درمیانہ">درمیانہ</Option>
                         <Option value="سست">سست</Option>
                       </Select></td>
                       <td>فریشنس</td>
-                      <td><Select
+                      <td style={{ width: 120 }}><Select
                         onChange={(value) => this.onchangetext('گھلنے ملنی کی کوالٹی', value, 'officeDetail', 0)}
                         className={"tdSelect"} name="گروپ" defaultValue={"گھلنے ملنے والے"} >
                         <Option value="گھلنے ملنے والے">گھلنے ملنے والے</Option>
                         <Option value="تنہائی پسند">تنہائی پسند</Option>
                       </Select></td>
                       <td>گھلنے ملنی کی کوالٹی</td>
-                      <td><Select
+                      <td style={{ width: 120 }}><Select
                         onChange={(value) => this.onchangetext('اسلامی بھائی کا مزاج و انداز', value, 'officeDetail', 0)}
                         className={"tdSelect"} name="گروپ" defaultValue={"1"} >
                         <Option value="1">1</Option>
@@ -1346,61 +1508,61 @@ class App extends React.Component {
                       <td>اسلامی بھائی کا مزاج و انداز</td>
                     </tr>
                     <tr>
-                      <td><Select
+                      <td style={{ width: 120 }}><Select
                         onChange={(value) => this.onchangetext('قد', value, 'officeDetail', 1)}
-                        className={"tdSelect"} name="گروپ" defaultValue={'لمبا'}>
+                        className={"tdSelect"} name="گروپ" defaultValue={'درمیانہ'}>
                         <Option value="لمبا">لمبا</Option>
                         <Option value="درمیانہ">درمیانہ</Option>
                         <Option value="چہوٹا">چہوٹا</Option>
                       </Select></td>
                       <td>قد</td>
-                      <td><Select
+                      <td style={{ width: 120 }}><Select
                         onChange={(value) => this.onchangetext('شخصیت', value, 'officeDetail', 2)}
                         className={"tdSelect"} name="گروپ" defaultValue={'وجیہ'}>
                         <Option value="غیر وجیہ">غیر وجیہ</Option>
                         <Option value="وجیہ">وجیہ</Option>
                       </Select></td>
                       <td>شخصیت</td>
-                      <td><Select
+                      <td style={{ width: 120 }}><Select
                         onChange={(value) => this.onchangetext('کھانا کھانے کا انداز', value, 'officeDetail', 2)}
-                        className={"tdSelect"} name="گروپ" defaultValue={'غیر مہزب'}>
+                        className={"tdSelect"} name="گروپ" defaultValue={'مہزب'}>
                         <Option value="غیر مہزب"> غیر مہزب </Option>
                         <Option value="مہزب">مہزب</Option>
                       </Select></td>
                       <td>کھانا کھانے کا انداز</td>
                     </tr>
                     <tr>
-                      <td><YesnoDropDown
+                      <td style={{ width: 120 }}><YesnoDropDown
                         onChange={(value) => this.onchangetext('وقت کے پابند ہیں', value, 'officeDetail', 4)}
                       /></td>
                       <td>وقت کے پابند ہیں</td>
-                      <td><YesnoDropDown
+                      <td style={{ width: 120 }}><YesnoDropDown
                         onChange={(value) => this.onchangetext('کام آگے برھ چڑھ کے کرتے ہیں', value, 'officeDetail', 3)}
                       /></td>
-                      <td>کام آکے برھ چڑھ کے کرتے ہیں</td>
-                      <td><Select
+                      <td>کام آگے برھ چڑھ کے کرتے ہیں</td>
+                      <td style={{ width: 120 }}><Select
                         onChange={(value) => this.onchangetext('لباس', value, 'officeDetail', 3)}
-                        className={"tdSelect"} name="گروپ" defaultValue={'6'}>
+                        className={"tdSelect"} name="گروپ" defaultValue={'سادہ لباس'}>
                         <Option value="سادہ لباس"> سادہ لباس </Option>
                         <Option value="خوش لباس">خوش لباس</Option>
                       </Select></td>
                       <td>لباس</td>
                     </tr>
                     <tr>
-                      <td>
+                      <td style={{ width: 120 }}>
                         <Select
                           onChange={(value) => this.onchangetext('سوشل میڈیا بالخصوص فیس بک کے استعمال کا انداز', value, 'officeDetail', 5)}
-                          className={"tdSelect"} name="گروپ" defaultValue={'غیر مناسب'}>
+                          className={"tdSelect"} name="گروپ" defaultValue={'دینی ضرورت کے پیش نظر'}>
                           <Option value="محض معلومات کے لئے">محض معلومات کے لئے</Option>
                           <Option value="غیر مناسب">غیر مناسب</Option>
                           <Option value="دینی ضرورت کے پیش نظر">دینی ضرورت کے پیش نظر</Option>
                         </Select>
                       </td>
                       <td>سوشل میڈیا بالخصوص فیس بک کے استعمال کا انداز</td>
-                      <td>
+                      <td style={{ width: 120 }}>
                         <Select
                           onChange={(value) => this.onchangetext('ان کے حوالے سے لوگوں سےشکایت وصول ہوتی ہے۔', value, 'officeDetail', 5)}
-                          className={"tdSelect"} name="گروپ" defaultValue={'اخلاقی'}>
+                          className={"tdSelect"} name="گروپ" defaultValue={'بالکل بھی نہیں'}>
                           <Option value="اخلاقی">اخلاقی</Option>
                           <Option value="علمی">علمی</Option>
                           <Option value="عملی">عملی</Option>
@@ -1408,7 +1570,7 @@ class App extends React.Component {
                         </Select>
                       </td>
                       <td>ان کے حوالے سے لوگوں سےشکایت وصول ہوتی ہے۔</td>
-                      <td><YesnoDropDown
+                      <td style={{ width: 120 }}><YesnoDropDown
                         onChange={(value) => this.onchangetext('بر وقت رپلائے دیتے ہیں', value, 'officeDetail', 4)}
                       /></td>
                       <td>بر وقت رپلائے دیتے ہیں</td>

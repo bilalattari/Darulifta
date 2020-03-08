@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import './App.css';
 import './detail.css'
 import { Steps, Input, Button, Icon, Select, Radio, Checkbox } from 'antd';
+import ReactToPrint from 'react-to-print';
 
 let personalInfo = {
     heading: 'ذاتی معلومات',
@@ -520,13 +521,12 @@ const TableChildHeading = ({ val, rowSpan, colSpan, index }) => <th rowSpan={row
 class Home extends React.Component {
     constructor(props) {
         super(props)
-
     }
     render() {
-        let allVals = this.props.location.state.data
-        console.log(allVals, 'allvalyes++++++++++++------------------')
+        let { personalInfo, socialMedia, address, SocialMedia, allVals, outOfCountry, outOfDarulift, reading, speeches, langugaes,
+            tanzeemiZimedari, officeDetail, skillsArr, worldlyEducation, islamicEducationArr } = this.props
         return (
-            <div className="App">
+            <div className="App" style={{ padding: 26 }}>
                 <div className={"table-div-pdf"}>
                     <table>
                         <tr>
@@ -537,9 +537,9 @@ class Home extends React.Component {
                                 let objArr = Object.keys(data)
                                 return (
                                     <tr>
-                                        <TableChild index={index} val={data[objArr[0]]} />
+                                        <TableChild index={index} val={data[objArr[0]] === true ? 'جی بنا ہوا ہے' : data[objArr[0]] === false ? 'نہیں بنا ہوا' : data[objArr[0]]} />
                                         <TableChildHeading index={index} val={objArr[0]} />
-                                        <TableChild index={index} val={data[objArr[1]]} />
+                                        <TableChild index={index} val={data[objArr[1]] === true ? 'جی بنا ہوا ہے' : data[objArr[1]] === false ? 'نہیں بنا ہوا' : data[objArr[1]]} />
                                         <TableChildHeading index={index} val={objArr[1]} />
                                     </tr>
                                 )
@@ -646,7 +646,7 @@ class Home extends React.Component {
                                 return (
                                     index !== 0 ?
                                         <tr>
-                                            <td className={'pdfTd'}>{data.passingYear}</td>
+                                            <td jutkclassName={'pdfTd'}>{data.passingYear}</td>
                                             <td className={'pdfTd'}>{data.grade}</td>
                                             <td className={'pdfTd'}>{data.city}</td>
                                             <td className={'pdfTd'}>{data.institution}</td>
@@ -703,7 +703,7 @@ class Home extends React.Component {
                                             <td key={index} className={'pdfTd'}>{object[2]}</td>
                                             <td key={index} className={'pdfTd'}>{data[object[1]]}</td>
                                             <td key={index} className={'pdfTd'}>{object[1]}</td>
-                                            <td key={index} className={'pdfTd'}>{data[object[0]]}</td>
+                                            <td key={index} className={'pdfTd'}>{data[object[0]] === true ? 'جی ہاں' : 'نہیں'}</td>
                                             <th key={index} className={'pdfTd'}>{object[0]}</th>
                                         </tr>
                                         :
@@ -744,7 +744,7 @@ class Home extends React.Component {
                                             <tr>
                                                 <td className={'pdfTd'}>{data[object[3]]}</td>
                                                 <td className={'pdfTd'}>{data[object[2]]}</td>
-                                                <td className={'pdfTd'}>{data[object[1]]}</td>
+                                                <td className={'pdfTd'}>{data[object[1]] === true ? 'جی ہاں' : 'نہیں'}</td>
                                                 <th className={'pdfTd'}>{data[object[0]]}</th>
                                             </tr>
                                         </>
@@ -781,14 +781,14 @@ class Home extends React.Component {
                                             </tr>
                                             <tr>
                                                 <td className={'pdfTd'} rowSpan={'2'}>{data[object[1]]}</td>
-                                                <td className={'pdfTd'}>{data[object[2]]}</td>
-                                                <td className={'pdfTd'}>{data[object[3]]}</td>
+                                                <td className={'pdfTd'}>{data[object[2]] === true ? 'جی ہاں' : 'نہیں'}</td>
+                                                <td className={'pdfTd'}>{data[object[3]] === true ? 'جی ہاں' : 'نہیں'}</td>
                                             </tr>
                                         </> :
                                         index === 1 ?
                                             <tr>
-                                                <td className={'pdfTd'}>{data[object[0]]}</td>
                                                 <td className={'pdfTd'}>{data[object[1]]}</td>
+                                                <td className={'pdfTd'}>{data[object[0]]}</td>
                                             </tr>
                                             : null
 
@@ -863,9 +863,9 @@ class Home extends React.Component {
                                             <TableChild val={data[object[0]] ? 'جی کرتا ہوں' : 'جی نہیں کرتا'} />
                                             <TableChild val={data[object[1]] ? 'جی کرتا ہوں' : 'جی نہیں کرتا'} />
                                             <TableChild val={data[object[2]] ? 'جی کرتا ہوں' : 'جی نہیں کرتا'} />
-                                            <TableChild val={data[object[3]]} />
-                                        </tr> 
-                                        </>
+                                            <TableChild val={data[object[3]] ? 'جی کرتا ہوں' : 'جی نہیں کرتا'} />
+                                        </tr>
+                                    </>
 
                                 )
                             })
@@ -880,7 +880,6 @@ class Home extends React.Component {
                         {
                             allVals['tanzeemWork'].map((data, index) => {
                                 let object = Object.keys(tanzeemiZimedari.array[index])
-                                console.log(data ,object, 'datadata----------------------------------')
                                 return (
                                     <>
                                         <tr>
@@ -940,10 +939,10 @@ class Home extends React.Component {
                                 let object = Object.keys(data)
                                 return (
                                     <tr>
-                                        <TableChild val={data[object[1]]} />
-                                        <TableChild val={object[1]} />
-                                        <TableChild val={data[object[0]]} />
-                                        <TableChild val={object[0]} />
+                                        <TableChild val={data[object[1]] === true ? 'جی ہاں' : data[object[1]] === false ? 'جی نہیں' : data[object[1]]} />
+                                        <TableChildHeading val={object[1]} />
+                                        <TableChild val={data[object[0]] === true ? 'جی ہاں' : data[object[0]] === false ? 'جی نہیں' : data[object[0]]} />
+                                        <TableChildHeading val={object[0]} />
                                     </tr>
 
                                 )
@@ -955,5 +954,46 @@ class Home extends React.Component {
         )
     }
 }
-
-export default Home;
+class Example extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        let allVals
+        if (this.props.history) {
+            allVals = this.props.history.location.state.data
+        }
+        console.log(allVals, '-----------------------------------------------------------------')
+        return (
+            <div>
+                <ReactToPrint
+                    trigger={() => <Button className={'printOutButton'} type="primary">Print This Out</Button>}
+                    content={() => this.componentRef}
+                    pageStyle = {{padStart : 12 , padEnd : 25}}
+                    onBeforePrint={() => this.props.history.push('/')}
+                />
+                {
+                    allVals ?
+                        <Home
+                            personalInfo={personalInfo}
+                            socialMedia={socialMedia}
+                            address={address}
+                            langugaes={langugaes}
+                            outOfDarulift={outOfDarulift}
+                            outOfCountry={outOfCountry}
+                            speeches={speeches}
+                            reading={reading}
+                            allVals={allVals}
+                            skillsArr={skillsArr}
+                            tanzeemiZimedari={tanzeemiZimedari}
+                            worldlyEducation={worldlyEducation}
+                            islamicEducationArr={islamicEducationArr}
+                            officeDetail={officeDetail}
+                            SocialMedia={SocialMedia}
+                            ref={el => (this.componentRef = el)} />
+                        : null}
+            </div>
+        );
+    }
+}
+export default Example;

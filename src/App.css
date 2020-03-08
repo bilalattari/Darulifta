@@ -7,6 +7,9 @@ body {
   font-family: 'Jameel';
   padding-bottom: 25px;
 }
+*{
+  font-family: 'Jameel';
+}
 table{
   width: 100%;
 }
@@ -107,7 +110,7 @@ h2{
 .stepDiv{
   padding: 12px;
   float: left;
-  width: 25%;
+  width: 15%;
   border-right : 1px solid grey
 }
 .rightDiv{
@@ -206,7 +209,7 @@ span{
   height: 15px;
 }
 table{
-  width: 85%;
+  width: 95%;
   align-self: center;
   border: 1px #cccc solid;
   text-align: right;
@@ -264,12 +267,19 @@ td , th{
   font-size: 22px;
   margin-left: 12px;
 }
+
+.printOutButton{
+  width: 30%;    
+  margin-left: 35%;
+}
 .table-div{
-  width: 90%;
-  margin-left: 10%;  
+  width: 95%;
+  margin : 0 auto; 
+  margin-top: 5%; 
+  margin-left: 10%;
 }
 .table-div-pdf{
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
 }
 .table-div-pdf> table{
@@ -278,8 +288,9 @@ td , th{
   margin: 0px;
 }
 .selector{
-  width: 24%;
+  width: 20%;
 }
+
 .selectorDiv{
   width: 90%;
   height: 80px;
@@ -292,6 +303,12 @@ float: left;
 margin : 10px;
 cursor: pointer;
 }
+
+.avatar-uploader > .ant-upload {
+  width: 200px;
+  height: 200px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
