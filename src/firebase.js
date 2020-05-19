@@ -1,15 +1,16 @@
 import firebase from 'firebase'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCUR0a6Ig_wpWHjdkoEB1Enn3-vADLgxSo",
-    authDomain: "usama-ed4c1.firebaseapp.com",
-    databaseURL: "https://usama-ed4c1.firebaseio.com",
-    projectId: "usama-ed4c1",
-    storageBucket: "usama-ed4c1.appspot.com",
-    messagingSenderId: "925402787817",
-    appId: "1:925402787817:web:cffdfc603a2a064118a578",
-    measurementId: "G-8QDWPYF0SD"
-  };
+  apiKey: "AIzaSyDfO-yzG50UJo9Xi2zVjKL68D0bIcZXJ8s",
+  authDomain: "darulifta-ahlesunnat.firebaseapp.com",
+  databaseURL: "https://darulifta-ahlesunnat.firebaseio.com",
+  projectId: "darulifta-ahlesunnat",
+  storageBucket: "darulifta-ahlesunnat.appspot.com",
+  messagingSenderId: "282206646331",
+  appId: "1:282206646331:web:a7087558e9684f22a16c1e",
+  measurementId: "G-TSKRPRBBXV"
+};
+
   firebase.initializeApp(firebaseConfig)
 
 

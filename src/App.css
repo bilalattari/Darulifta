@@ -288,15 +288,19 @@ td , th{
   margin: 0px;
 }
 .selector{
-  width: 20%;
+  width: 300px;
+  margin-bottom: 12px;
+  font-size: 22px;
 }
 
 .selectorDiv{
   width: 90%;
-  height: 80px;
+  min-height: 80px;
   margin-left: 8%;
   justify-content: space-around;
   display: flex;
+  flex-wrap: wrap;
+  justify-content:  center;
 }
 .containerCards{
 float: left;
