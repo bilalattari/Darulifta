@@ -5,7 +5,7 @@ import "./App.css";
 import { addUser } from "./firebase";
 import { Steps, Input, Button, Icon, Select, Radio, Checkbox } from "antd";
 import { Upload, Modal } from "antd";
-import firebase from 'firebase'
+import firebase from "firebase";
 import ImageUploader from "react-images-upload";
 import { PlusSquareOutline } from "@ant-design/icons";
 const { Step } = Steps;
@@ -136,8 +136,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      branch: "",
       countNumber: 0,
-      pictureUploadingToServer : false,
+      pictureUploadingToServer: false,
       driving: false,
       license: false,
       dateOfSubmission: "",
@@ -675,11 +676,11 @@ class App extends React.Component {
             .then((url) => allPictures.push(url));
         })
         .catch((err) => this.setState({ pictureUploadingToServer: false }));
-        let info = this.state.personalInfo
-        info[9]['image'] = allPictures[0]
-        this.setState({personalInfo :info })
-  });
-}
+      let info = this.state.personalInfo;
+      info[9]["image"] = allPictures[0];
+      this.setState({ personalInfo: info });
+    });
+  };
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file) => {
@@ -720,6 +721,7 @@ class App extends React.Component {
       address,
       outOfDarulifta,
       reading,
+      branch,
       speeches,
       personalInfo,
       islamicEducationArr,
@@ -798,9 +800,56 @@ class App extends React.Component {
                     src={previewImage}
                   />
                 </Modal>
+                <div  style = {{ justifyContent : "center" , textAlign : "right" , width : "60%"}}>
+                  <span className={"inputHeading"}>موجودہ شاخ</span> <br />
+                  <Select
+                    className="input dropdown"
+                    defaultValue="موجودہ شاخ"
+                    onChange={(value) => this.setState({ branch: value })}
+                  >
+                    <Option value="افتاء مکتب کراچی">افتاء مکتب کراچی</Option>
+                    <Option value="نارتھ کراچی">نارتھ کراچی</Option>
+                    <Option value="صدر">صدر</Option>
+                    <Option value="کورنگی">کورنگی</Option>
+                    <Option value="کھاردار">کھاردار</Option>
+                    <Option value="بابری چوک">بابری چوک</Option>
+                    <Option value="حیدر آباد">حیدر آباد</Option>
+                    <Option value="لاہور">لاہور</Option>
+                    <Option value="فیصل آباد">فیصل آباد</Option>
+                    <Option value="گلزار طیبہ">گلزار طیبہ</Option>
+                    <Option value="راولپنڈی">راولپنڈی</Option>
+                    <Option value=" یوکے-برمنگھم"> یوکے-برمنگھم</Option>
+                    <Option value=" تخصص فی الفقہ لاہور سال اول">
+                      {" "}
+                      تخصص فی الفقہ لاہور سال اول
+                    </Option>
+                    <Option value=" تخصص فی الفقہ لاہور سال دوم">
+                      {" "}
+                      تخصص فی الفقہ لاہور سال دوم
+                    </Option>
+                    <Option value=" تخصص فی الفقہ کراچی سال اول">
+                      {" "}
+                      تخصص فی الفقہ کراچی سال اول
+                    </Option>
+                    <Option value=" تخصص فی الفقہ کراچی سال دوم">
+                      {" "}
+                      تخصص فی الفقہ کراچی سال دوم
+                    </Option>
+                    <Option value=" تخصص فی الفقہ فیصل آباد سال اول">
+                      {" "}
+                      تخصص فی الفقہ فیصل آباد سال اول
+                    </Option>
+                    <Option value=" تخصص فی الفقہ فیصل آباد سال دوم">
+                      {" "}
+                      تخصص فی الفقہ فیصل آباد سال دوم
+                    </Option>
+                  </Select>
+                </div>
 
                 <div className="header inputrow">
-                  <CustomInput
+                  <div className="inputrowchild">
+                    <span className={"inputHeading"}>موجودہ منصب</span> <br />
+                    {/* <CustomInput
                     onChange={(e) =>
                       this.onchangetext(
                         "موجودہ منصب",
@@ -810,7 +859,27 @@ class App extends React.Component {
                       )
                     }
                     title={"موجودہ منصب"}
-                  />
+                  /> */}
+                    <Select
+                      className="input dropdown"
+                      defaultValue="موجودہ منصب"
+                      onChange={(value) =>
+                        this.onchangetext(
+                          "موجودہ منصب",
+                          value,
+                          "personalInfo",
+                          0
+                        )
+                      }
+                    >
+                      <Option value="مصدق">مصدق</Option>
+                      <Option value="مفتی">مفتی</Option>
+                      <Option value="نائب مفتی">نائب مفتی</Option>
+                      <Option value="سینیئر متخصص">سینیئر متخصص</Option>
+                      <Option value="متخصص">متخصص</Option>
+                      <Option value="معاون">معاون</Option>
+                    </Select>
+                  </div>
                   <CustomInput
                     onChange={(e) =>
                       this.onchangetext(
@@ -1002,7 +1071,6 @@ class App extends React.Component {
                   />
                 </div>
                 <div className="header inputrow">
-                  <div className="inputrowchild"></div>
                   <CustomInput
                     onChange={(e) =>
                       this.onchangetext(
@@ -2947,7 +3015,7 @@ class App extends React.Component {
                     }
                     if (countNumber === 12) {
                       allData["officeDetail"] = officeDetail;
-                      addUser(allData);
+                      addUser(allData , this.state.branch);
                       this.props.history.push("/");
                       this.setState({ countNumber: 0 });
                     }

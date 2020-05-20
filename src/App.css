@@ -1,41 +1,41 @@
-@font-face{
-  font-family: 'Jameel';
-  src: url('Jameel\ Noori\ Nastaleeq.ttf');
+@font-face {
+  font-family: "Jameel";
+  src: url("Jameel\ Noori\ Nastaleeq.ttf");
 }
 
 body {
-  font-family: 'Jameel';
+  font-family: "Jameel";
   padding-bottom: 25px;
 }
-*{
-  font-family: 'Jameel';
+* {
+  font-family: "Jameel";
 }
-table{
+table {
   width: 100%;
 }
-li{
+li {
   display: inline;
   font-size: 22px;
   padding-left: 12px;
 }
-.app-header{
+.app-header {
   height: 60px;
   background-color: teal;
   color: #ffffff;
   padding-right: 3%;
   align-items: center;
-  font-family: 'Jameel';
+  font-family: "Jameel";
 }
-.header-title{
+.header-title {
   text-decoration: none;
   margin-right: 25px;
   float: right;
   color: #ffffff;
 }
-.steps{
-  font-family: 'Jameel';
+.steps {
+  font-family: "Jameel";
 }
-.link{
+.link {
   font-size: 22px;
   font-weight: normal;
   cursor: pointer;
@@ -46,27 +46,27 @@ li{
   margin-top: 8px;
   border-radius: 25px;
 }
-.link:hover{
-background-color: white;
-color:teal ;
-font-weight: bold;
+.link:hover {
+  background-color: white;
+  color: teal;
+  font-weight: bold;
 }
-h2{
-  font-family: 'Jameel';
+h2 {
+  font-family: "Jameel";
   padding-right: 25px;
 }
-.containerHome{
-  width: '80%';
+.containerHome {
+  width: "80%";
   margin-left: 10%;
   margin-right: 5%;
 }
-.filterDiv{
+.filterDiv {
   height: 400px;
   float: left;
   width: 15%;
 }
 
-.userItem{
+.userItem {
   height: 120px;
   width: 80%;
   margin-left: 20%;
@@ -75,60 +75,60 @@ h2{
   border: 2px solid #cccc;
   margin-top: 12px;
 }
-.userItem:hover{
+.userItem:hover {
   opacity: 0.7;
   cursor: pointer;
 }
 .pdfTd {
-  font-family: 'Jameel';
+  font-family: "Jameel";
   font-size: 20px;
   height: 40px;
   min-width: 50px;
   max-width: 80px;
   text-align: center;
 }
-.pdfHeading{
+.pdfHeading {
   background-color: #cccc;
   color: #000000;
 }
-.pdfHeader{
+.pdfHeader {
   background-color: black;
   color: white;
   font-weight: bold;
   font-size: 20px;
   height: 40px;
-  font-family: 'Jameel';
+  font-family: "Jameel";
 }
-.steps{
- font-size: 25px; 
- font-weight: bold;
+.steps {
+  font-size: 25px;
+  font-weight: bold;
 }
-.container{
+.container {
   display: flex;
   justify-content: flex-start;
 }
-.stepDiv{
+.stepDiv {
   padding: 12px;
   float: left;
   width: 15%;
-  border-right : 1px solid grey
+  border-right: 1px solid grey;
 }
-.rightDiv{
+.rightDiv {
   float: left;
   width: 75%;
 }
-.stepDivHome{
+.stepDivHome {
   float: left;
   width: 15%;
 }
-.rightDivHome{
+.rightDivHome {
   float: left;
   width: 84%;
 }
-.checkbox{
+.checkbox {
   font-size: 22px;
 }
-.buttonDiv{
+.buttonDiv {
   margin: 12px;
   display: flex;
   justify-content: space-around;
@@ -137,25 +137,24 @@ h2{
   height: 40vmin;
   pointer-events: none;
 }
-.accounts{
+.accounts {
   text-align: left;
   justify-content: left;
 }
-.social{
+.social {
   text-align: left;
 }
-p{
+p {
   text-align: center;
   font-size: 32px;
   margin: 12px;
   font-weight: bold;
-  font-family: 'Jameel';
+  font-family: "Jameel";
   text-decoration: underline;
 }
-.tableHeading{
+.tableHeading {
   background-color: turquoise;
-  font-family: 'Jameel';
-
+  font-family: "Jameel";
 }
 .App-header {
   min-height: 100vh;
@@ -163,7 +162,7 @@ p{
   color: #000000;
 }
 
-.header{
+.header {
   display: flex;
   color: white;
   padding: 41px;
@@ -172,80 +171,80 @@ p{
   height: 70px;
   background-color: blueviolet;
 }
-.inputHeading{
+.inputHeading {
   font-size: 18px;
 }
-.inputrow{
+.inputrow {
   background-color: #ffffff;
   color: black;
   margin: 12px;
   text-align: end;
   align-items: center;
 }
-td > input{
+td > input {
   width: 100%;
-  font-family: 'Jameel';
-
+  font-family: "Jameel";
 }
-span{
-  font-family: 'Jameel';
+span {
+  font-family: "Jameel";
 }
-.input{
+.input {
   /* height: 38px; */
   text-align: right;
-  font-family: 'Jameel';
+  font-family: "Jameel";
   width: 70%;
   font-size: 20px;
   margin-top: 5px;
 }
-.input::placeholder{
-  font-family: 'Jameel';
+.input::placeholder {
+  font-family: "Jameel";
 }
 .dropdown {
   height: 35px;
 }
-.radio{
+.radio {
   width: 10%;
   height: 15px;
 }
-table{
+table {
   width: 95%;
   align-self: center;
   border: 1px #cccc solid;
   text-align: right;
 }
-td , th{
+td,
+th {
   border: 1px #cccc solid;
   text-align: center;
   padding: 5px;
-  font-family: 'Jameel';
+  font-family: "Jameel";
   margin: 0px;
 }
-.tdSelect{
+.tdSelect {
   width: 90%;
 }
-.inputrowchild{
-  width:80%;
+.inputrowchild {
+  width: 80%;
   margin-right: 5%;
 }
-.tableInput{
-  width:  95%;
+.tableInput {
+  width: 95%;
   text-align: right;
   font-size: 22px;
 }
-.formRow{
+.formRow {
   display: flex;
   min-height: 40px;
   align-items: flex-end;
   text-align: end;
   justify-content: center;
 }
-.first{
+.first {
   background-color: yellow;
   width: 40%;
   margin: 12px;
 }
-.skills{
+.skills {
   width: 90%;
   margin: 0 auto;
 }
@@ -257,53 +256,71 @@ td , th{
 .App-link {
   color: #61dafb;
 }
-.textArea{
+.textArea {
   display: flex;
   margin: 0 auto;
   width: 90%;
   justify-content: center;
 }
-.checkbox{
+.checkbox {
   font-size: 22px;
   margin-left: 12px;
 }
 
-.printOutButton{
-  width: 30%;    
+.printOutButton {
+  width: 30%;
   margin-left: 35%;
 }
-.table-div{
+.table-div {
   width: 95%;
-  margin : 0 auto; 
-  margin-top: 5%; 
+  margin: 0 auto;
+  margin-top: 5%;
   margin-left: 10%;
 }
-.table-div-pdf{
+.table-div-pdf {
   width: 90%;
   margin: 0 auto;
 }
-.table-div-pdf> table{
+.table-div-pdf > table {
   width: 100%;
   padding: 0px;
   margin: 0px;
 }
-.selector{
+.selector {
   width: 300px;
   margin-bottom: 12px;
   font-size: 22px;
 }
-
-.selectorDiv{
+.branchTotal{
+  font-weight: bold;
+  font-size: 20px
+}
+.branchName{
+  font-weight: bold;
+  font-size: 20px;
+}
+.branchheader {
+  width: 90%;
+  text-align: center;
+  height: 50px;
+  background-color: aquamarine;
+  border: 1px solid lightblue;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  margin-top: 12px;
+}
+.selectorDiv {
   width: 90%;
   min-height: 80px;
   margin-left: 8%;
   justify-content: space-around;
   display: flex;
   flex-wrap: wrap;
-  justify-content:  center;
+  justify-content: center;
 }
-.containerCards{
-float: left;
+.containerCards {
+  float: left;
 margin : 10px;
 cursor: pointer;
 }
@@ -323,32 +340,32 @@ cursor: pointer;
 }
 
 @media screen and (max-width: 1000px) {
- .input{
-   width: 100%;
- }
- .inputrowchild{
-  width: 100%;
-  margin-right: 2%;
- }
-}
-@media screen and (max-width: 800px) {
-  .input{
+  .input {
     width: 100%;
   }
-  .inputrowchild{
-   width: 100%;
-   margin-right: 2%;
+  .inputrowchild {
+    width: 100%;
+    margin-right: 2%;
   }
-  .rightDiv{
- display: block;
- width: 100%;
- margin-right: auto;
- margin-left: auto;
+}
+@media screen and (max-width: 800px) {
+  .input {
+    width: 100%;
   }
-  .skills{
+  .inputrowchild {
+    width: 100%;
+    margin-right: 2%;
+  }
+  .rightDiv {
+    display: block;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .skills {
     width: 98%;
   }
-  .stepDiv{
-   display: none; 
+  .stepDiv {
+    display: none;
   }
- }
+}

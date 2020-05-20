@@ -16,8 +16,8 @@ const firebaseConfig = {
 
   let db = firebase.database().ref()
 
-  export const  addUser = (obj)=>{
-    db.child('Brother').push(obj) 
+  export const  addUser = (obj , branch)=>{
+    db.child('Brother/' +branch ).push(obj) 
   }
 
   export const  getUsers = async ()=>{
