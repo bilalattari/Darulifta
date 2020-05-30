@@ -8,12 +8,14 @@ import { getUsers } from "./firebase";
 import { Select, Card, Modal, Button, Input } from "antd";
 const { Option } = Select;
 const { Meta } = Card;
+const { Search } = Input;
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       allUsers: [],
+      allBrothers: [],
       filterdVal: 0,
       filteredArr: [],
       password: "",
@@ -23,7 +25,6 @@ class Home extends React.Component {
     this.allUsers = [];
   }
   componentDidMount = async () => {
-    console.log(firebase.auth().currentUser);
     if (firebase.auth().currentUser) {
       this.setState({ showModal: false, userSignedIn: true }, () =>
         this.getUsers()
@@ -32,26 +33,33 @@ class Home extends React.Component {
       this.setState({ showModal: true, userSignedIn: false });
     }
   };
-  getUsers() {
+  getUsers = () => {
     firebase
       .database()
       .ref()
       .child("Brother")
       .once("value", (snapshot) => {
         let val = snapshot.val();
-        this.setState({ allUsers: val });
-        // if (val !== null) {
-        //   let arr = Object.values(val);
-        //   console.log(arr, "arr");
-        //   this.setState({ allUsers: arr });
-        //   this.allUsers = arr;
-        // }
+        this.setState({ allUsers: val }, () => this.getAllDaruliftaBrothers());
       });
-  }
+  };
+  getAllDaruliftaBrothers = async () => {
+    let { allUsers, allBrothers } = this.state;
+    let AllDaruliftaBrothers = [];
+    await Object.keys(allUsers).map((branchName, index) => {
+      let allBros = Object.values(allUsers[branchName]);
+      allBros.map((data, index) => {
+        console.log(data, "data");
+        AllDaruliftaBrothers.push(data);
+      });
+    });
+    this.setState({ allBrothers: AllDaruliftaBrothers });
+    this.allUsers = AllDaruliftaBrothers;
+  };
   handleChange = async (array, value) => {
-    let { allUsers } = this.state;
+    let { allBrothers } = this.state;
     if (value !== "") {
-      this.setState({ allUsers: this.allUsers }, async () => {
+      this.setState({ allBrothers: this.allUsers }, async () => {
         let filteredNumber = 0;
         let arrVal = 0;
         let filteredArr = [];
@@ -68,7 +76,7 @@ class Home extends React.Component {
           console.log(arrVal, "arrVal");
           if (arrVal === usersArr.length) {
             this.setState({
-              allUsers: filteredArr,
+              allBrothers: filteredArr,
               filteredNumber: filteredNumber,
             });
           }
@@ -79,9 +87,9 @@ class Home extends React.Component {
     }
   };
   handleChangeTanzeem = async (array, value) => {
-    let { allUsers } = this.state;
+    let { allBrothers } = this.state;
     if (value !== "") {
-      this.setState({ allUsers: this.allUsers }, async () => {
+      this.setState({ allBrothers: this.allUsers }, async () => {
         let filteredNumber = 0;
         let arrVal = 0;
         let filteredArr = [];
@@ -107,7 +115,7 @@ class Home extends React.Component {
     }
   };
   handleChangeSpeech = async (array, value) => {
-    let { allUsers } = this.state;
+    let { allBrothers } = this.state;
     let outOfIfta = [
       "ہفتہ وار اجتماع میں بیان کرتے ہیں؟",
       "کیا بیانات کرتے ہیں؟",
@@ -136,37 +144,36 @@ class Home extends React.Component {
         });
       });
     } else {
-      this.setState({ allUsers: this.allUsers });
+      this.setState({ allBrothers: this.allUsers });
     }
   };
   handleChangeWorld = async (array, value) => {
-    let { allUsers } = this.state;
+    let { allBrothers } = this.state;
     if (value !== "") {
-      this.setState({ allUsers: this.allUsers }, async () => {
+      this.setState({ allBrothers: this.allUsers }, async () => {
         let filteredNumber = 0;
         let arrVal = 0;
         let filteredArr = [];
-        let usersArr = Object.values(this.allUsers);
+        let usersArr = this.allUsers;
         await usersArr.map(async (info) => {
           let arrValue = ++arrVal;
-          await info[array].map((data) => {
-            console.log(data.degree, data.haveDone, " data.haveDone");
+          await info[array].map((data, index) => {
             if (data.degree === value && data.haveDone) {
-              filteredArr.push(info);
+              filteredArr.push(info["worldlyEducation"][0]);
               let updatedVal = ++filteredNumber;
-              console.log(filteredArr, filteredNumber, "filteredNumber");
+              console.log(filteredArr, updatedVal, "filteredNumber");
             }
           });
           if (arrVal === usersArr.length) {
             this.setState({
-              allUsers: filteredArr,
+              allBrothers: filteredArr,
               filteredNumber: filteredNumber,
             });
           }
         });
       });
     } else {
-      this.setState({ allUsers: this.allUsers });
+      this.setState({ allBrothers: this.allUsers });
     }
   };
   signInUser = async () => {
@@ -205,111 +212,28 @@ class Home extends React.Component {
         </Modal>
         {userSignedIn ? (
           <div className="App">
-            <div className={"selectorDiv"}>
-              <div className={"selector"}>
-                <Select
-                  defaultValue=""
-                  style={{ width: "80%" }}
-                  onChange={(value) =>
-                    this.handleChangeTanzeem("tanzeemWork", value)
-                  }
-                >
-                  <Option value="">تنظیمی ذمہ داری</Option>
-                  <Option value="ذیلی">ذیلی</Option>
-                  <Option value="حلقہ">حلقہ</Option>
-                  <Option value="علاقہ">علاقہ</Option>
-                  <Option value="ڈویژن">ڈویژن</Option>
-                  <Option value="کابینہ">کابینہ</Option>
-                  <Option value="زون">زون</Option>
-                </Select>
+            {/* <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                margin: 25,
+              }}
+            >
+              <div style={{ width: "90%" }}>
+                <Search
+                  placeholder="نام کے ساتھ سرچ کریں"
+                  enterButton="Search"
+                  size="large"
+                  style = {{textAlign : "end"}}
+                  onSearch={(value) => console.log(value)}
+                />
               </div>
-              <div className={"selector special"}>
-                <Select
-                  defaultValue=""
-                  style={{ width: "90%" }}
-                  onChange={(value) =>
-                    this.handleChange("outOfDarulifta", value)
-                  }
-                >
-                  <Option value="">دار الافتاء کے علاوہ مصروفیات</Option>
-                  <Option value="0">امامت</Option>
-                  <Option value="1">مؤذنی</Option>
-                  <Option value="2">جامعۃ المدینہ میں تدریس</Option>
-                  <Option value="3">خطابت</Option>
-                </Select>
-              </div>
-              <div className={"selector"}>
-                <Select
-                  defaultValue=""
-                  style={{ width: "80%" }}
-                  onChange={(value) =>
-                    this.handleChangeSpeech("speeches", value)
-                  }
-                >
-                  <Option value="">بیاىا ت</Option>
-                  <Option value="0">ہفتہ وار اجتماع میں بیان</Option>
-                  <Option value="1">بیانات کرتے ہیں</Option>
-                </Select>
-              </div>
-              <div className={"selector"}>
-                <Select
-                  defaultValue=""
-                  style={{ width: "80%" }}
-                  onChange={this.handleChange}
-                >
-                  <Option value="">سلسلہ</Option>
-                  <Option value="کیا آپ مدنی چینل پر سلسلے کرتےہیں؟">
-                    {" "}
-                    مدنی چینل
-                  </Option>
-                  <Option value="کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟">
-                    {" "}
-                    سوشل میڈیا
-                  </Option>
-                </Select>
-              </div>
-              <div className={"selector"}>
-                <Select
-                  defaultValue=""
-                  style={{ width: "80%" }}
-                  onChange={(value) =>
-                    this.handleChangeWorld("worldlyEducation", value)
-                  }
-                >
-                  <Option value="">دنیوی تعلیم</Option>
-                  <Option value="میٹرک">میٹرک</Option>
-                  <Option value="انٹر">انٹر</Option>
-                  <Option value="گریجویٹ">گریجویٹ</Option>
-                  <Option value="ماسٹر">ماسٹر</Option>
-                  <Option value="ایم فل">ایم فل</Option>
-                  <Option value="پی ایچ ڈی">پی ایچ ڈی</Option>
-                  <Option value="بی ایس">بی ایس</Option>
-                  <Option value="عالم فاضل عربی">عالم فاضل عربی</Option>
-                </Select>
-              </div>
-              <div className={"selector"}>
-                <Select
-                  defaultValue=""
-                  style={{ width: "80%" }}
-                  onChange={(value) =>
-                    this.handleChangeWorld("islamicEducationArr", value)
-                  }
-                >
-                  <Option value="">اسلامی تعلیم</Option>
-                  <Option value="ناظرہ قرآن">ناظرہ قرآن</Option>
-                  <Option value="حفظِ قرآن">حفظِ قرآن</Option>
-                  <Option value="درسِ نظامی">درسِ نظامی</Option>
-                  <Option value="حسنِ قرأت">حسنِ قرأت</Option>
-                  <Option value="نعت شریف">نعت شریف</Option>
-                </Select>
-              </div>
-            </div>
+            </div> */}
             <div className={"containerHome"}>
               {allUsers !== null &&
                 Object.keys(allUsers).map((branchName, index) => {
                   let allBros = Object.values(allUsers[branchName]);
                   let allBrosKeys = Object.keys(allUsers[branchName]);
-                  console.log(allBros, allBros.length);
                   return (
                     <div>
                       <div className={"branchheader"}>
@@ -329,7 +253,7 @@ class Home extends React.Component {
                                     state: {
                                       data: data,
                                       key: key,
-                                      branch : branchName
+                                      branch: branchName,
                                     },
                                   });
                                 }}

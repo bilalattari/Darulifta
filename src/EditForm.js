@@ -3122,7 +3122,7 @@ class EditForm extends React.Component {
                   size={"large"}
                   type="primary"
                   onClick={() => {
-                    if (countNumber < 12) {
+                    if (countNumber < 13) {
                       this.setState({ countNumber: countNumber - 1 });
                     } else {
                       this.setState({ countNumber: 0 });

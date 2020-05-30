@@ -21,7 +21,7 @@ const devConfig = {
   appId: "1:187129122998:web:0aa266358dbc7954591617",
   measurementId: "G-Y8688J3KRJ",
 };
-firebase.initializeApp(devConfig);
+firebase.initializeApp(firebaseConfig);
 
 let db = firebase.database().ref();
 
