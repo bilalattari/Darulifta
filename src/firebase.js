@@ -11,6 +11,17 @@ const firebaseConfig = {
   measurementId: "G-TSKRPRBBXV"
 };
 
+
+const devConfig = {
+  apiKey: "AIzaSyBFfSvAAwtYRvo0I6KBNUJCRqB425zfZq8",
+  authDomain: "darulifta-prac.firebaseapp.com",
+  databaseURL: "https://darulifta-prac.firebaseio.com",
+  projectId: "darulifta-prac",
+  storageBucket: "darulifta-prac.appspot.com",
+  messagingSenderId: "187129122998",
+  appId: "1:187129122998:web:0aa266358dbc7954591617",
+  measurementId: "G-Y8688J3KRJ"
+};
   firebase.initializeApp(firebaseConfig)
 
 

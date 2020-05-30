@@ -128,6 +128,7 @@ const CustomInput = (props) => (
       placeholder={props.title}
       onChange={props.onChange}
       type={props.type ? props.type : null}
+      value={props.value}
     />
   </div>
 );
@@ -634,6 +635,30 @@ class App extends React.Component {
       ],
     };
   }
+
+  componentDidMount() {
+    if (this.props.history) {
+      let allVals = this.props.history.location.state.data;
+      let id = this.props.history.location.state.key;
+      this.setState({
+        personalInfo: allVals["personalInfo"],
+        socialMedia: allVals["socialMedia"],
+        address: allVals["address"],
+        worldlyEducation: allVals["worldlyEducation"],
+        islamicEducationArr: allVals["islamicEducationArr"],
+        skillsArr: allVals["skillsArr"],
+        writtenwork: allVals["writtenwork"],
+        outOfDarulifta: allVals["outOfDarulifta"],
+        reading: allVals["reading"],
+        speeches: allVals["speeches"],
+        languageArr: allVals["languageArr"],
+        socialMediaPrograms: allVals["socialMediaPrograms"],
+        tanzeemWork: allVals["tanzeemWork"],
+        outOfCountry: allVals["outOfCountry"],
+        officeDetail: allVals["officeDetail"],
+      });
+    }
+  }
   handleChange(name, value) {
     console.log(`selected ${name} ${value}`);
     this.setState({ [name]: value });
@@ -800,11 +825,18 @@ class App extends React.Component {
                     src={previewImage}
                   />
                 </Modal>
-                <div  style = {{ justifyContent : "center" , textAlign : "right" , width : "60%"}}>
+                <div
+                  style={{
+                    justifyContent: "center",
+                    textAlign: "right",
+                    width: "60%",
+                  }}
+                >
                   <span className={"inputHeading"}>موجودہ شاخ</span> <br />
                   <Select
                     className="input dropdown"
                     defaultValue="موجودہ شاخ"
+                    value={branch}
                     onChange={(value) => this.setState({ branch: value })}
                   >
                     <Option value="افتاء مکتب کراچی">افتاء مکتب کراچی</Option>
@@ -849,20 +881,10 @@ class App extends React.Component {
                 <div className="header inputrow">
                   <div className="inputrowchild">
                     <span className={"inputHeading"}>موجودہ منصب</span> <br />
-                    {/* <CustomInput
-                    onChange={(e) =>
-                      this.onchangetext(
-                        "موجودہ منصب",
-                        e.target.value,
-                        "personalInfo",
-                        0
-                      )
-                    }
-                    title={"موجودہ منصب"}
-                  /> */}
                     <Select
                       className="input dropdown"
-                      defaultValue="موجودہ منصب"
+                      value={personalInfo[0]["موجودہ منصب"]}
+                      placeholder="موجودہ منصب"
                       onChange={(value) =>
                         this.onchangetext(
                           "موجودہ منصب",
@@ -889,12 +911,14 @@ class App extends React.Component {
                         0
                       )
                     }
+                    value={personalInfo[0]["تاریخ تقرری"]}
                     type={"date"}
                     title={"تاریخ تقرری"}
                   />
                 </div>
                 <div className="header inputrow">
                   <CustomInput
+                    value={personalInfo[1]["Father-ولدیت"]}
                     onChange={(e) =>
                       this.onchangetext(
                         "Father-ولدیت",
@@ -914,6 +938,7 @@ class App extends React.Component {
                         1
                       )
                     }
+                    value={personalInfo[1]["Name-نام"]}
                     title={"Name-نام"}
                   />
                 </div>
@@ -927,6 +952,7 @@ class App extends React.Component {
                         2
                       )
                     }
+                    value={personalInfo[2]["Nationality -قومیت"]}
                     title={"Nationality -قومیت"}
                   />
                   <CustomInput
@@ -939,6 +965,7 @@ class App extends React.Component {
                       )
                     }
                     title={"Date of Birth- تاریخ پیدائش"}
+                    value={personalInfo[2]["Date of Birth- تاریخ پیدائش"]}
                     type={"date"}
                   />
                 </div>
@@ -952,6 +979,7 @@ class App extends React.Component {
                         3
                       )
                     }
+                    value={personalInfo[3]["Passport No - پاسپورٹ نمبر"]}
                     title={"Passport No. - پاسپورٹ نمبر"}
                     type={"number"}
                   />
@@ -964,6 +992,7 @@ class App extends React.Component {
                         3
                       )
                     }
+                    value={personalInfo[3]["NIC-ID -شناختی کارڈ نمبر آئی ڈی"]}
                     title={"NIC/ID -شناختی کارڈ نمبر/  آئی ڈی "}
                     type={"number"}
                   />
@@ -978,6 +1007,7 @@ class App extends React.Component {
                         4
                       )
                     }
+                    value={personalInfo[4]["PTCL-پی ٹی سی ایل نمبر"]}
                     title={"PTCL-پی ٹی سی ایل نمبر"}
                     type={"number"}
                   />
@@ -990,6 +1020,7 @@ class App extends React.Component {
                         4
                       )
                     }
+                    value={personalInfo[4]["Mobile No -موبائل نمبر"]}
                     title={"Mobile No. -موبائل نمبر"}
                     type={"number"}
                   />
@@ -1004,6 +1035,7 @@ class App extends React.Component {
                         5
                       )
                     }
+                    value={personalInfo[5]["Chronic Disease - دائمی مرض"]}
                     title={"Chronic Disease - دائمی مرض"}
                   />
                   <div className="inputrowchild">
@@ -1014,6 +1046,7 @@ class App extends React.Component {
                     <Select
                       className="input dropdown"
                       defaultValue="A+"
+                      value={personalInfo[5]["Blood Group - بلڈ گروپ"]}
                       onChange={(value) =>
                         this.onchangetext(
                           "Blood Group - بلڈ گروپ",
@@ -1043,6 +1076,7 @@ class App extends React.Component {
                     <Select
                       className="input dropdown"
                       defaultValue="unmarried"
+                      value={personalInfo[6]["Marital Status - ازدواجی حیثیت"]}
                       onChange={(value) =>
                         this.onchangetext(
                           "Marital Status - ازدواجی حیثیت",
@@ -1066,6 +1100,7 @@ class App extends React.Component {
                         6
                       )
                     }
+                    value={personalInfo[6]["Emergency No - ایمرجنسی نمبر"]}
                     title={"Emergency No. - ایمرجنسی نمبر"}
                     type={"number"}
                   />
@@ -1080,6 +1115,7 @@ class App extends React.Component {
                         7
                       )
                     }
+                    value={personalInfo[7]["E-mail-ای میل"]}
                     title={"E-mail - ای میل"}
                   />
                 </div>
@@ -3015,7 +3051,7 @@ class App extends React.Component {
                     }
                     if (countNumber === 12) {
                       allData["officeDetail"] = officeDetail;
-                      addUser(allData , this.state.branch);
+                      addUser(allData, this.state.branch);
                       this.props.history.push("/");
                       this.setState({ countNumber: 0 });
                     }

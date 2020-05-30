@@ -310,6 +310,7 @@ class Home extends React.Component {
             <div className={"containerHome"}>
               {Object.keys(allUsers).map((branchName, index) => {
                 let allBros = Object.values(allUsers[branchName]);
+                let allBrosKeys = Object.keys(allUsers[branchName]);
                 console.log(allBros, allBros.length);
                 return (
                   <div>
@@ -319,6 +320,7 @@ class Home extends React.Component {
                     </div>
                     <div className={"containerCards"}>
                       {allBros.map((data, index) => {
+                        let key = allBrosKeys[index];
                         let item = data["personalInfo"];
                         return (
                           <div className={"containerCards"}>
@@ -328,26 +330,31 @@ class Home extends React.Component {
                                   pathname: "/detail",
                                   state: {
                                     data: data,
+                                    key: key,
                                   },
                                 });
                               }}
                             >
-                                <Card
-                                  hoverable
-                                  style={{ width: 240 }}
-                                  cover={
-                                    <img
-                                      alt="example"
-                                      height={200}
-                                      src={item[9]["image"]  ? item[9]["image"] : require('./download (7).jpg')}
-                                    />
-                                  }
-                                >
-                                  <Meta
-                                    title={item[1]["Name-نام"]}
-                                    description={item[0]["موجودہ منصب"]}
+                              <Card
+                                hoverable
+                                style={{ width: 240 }}
+                                cover={
+                                  <img
+                                    alt="example"
+                                    height={200}
+                                    src={
+                                      item[9]["image"]
+                                        ? item[9]["image"]
+                                        : require("./download (7).jpg")
+                                    }
                                   />
-                                </Card>
+                                }
+                              >
+                                <Meta
+                                  title={item[1]["Name-نام"]}
+                                  description={item[0]["موجودہ منصب"]}
+                                />
+                              </Card>
                             </div>
                           </div>
                         );
