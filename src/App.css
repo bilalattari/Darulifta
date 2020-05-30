@@ -129,9 +129,12 @@ h2 {
   font-size: 22px;
 }
 .buttonDiv {
-  margin: 12px;
   display: flex;
-  justify-content: space-around;
+  position: fixed;
+  bottom: 25px;
+  margin-left:  41px;
+  width: 70%;
+  justify-content: space-between;
 }
 .App-logo {
   height: 40vmin;
@@ -291,11 +294,11 @@ th {
   margin-bottom: 12px;
   font-size: 22px;
 }
-.branchTotal{
+.branchTotal {
   font-weight: bold;
-  font-size: 20px
+  font-size: 20px;
 }
-.branchName{
+.branchName {
   font-weight: bold;
   font-size: 20px;
 }
@@ -321,8 +324,8 @@ th {
 }
 .containerCards {
   float: left;
-margin : 10px;
-cursor: pointer;
+  margin: 10px;
+  cursor: pointer;
 }
 
 .avatar-uploader > .ant-upload {

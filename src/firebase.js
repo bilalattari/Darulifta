@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from "firebase";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDfO-yzG50UJo9Xi2zVjKL68D0bIcZXJ8s",
@@ -8,9 +8,8 @@ const firebaseConfig = {
   storageBucket: "darulifta-ahlesunnat.appspot.com",
   messagingSenderId: "282206646331",
   appId: "1:282206646331:web:a7087558e9684f22a16c1e",
-  measurementId: "G-TSKRPRBBXV"
+  measurementId: "G-TSKRPRBBXV",
 };
-
 
 const devConfig = {
   apiKey: "AIzaSyBFfSvAAwtYRvo0I6KBNUJCRqB425zfZq8",
@@ -20,16 +19,20 @@ const devConfig = {
   storageBucket: "darulifta-prac.appspot.com",
   messagingSenderId: "187129122998",
   appId: "1:187129122998:web:0aa266358dbc7954591617",
-  measurementId: "G-Y8688J3KRJ"
+  measurementId: "G-Y8688J3KRJ",
 };
-  firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(devConfig);
 
+let db = firebase.database().ref();
 
-  let db = firebase.database().ref()
+export const addUser = (obj, branch) => {
+  db.child("Brother/" + branch).push(obj);
+};
+export const updateUser = (obj, branch, key) => {
+  db.child("Brother/" + branch + "/" + key).set(obj);
+};
+export const deleteUser = (obj, branch, key) => {
+  db.child("Brother/" + branch + "/" + key).remove();
+};
 
-  export const  addUser = (obj , branch)=>{
-    db.child('Brother/' +branch ).push(obj) 
-  }
-
-  export const  getUsers = async ()=>{
-  }
+export const getUsers = async () => {};

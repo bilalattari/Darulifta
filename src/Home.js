@@ -39,9 +39,6 @@ class Home extends React.Component {
       .child("Brother")
       .once("value", (snapshot) => {
         let val = snapshot.val();
-        console.log(val, "valllllllllllllll");
-        let branches = Object.keys(val);
-        console.log(branches, "branches");
         this.setState({ allUsers: val });
         // if (val !== null) {
         //   let arr = Object.values(val);
@@ -308,61 +305,63 @@ class Home extends React.Component {
               </div>
             </div>
             <div className={"containerHome"}>
-              {Object.keys(allUsers).map((branchName, index) => {
-                let allBros = Object.values(allUsers[branchName]);
-                let allBrosKeys = Object.keys(allUsers[branchName]);
-                console.log(allBros, allBros.length);
-                return (
-                  <div>
-                    <div className={"branchheader"}>
-                      <span className={"branchTotal"}>{allBros.length}</span>
-                      <span className={"branchName"}>{branchName}</span>
-                    </div>
-                    <div className={"containerCards"}>
-                      {allBros.map((data, index) => {
-                        let key = allBrosKeys[index];
-                        let item = data["personalInfo"];
-                        return (
-                          <div className={"containerCards"}>
-                            <div
-                              onClick={() => {
-                                this.props.history.push({
-                                  pathname: "/detail",
-                                  state: {
-                                    data: data,
-                                    key: key,
-                                  },
-                                });
-                              }}
-                            >
-                              <Card
-                                hoverable
-                                style={{ width: 240 }}
-                                cover={
-                                  <img
-                                    alt="example"
-                                    height={200}
-                                    src={
-                                      item[9]["image"]
-                                        ? item[9]["image"]
-                                        : require("./download (7).jpg")
-                                    }
-                                  />
-                                }
+              {allUsers !== null &&
+                Object.keys(allUsers).map((branchName, index) => {
+                  let allBros = Object.values(allUsers[branchName]);
+                  let allBrosKeys = Object.keys(allUsers[branchName]);
+                  console.log(allBros, allBros.length);
+                  return (
+                    <div>
+                      <div className={"branchheader"}>
+                        <span className={"branchTotal"}>{allBros.length}</span>
+                        <span className={"branchName"}>{branchName}</span>
+                      </div>
+                      <div className={"containerCards"}>
+                        {allBros.map((data, index) => {
+                          let key = allBrosKeys[index];
+                          let item = data["personalInfo"];
+                          return (
+                            <div className={"containerCards"}>
+                              <div
+                                onClick={() => {
+                                  this.props.history.push({
+                                    pathname: "/detail",
+                                    state: {
+                                      data: data,
+                                      key: key,
+                                      branch : branchName
+                                    },
+                                  });
+                                }}
                               >
-                                <Meta
-                                  title={item[1]["Name-نام"]}
-                                  description={item[0]["موجودہ منصب"]}
-                                />
-                              </Card>
+                                <Card
+                                  hoverable
+                                  style={{ width: 240 }}
+                                  cover={
+                                    <img
+                                      alt="example"
+                                      height={200}
+                                      src={
+                                        item[9]["image"]
+                                          ? item[9]["image"]
+                                          : require("./download (7).jpg")
+                                      }
+                                    />
+                                  }
+                                >
+                                  <Meta
+                                    title={item[1]["Name-نام"]}
+                                    description={item[0]["موجودہ منصب"]}
+                                  />
+                                </Card>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         ) : (

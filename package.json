@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -10,6 +11,7 @@
     "firebase": "^7.9.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-icons": "^3.10.0",
     "react-images-upload": "^1.2.8",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.1",

@@ -2,14 +2,19 @@ import React from "react";
 import logo from "./logo.svg";
 import "antd/dist/antd.css";
 import "./App.css";
-import { addUser } from "./firebase";
+import { addUser, updateUser } from "./firebase";
 import { Steps, Input, Button, Icon, Select, Radio, Checkbox } from "antd";
 import { Upload, Modal } from "antd";
-
-import { FaWhatsapp , FaInstagram , FaLinkedin , FaSkype , FaFacebook , FaTwitter } from 'react-icons/fa';
-
 import firebase from "firebase";
 import ImageUploader from "react-images-upload";
+import {
+  FaWhatsapp,
+  FaInstagram,
+  FaLinkedin,
+  FaSkype,
+  FaFacebook,
+  FaTwitter,
+} from "react-icons/fa";
 import { PlusSquareOutline } from "@ant-design/icons";
 const { Step } = Steps;
 const { Option } = Select;
@@ -21,6 +26,7 @@ const YearDropDown = (props) => (
     onChange={(value) => props.onChange(value)}
     style={{ width: 80 }}
     defaultValue={"1999"}
+    value={props.value}
     className={"tdSelect"}
     name="گریڈ"
   >
@@ -62,6 +68,7 @@ const GradeDropDown = (props) => (
     disabled={props.disabled}
     onChange={(value) => props.onChange(value)}
     defaultValue={"A"}
+    value={props.value}
     className={"tdSelect"}
     name="گریڈ"
   >
@@ -77,6 +84,7 @@ const Duration = (props) => (
   <Select
     onChange={(value) => props.onChange(value)}
     defaultValue={"1"}
+    value={props.value}
     className={"tdSelect"}
     name="گریڈ"
   >
@@ -93,6 +101,7 @@ const YesnoDropDown = (props) => (
   <Select
     className={"tdSelect"}
     disabled={props.disabled}
+    value={props.value}
     onChange={(value) => props.onChange(value)}
     name="گروپ"
     defaultValue={true}
@@ -129,19 +138,21 @@ const CustomInput = (props) => (
     <Input
       className={"input"}
       placeholder={props.title}
-      prefix = {props.prefix}
+      prefix={props.prefix}
       onChange={props.onChange}
       type={props.type ? props.type : null}
+      value={props.value}
     />
   </div>
 );
 
-class App extends React.Component {
+class EditForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       branch: "",
       countNumber: 0,
+      userId: "",
       pictureUploadingToServer: false,
       driving: false,
       license: false,
@@ -638,6 +649,34 @@ class App extends React.Component {
       ],
     };
   }
+
+  componentDidMount() {
+    if (this.props.history) {
+      let allVals = this.props.history.location.state.data;
+      let id = this.props.history.location.state.key;
+      let branchName = this.props.history.location.state.branch;
+      console.log(id, branchName, "branchNamebranchNamebranchNamebranchName");
+      this.setState({
+        personalInfo: allVals["personalInfo"],
+        socialMedia: allVals["socialMedia"],
+        address: allVals["address"],
+        worldlyEducation: allVals["worldlyEducation"],
+        islamicEducationArr: allVals["islamicEducationArr"],
+        skillsArr: allVals["skillsArr"],
+        writtenwork: allVals["writtenwork"],
+        outOfDarulifta: allVals["outOfDarulifta"],
+        reading: allVals["reading"],
+        speeches: allVals["speeches"],
+        languageArr: allVals["languageArr"],
+        socialMediaPrograms: allVals["socialMediaPrograms"],
+        tanzeemWork: allVals["tanzeemWork"],
+        outOfCountry: allVals["outOfCountry"],
+        officeDetail: allVals["officeDetail"],
+        userId: id,
+        branch: branchName,
+      });
+    }
+  }
   handleChange(name, value) {
     console.log(`selected ${name} ${value}`);
     this.setState({ [name]: value });
@@ -736,7 +775,7 @@ class App extends React.Component {
       allData,
       socialMediaPrograms,
     } = this.state;
-    const { previewVisible, previewImage, imageUrl } = this.state;
+    const { previewVisible, previewImage, imageUrl, userId } = this.state;
 
     return (
       <div className="App">
@@ -804,11 +843,18 @@ class App extends React.Component {
                     src={previewImage}
                   />
                 </Modal>
-                <div  style = {{ justifyContent : "center" , textAlign : "right" , width : "60%"}}>
+                <div
+                  style={{
+                    justifyContent: "center",
+                    textAlign: "right",
+                    width: "60%",
+                  }}
+                >
                   <span className={"inputHeading"}>موجودہ شاخ</span> <br />
                   <Select
                     className="input dropdown"
                     defaultValue="موجودہ شاخ"
+                    value={branch}
                     onChange={(value) => this.setState({ branch: value })}
                   >
                     <Option value="افتاء مکتب کراچی">افتاء مکتب کراچی</Option>
@@ -853,20 +899,10 @@ class App extends React.Component {
                 <div className="header inputrow">
                   <div className="inputrowchild">
                     <span className={"inputHeading"}>موجودہ منصب</span> <br />
-                    {/* <CustomInput
-                    onChange={(e) =>
-                      this.onchangetext(
-                        "موجودہ منصب",
-                        e.target.value,
-                        "personalInfo",
-                        0
-                      )
-                    }
-                    title={"موجودہ منصب"}
-                  /> */}
                     <Select
                       className="input dropdown"
-                      defaultValue="موجودہ منصب"
+                      value={personalInfo[0]["موجودہ منصب"]}
+                      placeholder="موجودہ منصب"
                       onChange={(value) =>
                         this.onchangetext(
                           "موجودہ منصب",
@@ -893,12 +929,14 @@ class App extends React.Component {
                         0
                       )
                     }
+                    value={personalInfo[0]["تاریخ تقرری"]}
                     type={"date"}
                     title={"تاریخ تقرری"}
                   />
                 </div>
                 <div className="header inputrow">
                   <CustomInput
+                    value={personalInfo[1]["Father-ولدیت"]}
                     onChange={(e) =>
                       this.onchangetext(
                         "Father-ولدیت",
@@ -918,6 +956,7 @@ class App extends React.Component {
                         1
                       )
                     }
+                    value={personalInfo[1]["Name-نام"]}
                     title={"Name-نام"}
                   />
                 </div>
@@ -931,6 +970,7 @@ class App extends React.Component {
                         2
                       )
                     }
+                    value={personalInfo[2]["Nationality -قومیت"]}
                     title={"Nationality -قومیت"}
                   />
                   <CustomInput
@@ -943,6 +983,7 @@ class App extends React.Component {
                       )
                     }
                     title={"Date of Birth- تاریخ پیدائش"}
+                    value={personalInfo[2]["Date of Birth- تاریخ پیدائش"]}
                     type={"date"}
                   />
                 </div>
@@ -956,7 +997,9 @@ class App extends React.Component {
                         3
                       )
                     }
+                    value={personalInfo[3]["Passport No - پاسپورٹ نمبر"]}
                     title={"Passport No. - پاسپورٹ نمبر"}
+                    type={"number"}
                   />
                   <CustomInput
                     onChange={(e) =>
@@ -967,6 +1010,7 @@ class App extends React.Component {
                         3
                       )
                     }
+                    value={personalInfo[3]["NIC-ID -شناختی کارڈ نمبر آئی ڈی"]}
                     title={"NIC/ID -شناختی کارڈ نمبر/  آئی ڈی "}
                     type={"number"}
                   />
@@ -981,6 +1025,7 @@ class App extends React.Component {
                         4
                       )
                     }
+                    value={personalInfo[4]["PTCL-پی ٹی سی ایل نمبر"]}
                     title={"PTCL-پی ٹی سی ایل نمبر"}
                     type={"number"}
                   />
@@ -993,6 +1038,7 @@ class App extends React.Component {
                         4
                       )
                     }
+                    value={personalInfo[4]["Mobile No -موبائل نمبر"]}
                     title={"Mobile No. -موبائل نمبر"}
                     type={"number"}
                   />
@@ -1007,6 +1053,7 @@ class App extends React.Component {
                         5
                       )
                     }
+                    value={personalInfo[5]["Chronic Disease - دائمی مرض"]}
                     title={"Chronic Disease - دائمی مرض"}
                   />
                   <div className="inputrowchild">
@@ -1017,6 +1064,7 @@ class App extends React.Component {
                     <Select
                       className="input dropdown"
                       defaultValue="A+"
+                      value={personalInfo[5]["Blood Group - بلڈ گروپ"]}
                       onChange={(value) =>
                         this.onchangetext(
                           "Blood Group - بلڈ گروپ",
@@ -1046,6 +1094,7 @@ class App extends React.Component {
                     <Select
                       className="input dropdown"
                       defaultValue="unmarried"
+                      value={personalInfo[6]["Marital Status - ازدواجی حیثیت"]}
                       onChange={(value) =>
                         this.onchangetext(
                           "Marital Status - ازدواجی حیثیت",
@@ -1069,6 +1118,7 @@ class App extends React.Component {
                         6
                       )
                     }
+                    value={personalInfo[6]["Emergency No - ایمرجنسی نمبر"]}
                     title={"Emergency No. - ایمرجنسی نمبر"}
                     type={"number"}
                   />
@@ -1083,13 +1133,14 @@ class App extends React.Component {
                         7
                       )
                     }
+                    value={personalInfo[7]["E-mail-ای میل"]}
                     title={"E-mail - ای میل"}
                   />
                 </div>
                 <div className="header inputrow">
                   <div className="inputrowchild">
                     <Checkbox
-                      value={personalInfo[8]["ڈرائیونگ آتی ہے۔"]}
+                      checked={personalInfo[8]["ڈرائیونگ آتی ہے۔"]}
                       onChange={(value) => {
                         this.onchangetext(
                           "ڈرائیونگ آتی ہے",
@@ -1104,7 +1155,7 @@ class App extends React.Component {
                   </div>
                   <div className="inputrowchild">
                     <Checkbox
-                      value={personalInfo[8]["لائسنس بنا ہوا ہے"]}
+                      checked={personalInfo[8]["لائسنس بنا ہوا ہے"]}
                       onChange={(value) => {
                         this.onchangetext(
                           "لائسنس بنا ہوا ہے",
@@ -1127,8 +1178,8 @@ class App extends React.Component {
                 <div className="header inputrow accounts">
                   <CustomInput
                     className={"social"}
-                    prefix = {<FaFacebook className="site-form-item-icon"  />}
-                    value = {socialMedia[0]['Facebook']}
+                    prefix={<FaFacebook className="site-form-item-icon" />}
+                    value={socialMedia[0]["Facebook"]}
                     onChange={(e) =>
                       this.onchangetext(
                         "Facebook",
@@ -1141,8 +1192,8 @@ class App extends React.Component {
                   />
                   <CustomInput
                     className={"social"}
-                    value = {socialMedia[0]['Whatsapp']}
-                    prefix = {<FaWhatsapp className="site-form-item-icon"  />}
+                    value={socialMedia[0]["Whatsapp"]}
+                    prefix={<FaWhatsapp className="site-form-item-icon" />}
                     onChange={(e) =>
                       this.onchangetext(
                         "Whatsapp",
@@ -1157,8 +1208,8 @@ class App extends React.Component {
                 <div className="header inputrow accounts">
                   <CustomInput
                     className={"social"}
-                    value = {socialMedia[1]['Twitter']}
-                    prefix = {<FaTwitter className="site-form-item-icon"  />}
+                    value={socialMedia[1]["Twitter"]}
+                    prefix={<FaTwitter className="site-form-item-icon" />}
                     onChange={(e) =>
                       this.onchangetext(
                         "Twitter",
@@ -1171,8 +1222,8 @@ class App extends React.Component {
                   />
                   <CustomInput
                     className={"social"}
-                    value = {socialMedia[0]['Skype']}
-                    prefix = {<FaSkype className="site-form-item-icon"  />}
+                    value={socialMedia[0]["Skype"]}
+                    prefix={<FaSkype className="site-form-item-icon" />}
                     onChange={(e) =>
                       this.onchangetext(
                         "Skype",
@@ -1187,8 +1238,8 @@ class App extends React.Component {
                 <div className="header inputrow accounts">
                   <CustomInput
                     className={"social"}
-                    value = {socialMedia[1]['Instagram']}
-                    prefix = {<FaInstagram className="site-form-item-icon"  />}
+                    value={socialMedia[1]["Instagram"]}
+                    prefix={<FaInstagram className="site-form-item-icon" />}
                     onChange={(e) =>
                       this.onchangetext(
                         "Instagram",
@@ -1201,8 +1252,8 @@ class App extends React.Component {
                   />
                   <CustomInput
                     className={"social"}
-                    value = {socialMedia[1]['LinkedIn']}
-                    prefix = {<FaLinkedin className="site-form-item-icon"  />}
+                    value={socialMedia[1]["LinkedIn"]}
+                    prefix={<FaLinkedin className="site-form-item-icon" />}
                     onChange={(e) =>
                       this.onchangetext(
                         "LinkedIn",
@@ -1228,6 +1279,7 @@ class App extends React.Component {
                       <Select
                         className="input dropdown"
                         defaultValue="سندھ"
+                        value={address[1]["سرکاری صوبہ"]}
                         onChange={(value) =>
                           this.onchangetext("سرکاری صوبہ", value, "address", 1)
                         }
@@ -1240,6 +1292,7 @@ class App extends React.Component {
                     </div>
                     <CustomInput
                       width={true}
+                      value={address[0]["شہر"]}
                       onChange={(e) =>
                         this.onchangetext("شہر", e.target.value, "address", 0)
                       }
@@ -1247,6 +1300,7 @@ class App extends React.Component {
                     />
                     <CustomInput
                       width={true}
+                      value={address[0]["علاقہ-محلہ"]}
                       onChange={(e) =>
                         this.onchangetext(
                           "علاقہ-محلہ",
@@ -1259,6 +1313,7 @@ class App extends React.Component {
                     />
                     <CustomInput
                       width={true}
+                      value={address[0]["گلی نمبر"]}
                       onChange={(e) =>
                         this.onchangetext(
                           "گلی نمبر",
@@ -1271,6 +1326,7 @@ class App extends React.Component {
                     />
                     <CustomInput
                       width={true}
+                      value={address[0]["مکان نمبر"]}
                       onChange={(e) =>
                         this.onchangetext(
                           "مکان نمبر",
@@ -1291,6 +1347,7 @@ class App extends React.Component {
                     <Select
                       className="input dropdown"
                       defaultValue="ذاتی"
+                      value={address[1]["مکان کی حیثیت"]}
                       onChange={(value) =>
                         this.onchangetext("مکان کی حیثیت", value, "address", 1)
                       }
@@ -1331,6 +1388,7 @@ class App extends React.Component {
                         <td>
                           <YearDropDown
                             disabled={!data.haveDone}
+                            value={worldlyEducation[index]["passingYear"]}
                             onChange={(value) =>
                               this.handleArrayChange(
                                 value,
@@ -1344,6 +1402,7 @@ class App extends React.Component {
                         <td>
                           <GradeDropDown
                             disabled={!data.haveDone}
+                            value={worldlyEducation[index]["grade"]}
                             onChange={(value) =>
                               this.handleArrayChange(
                                 value,
@@ -1357,6 +1416,7 @@ class App extends React.Component {
                         <td>
                           <Input
                             disabled={!data.haveDone}
+                            value={worldlyEducation[index]["city"]}
                             onChange={(e) =>
                               this.handleArrayChange(
                                 e.target.value,
@@ -1372,6 +1432,7 @@ class App extends React.Component {
                         <td>
                           <Input
                             disabled={!data.haveDone}
+                            value={worldlyEducation[index]["institution"]}
                             onChange={(e) =>
                               this.handleArrayChange(
                                 e.target.value,
@@ -1387,6 +1448,7 @@ class App extends React.Component {
                         <td style={{ width: 100 }}>
                           <Select
                             disabled={!data.haveDone}
+                            value={worldlyEducation[index]["status"]}
                             onChange={(value) =>
                               this.handleArrayChange(
                                 value,
@@ -1409,6 +1471,7 @@ class App extends React.Component {
                               className={"tdSelect"}
                               name="گروپ"
                               disabled={!data.haveDone}
+                              value={worldlyEducation[index]["group"]}
                               onChange={(value) =>
                                 this.handleArrayChange(
                                   value,
@@ -1426,6 +1489,15 @@ class App extends React.Component {
                           ) : (
                             <Input
                               disabled={!data.haveDone}
+                              checked={worldlyEducation[index]["group"]}
+                              onChange={(value) =>
+                                this.handleArrayChange(
+                                  value,
+                                  index,
+                                  "group",
+                                  "worldlyEducation"
+                                )
+                              }
                               className={"tableInput"}
                               placeholder={"Subject"}
                             />
@@ -1434,6 +1506,7 @@ class App extends React.Component {
                         <td style={{ fontWeight: "bold" }}>
                           <Checkbox
                             defaultChecked={false}
+                            checked={worldlyEducation[index]["haveDone"]}
                             onChange={(value) =>
                               this.handleArrayChange(
                                 !data.haveDone,
@@ -1473,10 +1546,11 @@ class App extends React.Component {
                         <td>
                           <YearDropDown
                             disabled={!data.haveDone}
+                            value={islamicEducationArr[index]["passingYear"]}
                             onChange={(value) =>
                               this.handleArrayChange(
                                 value,
-                                index + 1,
+                                index,
                                 "passingYear",
                                 "islamicEducationArr"
                               )
@@ -1486,6 +1560,7 @@ class App extends React.Component {
                         <td>
                           <GradeDropDown
                             disabled={!data.haveDone}
+                            value={islamicEducationArr[index]["grade"]}
                             onChange={(value) =>
                               this.handleArrayChange(
                                 value,
@@ -1499,6 +1574,7 @@ class App extends React.Component {
                         <td>
                           <Input
                             disabled={!data.haveDone}
+                            value={islamicEducationArr[index]["city"]}
                             onChange={(e) =>
                               this.handleArrayChange(
                                 e.target.value,
@@ -1517,6 +1593,7 @@ class App extends React.Component {
                               className={"tdSelect"}
                               name="گروپ"
                               disabled={!data.haveDone}
+                              value={islamicEducationArr[index]["institution"]}
                               onChange={(value) =>
                                 this.handleArrayChange(
                                   value,
@@ -1535,6 +1612,7 @@ class App extends React.Component {
                           ) : (
                             <Input
                               disabled={!data.haveDone}
+                              value={islamicEducationArr[index]["institution"]}
                               onChange={(e) =>
                                 this.handleArrayChange(
                                   e.target.value,
@@ -1551,6 +1629,7 @@ class App extends React.Component {
                         <td style={{ fontWeight: "bold" }}>
                           <Checkbox
                             defaultChecked={false}
+                            checked={islamicEducationArr[index]["haveDone"]}
                             onChange={(value) =>
                               this.handleArrayChange(
                                 !data.haveDone,
@@ -1596,6 +1675,7 @@ class App extends React.Component {
                               "skillsArr"
                             )
                           }
+                          value={skillsArr[index]["years"]}
                         />
                       </td>
                       <td>
@@ -1608,6 +1688,7 @@ class App extends React.Component {
                               "skillsArr"
                             )
                           }
+                          value={skillsArr[index]["grade"]}
                         />
                       </td>
                       <td>
@@ -1622,6 +1703,7 @@ class App extends React.Component {
                           }
                           className={"tableInput"}
                           placeholder={"شہر"}
+                          value={skillsArr[index]["city"]}
                         />
                       </td>
                       <td>
@@ -1636,6 +1718,7 @@ class App extends React.Component {
                           }
                           className={"tableInput"}
                           placeholder={"ادارہ"}
+                          value={skillsArr[index]["institution"]}
                         />
                       </td>
                       <td style={{ fontWeight: "bold" }}>
@@ -1650,6 +1733,7 @@ class App extends React.Component {
                           }
                           className={"tableInput"}
                           placeholder={"مضامین"}
+                          value={skillsArr[index]["subjects"]}
                         />
                       </td>
                       <td style={{ fontWeight: "bold" }}>
@@ -1662,6 +1746,7 @@ class App extends React.Component {
                               "skillsArr"
                             )
                           }
+                          value={skillsArr[index]["course"]}
                           className={"tableInput"}
                           placeholder={"کورس /ڈپلومہ"}
                         />
@@ -1707,6 +1792,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!outOfDarulifta[0]["امامت"]}
+                          value={outOfDarulifta[0]["عرصہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "عرصہ",
@@ -1721,6 +1807,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!outOfDarulifta[0]["امامت"]}
+                          value={outOfDarulifta[0]["جگہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "جگہ",
@@ -1735,6 +1822,7 @@ class App extends React.Component {
                       </td>
                       <td>
                         <YesnoDropDown
+                          value={outOfDarulifta[0]["امامت"]}
                           onChange={(value) =>
                             this.onchangetext(
                               "امامت",
@@ -1759,6 +1847,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!outOfDarulifta[1]["مؤذنی"]}
+                          value={outOfDarulifta[1]["عرصہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "عرصہ",
@@ -1773,6 +1862,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!outOfDarulifta[1]["مؤذنی"]}
+                          value={outOfDarulifta[1]["جگہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "جگہ",
@@ -1787,6 +1877,7 @@ class App extends React.Component {
                       </td>
                       <td>
                         <YesnoDropDown
+                          value={outOfDarulifta[1]["مؤذنی"]}
                           onChange={(value) =>
                             this.onchangetext(
                               "مؤذنی",
@@ -1813,6 +1904,7 @@ class App extends React.Component {
                           disabled={
                             !outOfDarulifta[2]["جامعۃ المدینہ میں تدریس"]
                           }
+                          value={outOfDarulifta[2]["عرصہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "عرصہ",
@@ -1830,6 +1922,7 @@ class App extends React.Component {
                           disabled={
                             !outOfDarulifta[2]["جامعۃ المدینہ میں تدریس"]
                           }
+                          value={outOfDarulifta[2]["جگہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "جگہ",
@@ -1844,6 +1937,7 @@ class App extends React.Component {
                       </td>
                       <td>
                         <YesnoDropDown
+                          value={outOfDarulifta[2]["جامعۃ المدینہ میں تدریس"]}
                           onChange={(value) =>
                             this.onchangetext(
                               "جامعۃ المدینہ میں تدریس",
@@ -1868,6 +1962,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!outOfDarulifta[3]["خطابت"]}
+                          value={outOfDarulifta[3]["خطابت"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "عرصہ",
@@ -1883,6 +1978,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!outOfDarulifta[3]["خطابت"]}
+                          value={outOfDarulifta[3]["جگہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "جگہ",
@@ -1898,6 +1994,7 @@ class App extends React.Component {
                       <td>
                         {" "}
                         <YesnoDropDown
+                          value={outOfDarulifta[3]["خطابت"]}
                           onChange={(value) =>
                             this.onchangetext(
                               "خطابت",
@@ -1921,6 +2018,7 @@ class App extends React.Component {
                     <tr>
                       <td colSpan={3}>
                         <TextArea
+                          value={outOfDarulifta[4]["دیگر(کاروباری یا علاوہ)"]}
                           style={{ textAlign: "right" }}
                           onChange={(e) =>
                             this.onchangetext(
@@ -1947,6 +2045,8 @@ class App extends React.Component {
                   <p>تحریری و تصنیفی خدمات</p>
                   <div className={"textArea"}>
                     <TextArea
+                      v
+                      alue={this.state.writtenWork}
                       onChange={(e) =>
                         this.setState({ writtenWork: e.target.value })
                       }
@@ -1978,6 +2078,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!reading[0]["مطالعہ کی عادت ہے؟"]}
+                          value={reading[1]["کس علم میں خصوصی مہارت ہے؟"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "کس علم میں خصوصی مہارت ہے؟",
@@ -1993,6 +2094,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!reading[0]["مطالعہ کی عادت ہے؟"]}
+                          value={reading[0]["مطالعہ کی عادت ہے؟"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "کس علم میں خصوصی شغف ہے؟",
@@ -2008,6 +2110,7 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!reading[0]["مطالعہ کی عادت ہے؟"]}
+                          value={reading[0]["کن کن علوم کا مطالعہ کرتے ہیں؟"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "کن کن علوم کا مطالعہ کرتے ہیں؟",
@@ -2023,6 +2126,11 @@ class App extends React.Component {
                       <td>
                         <Input
                           disabled={!reading[0]["مطالعہ کی عادت ہے؟"]}
+                          value={
+                            reading[0][
+                              "ایک ہفتے میں کتنے صفحات اوسطا پڑھتے ہیں؟"
+                            ]
+                          }
                           onChange={(e) =>
                             this.onchangetext(
                               "ایک ہفتے میں کتنے صفحات اوسطا پڑھتے ہیں؟",
@@ -2038,6 +2146,7 @@ class App extends React.Component {
                       <td>
                         {" "}
                         <YesnoDropDown
+                          value={reading[0]["مطالعہ کی عادت ہے؟"]}
                           onChange={(value) => {
                             this.onchangetext(
                               "مطالعہ کی عادت ہے؟",
@@ -2056,6 +2165,7 @@ class App extends React.Component {
                           disabled={!reading[0]["مطالعہ کی عادت ہے؟"]}
                           placeholder="Please select"
                           defaultValue={["Urdu"]}
+                          value={reading[1]["کس کس زبان میں مطالعہ کرتے ہیں؟"]}
                           onChange={(value) => {
                             this.onchangetext(
                               "کس کس زبان میں مطالعہ کرتے ہیں؟",
@@ -2102,6 +2212,7 @@ class App extends React.Component {
                           }
                           placeholder="Please select"
                           defaultValue={["Urdu"]}
+                          value={speeches[0]["کس زبان میں"]}
                           onChange={(value) =>
                             this.onchangetext(
                               "کس زبان میں",
@@ -2118,6 +2229,9 @@ class App extends React.Component {
                       <td>
                         {" "}
                         <YesnoDropDown
+                          value={
+                            speeches[0]["ہفتہ وار اجتماع میں بیان کرتے ہیں؟"]
+                          }
                           onChange={(value) =>
                             this.onchangetext(
                               "ہفتہ وار اجتماع میں بیان کرتے ہیں؟",
@@ -2131,6 +2245,7 @@ class App extends React.Component {
                       <td>
                         {" "}
                         <YesnoDropDown
+                          value={speeches[0]["کیا بیانات کرتے ہیں؟"]}
                           onChange={(value) =>
                             this.onchangetext(
                               "کیا بیانات کرتے ہیں؟",
@@ -2149,6 +2264,9 @@ class App extends React.Component {
                           disabled={
                             !speeches[0]["ہفتہ وار اجتماع میں بیان کرتے ہیں؟"]
                           }
+                          value={
+                            speeches[1]["ہفتہ وار اجتماع میں بیان کرتے ہیں؟"]
+                          }
                           onChange={(e) =>
                             this.onchangetext(
                               "مہینے میں اوسطاً کتنے اجتماع",
@@ -2165,6 +2283,7 @@ class App extends React.Component {
                         {" "}
                         <Input
                           disabled={!speeches[0]["کیا بیانات کرتے ہیں؟"]}
+                          value={speeches[1]["مہینے میں اوسطاً کتنے بیان"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "مہینے میں اوسطاً کتنے بیان",
@@ -2195,6 +2314,7 @@ class App extends React.Component {
                       <td colSpan={"6"}>
                         {" "}
                         <Input
+                          value={languageArr[0]["Mother Tongue - مادری زبان"]}
                           onChange={(e) =>
                             this.handleArrayChange(
                               e.target.value,
@@ -2237,6 +2357,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
+                              value={languageArr[index]["curr"]}
                               name="گروپ"
                               defaultValue={"بہتر"}
                             >
@@ -2255,6 +2376,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
+                              value={languageArr[index]["howMuch"]}
                               className={"tableInput"}
                               type={"text"}
                             />
@@ -2269,6 +2391,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
+                              value={languageArr[index]["where"]}
                               className={"tableInput"}
                               type={"text"}
                             />
@@ -2284,7 +2407,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
-                              value={data.understand}
+                              checked={data.understand}
                             />
                           </td>
                           <td>
@@ -2298,7 +2421,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
-                              value={data.speak}
+                              checked={data.speak}
                             />
                           </td>
                           <td>
@@ -2312,7 +2435,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
-                              value={data.write}
+                              checked={data.write}
                             />
                           </td>
                           <td>
@@ -2326,7 +2449,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
-                              value={data.read}
+                              checked={data.read}
                             />
                           </td>
                           <td>
@@ -2340,7 +2463,7 @@ class App extends React.Component {
                                   "languageArr"
                                 )
                               }
-                              value={data.accent}
+                              checked={data.accent}
                             />
                           </td>
                           <td>{data.name}</td>
@@ -2376,7 +2499,8 @@ class App extends React.Component {
                             "کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟"
                           ]
                         }
-                        onChange={(value) =>
+                        value={socialMediaPrograms[1]["دیگر سلسلوں میں شرکت"]}
+                        checked={(value) =>
                           this.onchangetext(
                             "دیگر سلسلوں میں شرکت",
                             !socialMediaPrograms[1]["دیگر سلسلوں میں شرکت"],
@@ -2393,6 +2517,9 @@ class App extends React.Component {
                           !socialMediaPrograms[1][
                             "کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟"
                           ]
+                        }
+                        checked={
+                          socialMediaPrograms[1]["سلسلہ دارالاافتاء اہلسنت"]
                         }
                         onChange={(value) =>
                           this.onchangetext(
@@ -2412,6 +2539,7 @@ class App extends React.Component {
                             "کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟"
                           ]
                         }
+                        checked={socialMediaPrograms[1]["ذاتی سلسلہ"]}
                         onChange={(value) =>
                           this.onchangetext(
                             "ذاتی سلسلہ",
@@ -2445,6 +2573,7 @@ class App extends React.Component {
                             "کیا آپ مدنی چینل پر سلسلے کرتےہیں؟"
                           ]
                         }
+                        checked={socialMediaPrograms[0]["دیگر سلسلوں میں شرکت"]}
                         onChange={(value) =>
                           this.onchangetext(
                             "دیگر سلسلوں میں شرکت",
@@ -2462,6 +2591,9 @@ class App extends React.Component {
                           !socialMediaPrograms[0][
                             "کیا آپ مدنی چینل پر سلسلے کرتےہیں؟"
                           ]
+                        }
+                        checked={
+                          socialMediaPrograms[0]["سلسلہ دارالاافتاء اہلسنت"]
                         }
                         onChange={(value) =>
                           this.onchangetext(
@@ -2481,6 +2613,7 @@ class App extends React.Component {
                             "کیا آپ مدنی چینل پر سلسلے کرتےہیں؟"
                           ]
                         }
+                        checked={socialMediaPrograms[0]["ذاتی سلسلہ"]}
                         onChange={(value) =>
                           this.onchangetext(
                             "ذاتی سلسلہ",
@@ -2500,6 +2633,11 @@ class App extends React.Component {
                             "socialMediaPrograms",
                             0
                           )
+                        }
+                        value={
+                          socialMediaPrograms[0][
+                            "کیا آپ مدنی چینل پر سلسلے کرتےہیں؟"
+                          ]
                         }
                       />
                     </td>
@@ -2534,6 +2672,7 @@ class App extends React.Component {
                               0
                             )
                           }
+                          value={tanzeemWork[0]["مقام"]}
                           className={"tableInput"}
                           type={"text"}
                         />{" "}
@@ -2549,6 +2688,7 @@ class App extends React.Component {
                               0
                             )
                           }
+                          value={tanzeemWork[0]["عرصہ ذمہ داری"]}
                           className={"tableInput"}
                           type={"number"}
                         />{" "}
@@ -2563,6 +2703,7 @@ class App extends React.Component {
                               0
                             )
                           }
+                          value={tanzeemWork[0]["کس سطح پر؟"]}
                           className={"tdSelect"}
                           name="گروپ"
                           defaultValue={""}
@@ -2594,6 +2735,7 @@ class App extends React.Component {
                               1
                             )
                           }
+                          value={tanzeemWork[1]["مقام"]}
                           className={"tableInput"}
                           type={"text"}
                         />{" "}
@@ -2609,6 +2751,7 @@ class App extends React.Component {
                               1
                             )
                           }
+                          value={tanzeemWork[1]["عرصہ ذمہ داری"]}
                           className={"tableInput"}
                         />{" "}
                       </td>
@@ -2622,6 +2765,7 @@ class App extends React.Component {
                               1
                             )
                           }
+                          value={tanzeemWork[1]["شعبہ"]}
                           className={"tableInput"}
                           type={"text"}
                         />
@@ -2661,6 +2805,7 @@ class App extends React.Component {
                                 )
                               }
                               name="گروپ"
+                              value={outOfCountry[index][keys[4]]}
                               defaultValue={""}
                             >
                               <Option value="">سفر کا مقصد</Option>
@@ -2690,6 +2835,7 @@ class App extends React.Component {
                                 )
                               }
                               className={"tableInput"}
+                              value={outOfCountry[index][keys[3]]}
                               type={"text"}
                             />
                           </td>
@@ -2704,6 +2850,7 @@ class App extends React.Component {
                                   index
                                 )
                               }
+                              value={outOfCountry[index][keys[2]]}
                               className={"tableInput"}
                               type={"text"}
                             />
@@ -2721,6 +2868,7 @@ class App extends React.Component {
                               }
                               className={"tableInput"}
                               type={"text"}
+                              value={outOfCountry[index][keys[1]]}
                             />
                           </td>
                           <td>
@@ -2738,7 +2886,7 @@ class App extends React.Component {
                               type={"text"}
                             />
                           </td>
-                          <td>1</td>
+                          <td>{index}</td>
                         </tr>
                       );
                     })}
@@ -2981,8 +3129,8 @@ class App extends React.Component {
                     }
                   }}
                 >
-                  Back
                   <Icon type="left" />
+                  Back
                 </Button>
               ) : null}
               <Button
@@ -3030,7 +3178,7 @@ class App extends React.Component {
                     }
                     if (countNumber === 12) {
                       allData["officeDetail"] = officeDetail;
-                      addUser(allData , this.state.branch);
+                      updateUser(allData, this.state.branch, userId);
                       this.props.history.push("/");
                       this.setState({ countNumber: 0 });
                     }
@@ -3041,8 +3189,8 @@ class App extends React.Component {
                   }
                 }}
               >
-                <Icon type="right" />
                 {countNumber === 12 ? "Submit" : "Next"}
+                <Icon type="right" />
               </Button>
             </div>
           </div>
@@ -3052,4 +3200,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default EditForm;

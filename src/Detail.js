@@ -3,8 +3,11 @@ import logo from "./logo.svg";
 import "antd/dist/antd.css";
 import "./App.css";
 import "./detail.css";
-import { Steps, Input, Button, Icon, Select, Radio, Checkbox } from "antd";
+import { Steps, Input, Button, Icon, Select, Radio, Checkbox , Popconfirm, message  } from "antd";
+import { FaWhatsapp , FaInstagram , FaLinkedin , FaSkype , FaFacebook , FaTwitter } from 'react-icons/fa';
 import ReactToPrint from "react-to-print";
+import { deleteUser } from './firebase'
+const text = 'Are you sure to delete this user?';
 
 let personalInfo = {
   heading: "ذاتی معلومات",
@@ -554,6 +557,8 @@ class Home extends React.Component {
       worldlyEducation,
       islamicEducationArr,
     } = this.props;
+
+    
     return (
       <div className="App" style={{ padding: 26 }}>
         <div className={"table-div-pdf"}>
@@ -1070,18 +1075,25 @@ class Example extends React.Component {
   constructor(props) {
     super(props);
   }
+  confirm = () => {
+    let allVals = this.props.history.location.state.data;
+    let id = this.props.history.location.state.key;
+    let branchName = this.props.history.location.state.branch;
+    deleteUser(allVals ,branchName , id )
+    message.info('This user is deleted');
+    this.props.history.push("/");
+  }
+  
   render() {
     let allVals;
     let id;
+    let branchName;
     if (this.props.history) {
       allVals = this.props.history.location.state.data;
       id = this.props.history.location.state.key;
+      branchName = this.props.history.location.state.branch;
     }
-    console.log(
-      allVals,
-      id,
-      "-----------------------------------------------------------------"
-    );
+     
     return (
       <div>
         <div
@@ -1097,19 +1109,22 @@ class Example extends React.Component {
               type={"secondary"}
               onClick={() => {
                 this.props.history.push({
-                  pathname: "/form",
+                  pathname: `/edit/${id}`,
                   state: {
                     data: allVals,
                     key: id,
+                    branch : branchName
                   },
                 });
               }}
             >
               Edit
             </Button>
+            <Popconfirm placement="topLeft" title={text} onConfirm={this.confirm} okText="Yes" cancelText="No">
             <Button style={{ marginRight: 5, width: 156 }} type={"danger"}>
               Delete
             </Button>
+            </Popconfirm>
           </div>
           <ReactToPrint
             trigger={() => (
