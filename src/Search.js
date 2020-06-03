@@ -16,10 +16,14 @@ class Search extends React.Component {
     super(props);
     this.state = {
       allUsers: [],
+      world: false,
       allBrothers: [],
       filterdVal: 0,
       filteredArr: [],
       filteredArrPrint: [],
+      speech: false,
+      tanzeem: false,
+      outOfIfta: false,
     };
     this.allUsers = [];
   }
@@ -58,6 +62,7 @@ class Search extends React.Component {
       this.setState({ allBrothers: this.allUsers }, async () => {
         let filteredNumber = 0;
         let arrVal = 0;
+        let userVal = "";
         let filteredArr = [];
         let filteredArrPrint = [];
         let outOfIfta = ["امامت", "مؤذنی", "جامعۃ المدینہ میں تدریس", "خطابت"];
@@ -66,16 +71,22 @@ class Search extends React.Component {
           let arrValue = ++arrVal;
           await info[array].map((data) => {
             if (data[outOfIfta[value]]) {
-              console.log(data, "data[outOfIfta]");
-              filteredArrPrint.push(data);
+              let userInfo = data;
+              userInfo.name = info["personalInfo"][1]["Name-نام"];
+              userInfo.branch = info.branch;
+              filteredArrPrint.push(userInfo);
               filteredArr.push(info);
               let updatedVal = ++filteredNumber;
             }
+            console.log(filteredArrPrint, "filteredArrPrint");
           });
           if (arrVal === usersArr.length) {
             this.setState({
               filteredArr,
               filteredNumber: filteredNumber,
+              filteredArrPrint,
+              outOfIfta: true,
+              outOfIftaVal: outOfIfta[value],
             });
           }
         });
@@ -95,17 +106,22 @@ class Search extends React.Component {
         let usersArr = Object.values(this.allUsers);
         await usersArr.map(async (info) => {
           let arrValue = ++arrVal;
-          console.log(value, "+++++++++++++++++++++++");
           if (info[array][0]["کس سطح پر؟"] === value) {
             let val = ++filteredNumber;
+            let userInfo = info[array][0];
+            userInfo.name = info["personalInfo"][1]["Name-نام"];
+            userInfo.branch = info.branch;
             console.log(filteredNumber, "filter number");
             filteredArr.push(info);
-            filteredArrPrint.push(info[array][0]);
+            filteredArrPrint.push(userInfo);
           }
+          console.log(filteredArrPrint, "filteredArrPrintfilteredArrPrint");
           if (arrVal === usersArr.length) {
             this.setState({
               filteredArr,
               filteredNumber: filteredNumber,
+              filteredArrPrint,
+              tanzeem: true,
             });
           }
         });
@@ -131,16 +147,20 @@ class Search extends React.Component {
           let arrValue = ++arrVal;
           await info[array].map((data) => {
             if (data[outOfIfta[value]]) {
+              let userInfo = data;
+              userInfo.name = info["personalInfo"][1]["Name-نام"];
+              userInfo.branch = info.branch;
               filteredArr.push(info);
-              filteredArrPrint.push(data);
-              let updatedVal = ++filteredNumber;
-              console.log(filteredArr, filteredNumber, "filteredNumber");
+              filteredArrPrint.push(userInfo);
             }
           });
+          console.log(filteredArrPrint);
           if (arrVal === usersArr.length) {
             this.setState({
               filteredArr,
               filteredNumber: filteredNumber,
+              filteredArrPrint,
+              speech: true,
             });
           }
         });
@@ -162,7 +182,7 @@ class Search extends React.Component {
           let arrValue = ++arrVal;
           await info[array].map((data, index) => {
             if (data.degree === value && data.haveDone) {
-              let userInfo = info["worldlyEducation"][index];
+              let userInfo = info[array][index];
               userInfo.name = info["personalInfo"][1]["Name-نام"];
               userInfo.branch = info.branch;
               filteredArrPrint.push(userInfo);
@@ -176,6 +196,7 @@ class Search extends React.Component {
               filteredArr,
               filteredNumber: filteredNumber,
               filteredArrPrint,
+              world: true,
             });
           }
         });
@@ -203,6 +224,11 @@ class Search extends React.Component {
       userSignedIn,
       allBrothers,
       filteredArr,
+      world,
+      speech,
+      tanzeem,
+      outOfIftaVal,
+      outOfIfta,
     } = this.state;
     return (
       <div>
@@ -319,6 +345,11 @@ class Search extends React.Component {
               onBeforePrint={() => this.props.history.push("/")}
             />
             <PrintSearchTable
+              world={world}
+              speech={speech}
+              tanzeem={tanzeem}
+              outOfIfta={outOfIfta}
+              outOfIftaVal={outOfIftaVal}
               data={this.state.filteredArrPrint}
               ref={(el) => (this.componentRef = el)}
             />
