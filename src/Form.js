@@ -1822,7 +1822,7 @@ class App extends React.Component {
                             )
                           }
                           className={"tableInput"}
-                          type={"number"}
+                          type={"text"}
                         />
                       </td>
                       <td>
@@ -1877,7 +1877,7 @@ class App extends React.Component {
                             )
                           }
                           className={"tableInput"}
-                          type={"number"}
+                          type={"text"}
                         />
                       </td>
                       <td>
@@ -2981,8 +2981,8 @@ class App extends React.Component {
                     }
                   }}
                 >
-                  Back
                   <Icon type="left" />
+                  Back
                 </Button>
               ) : null}
               <Button
@@ -3041,8 +3041,8 @@ class App extends React.Component {
                   }
                 }}
               >
-                <Icon type="right" />
                 {countNumber === 12 ? "Submit" : "Next"}
+                <Icon type="right" />
               </Button>
             </div>
           </div>

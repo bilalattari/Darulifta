@@ -1914,7 +1914,7 @@ class EditForm extends React.Component {
                             )
                           }
                           className={"tableInput"}
-                          type={"number"}
+                          type={"text"}
                         />
                       </td>
                       <td>
@@ -1972,7 +1972,7 @@ class EditForm extends React.Component {
                             )
                           }
                           className={"tableInput"}
-                          type={"number"}
+                          type={"text"}
                         />
                       </td>
                       <td>
@@ -2045,8 +2045,7 @@ class EditForm extends React.Component {
                   <p>تحریری و تصنیفی خدمات</p>
                   <div className={"textArea"}>
                     <TextArea
-                      v
-                      alue={this.state.writtenWork}
+                      value={this.state.writtenWork}
                       onChange={(e) =>
                         this.setState({ writtenWork: e.target.value })
                       }
