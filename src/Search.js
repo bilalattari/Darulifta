@@ -5,6 +5,8 @@ import "./App.css";
 import { Link } from "react-router-dom";
 import firebase from "firebase";
 import { getUsers } from "./firebase";
+import ReactToPrint from "react-to-print";
+import PrintSearchTable from "./PrintTable";
 import { Select, Card, Modal, Button, Input } from "antd";
 const { Option } = Select;
 const { Meta } = Card;
@@ -17,6 +19,7 @@ class Search extends React.Component {
       allBrothers: [],
       filterdVal: 0,
       filteredArr: [],
+      filteredArrPrint: [],
     };
     this.allUsers = [];
   }
@@ -38,7 +41,10 @@ class Search extends React.Component {
     let AllDaruliftaBrothers = [];
     await Object.keys(allUsers).map((branchName, index) => {
       let allBros = Object.values(allUsers[branchName]);
+      let allBrosKeys = Object.keys(allUsers[branchName]);
       allBros.map((data, index) => {
+        data.branch = branchName;
+        data.id = allBrosKeys[index];
         console.log(data, "data");
         AllDaruliftaBrothers.push(data);
       });
@@ -156,16 +162,20 @@ class Search extends React.Component {
           let arrValue = ++arrVal;
           await info[array].map((data, index) => {
             if (data.degree === value && data.haveDone) {
-              filteredArrPrint.push(info["worldlyEducation"][0]);
+              let userInfo = info["worldlyEducation"][index];
+              userInfo.name = info["personalInfo"][1]["Name-نام"];
+              userInfo.branch = info.branch;
+              filteredArrPrint.push(userInfo);
               filteredArr.push(info);
               let updatedVal = ++filteredNumber;
-              console.log(filteredArr, updatedVal, "filteredNumber");
+              console.log(filteredArrPrint, "filteredArrPrint");
             }
           });
           if (arrVal === usersArr.length) {
             this.setState({
               filteredArr,
               filteredNumber: filteredNumber,
+              filteredArrPrint,
             });
           }
         });
@@ -291,12 +301,46 @@ class Search extends React.Component {
             </Select>
           </div>
         </div>
-
+        {this.state.filteredArrPrint.length > 0 && (
+          <div>
+            <ReactToPrint
+              trigger={() => (
+                <Button
+                  style={{
+                    width: 120,
+                  }}
+                  type="primary"
+                >
+                  Print
+                </Button>
+              )}
+              content={() => this.componentRef}
+              pageStyle={{ padStart: 12, padEnd: 25 }}
+              onBeforePrint={() => this.props.history.push("/")}
+            />
+            <PrintSearchTable
+              data={this.state.filteredArrPrint}
+              ref={(el) => (this.componentRef = el)}
+            />
+          </div>
+        )}
         <div className={"containerCards"}>
           {filteredArr.map((data, index) => {
             let item = data["personalInfo"];
             return (
-              <div className={"containerCards"}>
+              <div
+                className={"containerCards"}
+                onClick={() => {
+                  this.props.history.push({
+                    pathname: "/detail",
+                    state: {
+                      data: data,
+                      key: data.id,
+                      branch: data.branch,
+                    },
+                  });
+                }}
+              >
                 <div>
                   <Card
                     hoverable
@@ -312,7 +356,6 @@ class Search extends React.Component {
                         }
                       />
                     }
-                    
                   >
                     <Meta
                       title={item[1]["Name-نام"]}
