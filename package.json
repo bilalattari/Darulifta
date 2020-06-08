@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
+    "@emotion/core": "^10.0.28",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -15,6 +16,7 @@
     "react-images-upload": "^1.2.8",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.1",
+    "react-spinners": "^0.8.3",
     "react-to-print": "^2.6.1"
   },
   "scripts": {
