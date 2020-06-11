@@ -39,8 +39,12 @@ class Home extends React.Component {
       .ref()
       .child("Brother")
       .once("value", (snapshot) => {
-        let val = snapshot.val();
-        this.setState({ allUsers: val }, () => this.getAllDaruliftaBrothers());
+        if (snapshot.val()) {
+          let val = snapshot.val();
+          this.setState({ allUsers: val }, () =>
+            this.getAllDaruliftaBrothers()
+          );
+        }
       });
   };
   getAllDaruliftaBrothers = async () => {

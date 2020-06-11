@@ -3,11 +3,28 @@ import logo from "./logo.svg";
 import "antd/dist/antd.css";
 import "./App.css";
 import "./detail.css";
-import { Steps, Input, Button, Icon, Select, Radio, Checkbox , Popconfirm, message  } from "antd";
-import { FaWhatsapp , FaInstagram , FaLinkedin , FaSkype , FaFacebook , FaTwitter } from 'react-icons/fa';
+import {
+  Steps,
+  Input,
+  Button,
+  Icon,
+  Select,
+  Radio,
+  Checkbox,
+  Popconfirm,
+  message,
+} from "antd";
+import {
+  FaWhatsapp,
+  FaInstagram,
+  FaLinkedin,
+  FaSkype,
+  FaFacebook,
+  FaTwitter,
+} from "react-icons/fa";
 import ReactToPrint from "react-to-print";
-import { deleteUser } from './firebase'
-const text = 'Are you sure to delete this user?';
+import { deleteUser } from "./firebase";
+const text = "Are you sure to delete this user?";
 
 let personalInfo = {
   heading: "ذاتی معلومات",
@@ -485,12 +502,27 @@ let outOfCountry = {
       "سفر کا دورانیہ": "",
       "سفر کا مقصد": "",
     },
-    { "": "", "": "", "": "", "": "" },
-    { "": "", "": "", "": "", "": "" },
-    { "": "", "": "", "": "", "": "" },
   ],
 };
 
+let relationShip = {
+  heading: "رشتہ دار",
+  array: [
+    {
+      "رشتےد اروں میں کوئی اہم پوسٹ پر ہے": true,
+      "پرائیویٹ ادارہ": "",
+      "سرکاری ادارہ": "",
+      "کس پوسٹ پر ہیں؟": "",
+      "کس شہر میں ہیں؟": "",
+      "کتنے عرصے سے سروس کررہے ہیں؟": "",
+    },
+    {
+      "رشتےد اروں میں سے کوئی بڑا بزنس مین ہے": true,
+      "کیا کاروبار کرتےہیں؟": "",
+      "کس شہر میں کرتےہیں؟": "",
+    },
+  ],
+};
 let officeDetail = {
   heading: "صرف د فتری استعمال کے لیے",
   array: [
@@ -556,9 +588,9 @@ class Home extends React.Component {
       skillsArr,
       worldlyEducation,
       islamicEducationArr,
+      relationShip,
     } = this.props;
 
-    
     return (
       <div className="App" style={{ padding: 26 }}>
         <div className={"table-div-pdf"}>
@@ -572,16 +604,20 @@ class Home extends React.Component {
               let objArr = Object.keys(data);
               return (
                 <tr>
-                  <TableChild
-                    index={index}
-                    val={
-                      data[objArr[0]] === true
-                        ? "جی بنا ہوا ہے"
-                        : data[objArr[0]] === false
-                        ? "نہیں بنا ہوا"
-                        : data[objArr[0]]
-                    }
-                  />
+                  {objArr[0] === "image" ? (
+                    <img src={data[objArr[0]]} height={100} width={100} />
+                  ) : (
+                    <TableChild
+                      index={index}
+                      val={
+                        data[objArr[0]] === true
+                          ? "جی بنا ہوا ہے"
+                          : data[objArr[0]] === false
+                          ? "نہیں بنا ہوا"
+                          : data[objArr[0]]
+                      }
+                    />
+                  )}
                   <TableChildHeading index={index} val={objArr[0]} />
                   <TableChild
                     index={index}
@@ -905,6 +941,7 @@ class Home extends React.Component {
               </td>
             </tr>
             {allVals["languageArr"].map((data, index) => {
+              console.log(allVals["languageArr"], 'allVals["languageArr"]');
               let object = Object.keys(langugaes.array[index]);
               return index === 0 ? (
                 <tr>
@@ -912,18 +949,34 @@ class Home extends React.Component {
                   <TableChildHeading colSpan={2} val={object[0]} />
                 </tr>
               ) : index === 1 ? (
-                <tr>
-                  <TableChildHeading val={object[9]} />
-                  <TableChildHeading val={object[8]} />
-                  <TableChildHeading val={object[7]} />
-                  <TableChildHeading val={object[6]} />
-                  <TableChildHeading val={object[5]} />
-                  <TableChildHeading val={object[4]} />
-                  <TableChildHeading val={object[3]} />
-                  <TableChildHeading val={object[2]} />
-                  <TableChildHeading val={object[1]} />
-                  <TableChildHeading rowSpan={"8"} val={object[0]} />
-                </tr>
+                <>
+                  <tr>
+                    <TableChildHeading val={object[9]} />
+                    <TableChildHeading val={object[8]} />
+                    <TableChildHeading val={object[7]} />
+                    <TableChildHeading val={object[6]} />
+                    <TableChildHeading val={object[5]} />
+                    <TableChildHeading val={object[4]} />
+                    <TableChildHeading val={object[3]} />
+                    <TableChildHeading val={object[2]} />
+                    <TableChildHeading val={object[1]} />
+                    <TableChildHeading
+                      rowSpan={allVals["languageArr"].length}
+                      val={object[0]}
+                    />
+                  </tr>
+                  <tr>
+                    <TableChild val={data.curr} />
+                    <TableChild val={data.howMuch} />
+                    <TableChild val={data.where} />
+                    <TableChild val={data.understand ? "جی ہاں" : "جی نہیں"} />
+                    <TableChild val={data.speak ? "جی ہاں" : "جی نہیں"} />
+                    <TableChild val={data.write ? "جی ہاں" : "جی نہیں"} />
+                    <TableChild val={data.read ? "جی ہاں" : "جی نہیں"} />
+                    <TableChild val={data.accent ? "جی ہاں" : "جی نہیں"} />
+                    <TableChild val={data.name} />
+                  </tr>
+                </>
               ) : (
                 <tr>
                   <TableChild val={data.curr} />
@@ -1018,17 +1071,61 @@ class Home extends React.Component {
               <TableChildHeading val={Object.keys(outOfCountry.array[0])[0]} />
             </tr>
             {allVals["outOfCountry"].map((data, index) => {
-              let object = Object.keys(data);
               return (
                 <tr>
-                  <TableChild val={data[object[4]]} />
-                  <TableChild val={data[object[3]]} />
-                  <TableChild val={data[object[2]]} />
-                  <TableChild val={data[object[1]]} />
-                  <TableChild val={data[object[0]]} />
+                  <TableChild val={data['سفر کا مقصد']} />
+                  <TableChild val={data['سفر کا دورانیہ']} />
+                  <TableChild val={data['سفر کا سال']} />
+                  <TableChild val={data['شہر']} />
+                  <TableChild val={data['ملک']} />
                 </tr>
               );
             })}
+          </table>
+        </div>
+        <div className={"table-div-pdf"}>
+          <table>
+            <tr>
+              <td className={"pdfHeader"} colSpan={"6"}>
+                {relationShip.heading}
+              </td>
+            </tr>
+            {allVals["relationShip"] &&
+              allVals["relationShip"].map((data, index) => {
+                console.log(allVals["relationShip"]);
+                let objArr = Object.keys(data);
+                return index === 0 ? (
+                  <>
+                    <tr>
+                      <TableChildHeading val={objArr[5]} />
+                      <TableChildHeading val={objArr[4]} />
+                      <TableChildHeading val={objArr[3]} />
+                      <TableChildHeading val={objArr[2]} />
+                      <TableChildHeading val={objArr[1]} />
+                      <TableChildHeading val={objArr[0]} rowSpan={2} />
+                    </tr>
+                    <tr>
+                      <TableChild val={data[objArr[5]]} />
+                      <TableChild val={data[objArr[4]]} />
+                      <TableChild val={data[objArr[3]]} />
+                      <TableChild val={data[objArr[2]]} />
+                      <TableChild val={data[objArr[1]]} />
+                    </tr>
+                  </>
+                ) : (
+                  <>
+                    <tr>
+                      <TableChildHeading val={objArr[2]} colSpan={2} />
+                      <TableChildHeading val={objArr[1]} colSpan={3} />
+                      <TableChildHeading val={objArr[0]} rowSpan={2} />
+                    </tr>
+                    <tr>
+                      <TableChild val={data[objArr[2]]} colSpan={2} />
+                      <TableChild val={data[objArr[1]]} colSpan={3} />
+                    </tr>
+                  </>
+                );
+              })}
           </table>
         </div>
         <div className={"table-div-pdf"} style={{ marginBottom: 63 }}>
@@ -1079,11 +1176,11 @@ class Example extends React.Component {
     let allVals = this.props.history.location.state.data;
     let id = this.props.history.location.state.key;
     let branchName = this.props.history.location.state.branch;
-    deleteUser(allVals ,branchName , id )
-    message.info('This user is deleted');
+    deleteUser(allVals, branchName, id);
+    message.info("This user is deleted");
     this.props.history.push("/");
-  }
-  
+  };
+
   render() {
     let allVals;
     let id;
@@ -1093,7 +1190,7 @@ class Example extends React.Component {
       id = this.props.history.location.state.key;
       branchName = this.props.history.location.state.branch;
     }
-     
+
     return (
       <div>
         <div
@@ -1113,17 +1210,23 @@ class Example extends React.Component {
                   state: {
                     data: allVals,
                     key: id,
-                    branch : branchName
+                    branch: branchName,
                   },
                 });
               }}
             >
               Edit
             </Button>
-            <Popconfirm placement="topLeft" title={text} onConfirm={this.confirm} okText="Yes" cancelText="No">
-            <Button style={{ marginRight: 5, width: 156 }} type={"danger"}>
-              Delete
-            </Button>
+            <Popconfirm
+              placement="topLeft"
+              title={text}
+              onConfirm={this.confirm}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button style={{ marginRight: 5, width: 156 }} type={"danger"}>
+                Delete
+              </Button>
             </Popconfirm>
           </div>
           <ReactToPrint
@@ -1149,6 +1252,7 @@ class Example extends React.Component {
             reading={reading}
             allVals={allVals}
             skillsArr={skillsArr}
+            relationShip={relationShip}
             tanzeemiZimedari={tanzeemiZimedari}
             worldlyEducation={worldlyEducation}
             islamicEducationArr={islamicEducationArr}

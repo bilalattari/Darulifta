@@ -968,7 +968,6 @@ class App extends React.Component {
                       )
                     }
                     title={"NIC/ID -شناختی کارڈ نمبر/  آئی ڈی "}
-                    type={"number"}
                   />
                 </div>
                 <div className="header inputrow">
@@ -982,7 +981,6 @@ class App extends React.Component {
                       )
                     }
                     title={"PTCL-پی ٹی سی ایل نمبر"}
-                    type={"number"}
                   />
                   <CustomInput
                     onChange={(e) =>
@@ -994,7 +992,6 @@ class App extends React.Component {
                       )
                     }
                     title={"Mobile No. -موبائل نمبر"}
-                    type={"number"}
                   />
                 </div>
                 <div className="header inputrow">
@@ -1070,7 +1067,6 @@ class App extends React.Component {
                       )
                     }
                     title={"Emergency No. - ایمرجنسی نمبر"}
-                    type={"number"}
                   />
                 </div>
                 <div className="header inputrow">
@@ -1300,6 +1296,9 @@ class App extends React.Component {
                       <Option value="مسجد کی طرف سے">مسجد کی طرف سے</Option>
                       <Option value="مدنی مرکز کی طرف سے">
                         مدنی مرکز کی طرف سے
+                      </Option>
+                      <Option value="ابو کا">
+                        ابو کا
                       </Option>
                     </Select>
                   </div>

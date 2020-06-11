@@ -86,6 +86,7 @@ class Search extends React.Component {
               filteredNumber: filteredNumber,
               filteredArrPrint,
               outOfIfta: true,
+              tanzeem : false,
               outOfIftaVal: outOfIfta[value],
             });
           }

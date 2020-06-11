@@ -572,15 +572,15 @@ class EditForm extends React.Component {
       socialMediaPrograms: [
         {
           "کیا آپ مدنی چینل پر سلسلے کرتےہیں؟": true,
-          "ذاتی سلسلہ": "",
-          "سلسلہ دارالاافتاء اہلسنت": "",
-          "دیگر سلسلوں میں شرکت": "",
+          "ذاتی سلسلہ": false,
+          "سلسلہ دارالاافتاء اہلسنت": false,
+          "دیگر سلسلوں میں شرکت": false,
         },
         {
           "کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟": true,
-          "ذاتی سلسلہ": "",
-          "سلسلہ دارالاافتاء اہلسنت": "",
-          "دیگر سلسلوں میں شرکت": "",
+          "ذاتی سلسلہ": false,
+          "سلسلہ دارالاافتاء اہلسنت": false,
+          "دیگر سلسلوں میں شرکت": false,
         },
       ],
       tanzeemWork: [
@@ -620,6 +620,21 @@ class EditForm extends React.Component {
           "سفر کا مقصد": "",
         },
       ],
+      relationShip: [
+        {
+          "رشتےد اروں میں کوئی اہم پوسٹ پر ہے": true,
+          "پرائیویٹ ادارہ": "",
+          "سرکاری ادارہ": "",
+          "کس پوسٹ پر ہیں؟": "",
+          "کس شہر میں ہیں؟": "",
+          "کتنے عرصے سے سروس کررہے ہیں؟": "",
+        },
+        {
+          "رشتےد اروں میں سے کوئی بڑا بزنس مین ہے": true,
+          "کیا کاروبار کرتےہیں؟": "",
+          "کس شہر میں کرتےہیں؟": "",
+        },
+      ],
       officeDetail: [
         {
           "گھلنے ملنی کی کوالٹی": "1",
@@ -651,11 +666,12 @@ class EditForm extends React.Component {
   }
 
   componentDidMount() {
+    let { relationShip } = this.state;
     if (this.props.history) {
       let allVals = this.props.history.location.state.data;
       let id = this.props.history.location.state.key;
       let branchName = this.props.history.location.state.branch;
-      console.log(id, branchName, "branchNamebranchNamebranchNamebranchName");
+      console.log(id, branchName,allVals["outOfCountry"], "branchNamebranchNamebranchNamebranchName");
       this.setState({
         personalInfo: allVals["personalInfo"],
         socialMedia: allVals["socialMedia"],
@@ -672,6 +688,9 @@ class EditForm extends React.Component {
         tanzeemWork: allVals["tanzeemWork"],
         outOfCountry: allVals["outOfCountry"],
         officeDetail: allVals["officeDetail"],
+        relationShip: allVals["relationShip"]
+          ? allVals["relationShip"]
+          : relationShip,
         userId: id,
         branch: branchName,
       });
@@ -690,7 +709,6 @@ class EditForm extends React.Component {
   onchangetext = (name, val, arr, row) => {
     let array = this.state[arr];
     array[row][name] = val;
-    console.log(array, "arayyyyyyyyyyyyyyyyyyyyyyyyy");
     this.setState({ [arr]: array });
   };
   beforeUpload(file) {
@@ -769,6 +787,7 @@ class EditForm extends React.Component {
       personalInfo,
       islamicEducationArr,
       languageArr,
+      relationShip,
       socialMedia,
       tanzeemWork,
       officeDetail,
@@ -810,11 +829,42 @@ class EditForm extends React.Component {
                 title="تنظیمی ذمہ داری"
                 description=""
               />
+              <Step className={"steps"} title="رشتے دار" description="" />
               <Step className={"steps"} title="د فتری استعمال" description="" />
             </Steps>
           </div>
 
           <div className={"rightDiv"}>
+            <div style={{ position: "absolute", right: 26, top: 200 }}>
+              <Button
+                size={"large"}
+                type="primary"
+                onClick={() => {
+                  allData["personalInfo"] = personalInfo;
+                  allData["socialMedia"] = socialMedia;
+                  allData["address"] = address;
+                  allData["worldlyEducation"] = worldlyEducation;
+                  allData["islamicEducationArr"] = islamicEducationArr;
+                  allData["skillsArr"] = skillsArr;
+                  allData["writtenwork"] = this.state.writtenWork;
+                  allData["outOfDarulifta"] = outOfDarulifta;
+                  allData["reading"] = reading;
+                  allData["speeches"] = speeches;
+                  allData["languageArr"] = languageArr;
+                  allData["socialMediaPrograms"] = socialMediaPrograms;
+                  allData["tanzeemWork"] = tanzeemWork;
+                  allData["outOfCountry"] = outOfCountry;
+                  allData["officeDetail"] = officeDetail;
+                  allData["relationShip"] = relationShip;
+                  console.log(allData , 'allDataallDataallDataallDataallDataallDataallDataallData')
+                  updateUser(allData, this.state.branch, userId);
+                  // this.props.history.push("/");
+                }}
+              >
+                Update
+              </Button>
+            </div>
+
             {countNumber === 0 ? (
               <div className={"counter"}>
                 <div
@@ -999,7 +1049,6 @@ class EditForm extends React.Component {
                     }
                     value={personalInfo[3]["Passport No - پاسپورٹ نمبر"]}
                     title={"Passport No. - پاسپورٹ نمبر"}
-                    type={"number"}
                   />
                   <CustomInput
                     onChange={(e) =>
@@ -1012,7 +1061,6 @@ class EditForm extends React.Component {
                     }
                     value={personalInfo[3]["NIC-ID -شناختی کارڈ نمبر آئی ڈی"]}
                     title={"NIC/ID -شناختی کارڈ نمبر/  آئی ڈی "}
-                    type={"number"}
                   />
                 </div>
                 <div className="header inputrow">
@@ -1027,7 +1075,6 @@ class EditForm extends React.Component {
                     }
                     value={personalInfo[4]["PTCL-پی ٹی سی ایل نمبر"]}
                     title={"PTCL-پی ٹی سی ایل نمبر"}
-                    type={"number"}
                   />
                   <CustomInput
                     onChange={(e) =>
@@ -1040,7 +1087,6 @@ class EditForm extends React.Component {
                     }
                     value={personalInfo[4]["Mobile No -موبائل نمبر"]}
                     title={"Mobile No. -موبائل نمبر"}
-                    type={"number"}
                   />
                 </div>
                 <div className="header inputrow">
@@ -1120,7 +1166,6 @@ class EditForm extends React.Component {
                     }
                     value={personalInfo[6]["Emergency No - ایمرجنسی نمبر"]}
                     title={"Emergency No. - ایمرجنسی نمبر"}
-                    type={"number"}
                   />
                 </div>
                 <div className="header inputrow">
@@ -1140,7 +1185,7 @@ class EditForm extends React.Component {
                 <div className="header inputrow">
                   <div className="inputrowchild">
                     <Checkbox
-                      checked={personalInfo[8]["ڈرائیونگ آتی ہے۔"]}
+                      checked={personalInfo[8]["ڈرائیونگ آتی ہے"]}
                       onChange={(value) => {
                         this.onchangetext(
                           "ڈرائیونگ آتی ہے",
@@ -1348,9 +1393,20 @@ class EditForm extends React.Component {
                       className="input dropdown"
                       defaultValue="ذاتی"
                       value={address[1]["مکان کی حیثیت"]}
-                      onChange={(value) =>
-                        this.onchangetext("مکان کی حیثیت", value, "address", 1)
-                      }
+                      onChange={(value) => {
+                        if (value === "other") {
+                          let address = this.state.address;
+                          address[1].other = true;
+                          this.setState({ address: address });
+                        } else {
+                          this.onchangetext(
+                            "مکان کی حیثیت",
+                            value,
+                            "address",
+                            1
+                          );
+                        }
+                      }}
                     >
                       <Option value="ذاتی">ذاتی</Option>
                       <Option value="کرائے پر">کرائے پر</Option>
@@ -1358,6 +1414,8 @@ class EditForm extends React.Component {
                       <Option value="مدنی مرکز کی طرف سے">
                         مدنی مرکز کی طرف سے
                       </Option>
+                      <Option value="ابو کا">ابو کا</Option>
+                      <Option value="other">other</Option>
                     </Select>
                   </div>
                 </div>
@@ -1386,31 +1444,35 @@ class EditForm extends React.Component {
                     {worldlyEducation.map((data, index) => (
                       <tr key={index}>
                         <td>
-                          <YearDropDown
+                          <Input
                             disabled={!data.haveDone}
                             value={worldlyEducation[index]["passingYear"]}
-                            onChange={(value) =>
+                            onChange={(e) =>
                               this.handleArrayChange(
-                                value,
+                                e.target.value,
                                 index,
                                 "passingYear",
                                 "worldlyEducation"
                               )
                             }
+                            className={"tableInput"}
+                            placeholder={"Passing Year"}
                           />
                         </td>
                         <td>
-                          <GradeDropDown
+                          <Input
                             disabled={!data.haveDone}
                             value={worldlyEducation[index]["grade"]}
-                            onChange={(value) =>
+                            onChange={(e) =>
                               this.handleArrayChange(
-                                value,
+                                e.target.value,
                                 index,
                                 "grade",
                                 "worldlyEducation"
                               )
                             }
+                            className={"tableInput"}
+                            placeholder={"Grade"}
                           />
                         </td>
                         <td>
@@ -1490,14 +1552,15 @@ class EditForm extends React.Component {
                             <Input
                               disabled={!data.haveDone}
                               checked={worldlyEducation[index]["group"]}
-                              onChange={(value) =>
+                              onChange={(e) =>
                                 this.handleArrayChange(
-                                  value,
+                                  e.target.value,
                                   index,
                                   "group",
                                   "worldlyEducation"
                                 )
                               }
+                              value = {worldlyEducation[index]["group"]}
                               className={"tableInput"}
                               placeholder={"Subject"}
                             />
@@ -1544,31 +1607,35 @@ class EditForm extends React.Component {
                     index !== 0 ? (
                       <tr>
                         <td>
-                          <YearDropDown
+                          <Input
                             disabled={!data.haveDone}
                             value={islamicEducationArr[index]["passingYear"]}
-                            onChange={(value) =>
+                            onChange={(e) =>
                               this.handleArrayChange(
-                                value,
+                                e.target.value,
                                 index,
                                 "passingYear",
                                 "islamicEducationArr"
                               )
                             }
+                            className={"tableInput"}
+                            placeholder={"Passing Year"}
                           />
                         </td>
                         <td>
-                          <GradeDropDown
+                          <Input
                             disabled={!data.haveDone}
                             value={islamicEducationArr[index]["grade"]}
-                            onChange={(value) =>
+                            onChange={(e) =>
                               this.handleArrayChange(
-                                value,
+                                e.target.value,
                                 index,
                                 "grade",
                                 "islamicEducationArr"
                               )
                             }
+                            className={"tableInput"}
+                            placeholder={"Grade"}
                           />
                         </td>
                         <td>
@@ -1644,6 +1711,26 @@ class EditForm extends React.Component {
                       </tr>
                     ) : null
                   )}
+                  <td colSpan={"6"}>
+                    <Button
+                      type="dashed"
+                      block
+                      onClick={() => {
+                        let arr  = this.state.islamicEducationArr;
+                        arr.push({
+                          degree: "اس کے علاوہ وکوئی دوسرا کورس  ",
+                          haveDone: false,
+                          grade: "",
+                          institution: "",
+                          city: "",
+                          passingYear: "",
+                        });
+                        this.setState({ islamicEducationArr: arr });
+                      }}
+                    >
+                      Add More{" "}
+                    </Button>
+                  </td>
                 </table>
               </div>
             ) : null}
@@ -1666,29 +1753,33 @@ class EditForm extends React.Component {
                   {skillsArr.map((data, index) => (
                     <tr>
                       <td>
-                        <Duration
-                          onChange={(value) =>
+                        <Input
+                          value={skillsArr[index]["years"]}
+                          onChange={(e) =>
                             this.handleArrayChange(
-                              value,
+                              e.target.value,
                               index,
                               "years",
                               "skillsArr"
                             )
                           }
-                          value={skillsArr[index]["years"]}
+                          className={"tableInput"}
+                          placeholder={"Duration"}
                         />
                       </td>
                       <td>
-                        <GradeDropDown
-                          onChange={(value) =>
+                        <Input
+                          value={skillsArr[index]["grade"]}
+                          onChange={(e) =>
                             this.handleArrayChange(
-                              value,
+                              e.target.value,
                               index,
                               "grade",
                               "skillsArr"
                             )
                           }
-                          value={skillsArr[index]["grade"]}
+                          className={"tableInput"}
+                          placeholder={"Grade"}
                         />
                       </td>
                       <td>
@@ -1962,7 +2053,7 @@ class EditForm extends React.Component {
                       <td>
                         <Input
                           disabled={!outOfDarulifta[3]["خطابت"]}
-                          value={outOfDarulifta[3]["خطابت"]}
+                          value={outOfDarulifta[3]["عرصہ"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "عرصہ",
@@ -2093,7 +2184,7 @@ class EditForm extends React.Component {
                       <td>
                         <Input
                           disabled={!reading[0]["مطالعہ کی عادت ہے؟"]}
-                          value={reading[0]["مطالعہ کی عادت ہے؟"]}
+                          value={reading[0]["کس علم میں خصوصی شغف ہے؟"]}
                           onChange={(e) =>
                             this.onchangetext(
                               "کس علم میں خصوصی شغف ہے؟",
@@ -2139,7 +2230,6 @@ class EditForm extends React.Component {
                             )
                           }
                           className={"tableInput"}
-                          type={"number"}
                         />
                       </td>
                       <td>
@@ -2275,7 +2365,6 @@ class EditForm extends React.Component {
                             )
                           }
                           className={"tableInput"}
-                          type={"number"}
                         />
                       </td>
                       <td>
@@ -2292,7 +2381,6 @@ class EditForm extends React.Component {
                             )
                           }
                           className={"tableInput"}
-                          type={"number"}
                         />
                       </td>
                     </tr>
@@ -2360,9 +2448,10 @@ class EditForm extends React.Component {
                               name="گروپ"
                               defaultValue={"بہتر"}
                             >
-                              {data.current.map((data) => (
-                                <Option value={data}>{data}</Option>
-                              ))}
+                                <Option value={'ممتاز'}>{'ممتاز'}</Option>
+                                <Option value={'مناسب'}>{'مناسب'}</Option>
+                                <Option value={'بہتر'}>{'بہتر'}</Option>
+                                <Option value={'کمزور'}>{'کمزور'}</Option>
                             </Select>
                           </td>
                           <td>
@@ -2465,11 +2554,52 @@ class EditForm extends React.Component {
                               checked={data.accent}
                             />
                           </td>
-                          <td>{data.name}</td>
+                          <td>{data.name !== 'اردو' &&  data.name !== 'پنجابی' &&data.name !== 'سندھی' && data.name !== 'پشتو' &&
+                          data.name !== 'انگلش' &&data.name !== 'سرائیکی' &&data.name !== 'عربی'   ? 
+                          <Input
+                              onChange={(e) =>
+                                this.handleArrayChange(
+                                  e.target.value,
+                                  index,
+                                  "name",
+                                  "languageArr"
+                                )
+                              }
+                              value={languageArr[index]["name"]}
+                              className={"tableInput"}
+                              type={"text"}
+                            />
+                             : 
+                             data.name
+                          }</td>
                         </tr>
                       ) : null;
                     })}
                     <tr></tr>
+                    <td colSpan={"10"}>
+                    <Button
+                      type="dashed"
+                      block
+                      onClick={() => {
+                        let arr  = this.state.languageArr;
+                        arr.push(  {
+          name: "",
+          accent: false,
+          read: false,
+          write: false,
+          speak: false,
+          understand: false,
+          where: "",
+          howMuch: "",
+          curr: "",
+          current: ["بیتر", "مناسب", "کمزور"],
+        });
+                        this.setState({ languageArr: arr });
+                      }}
+                    >
+                      Add More{" "}
+                    </Button>
+                    </td>
                   </table>
                 </div>
               </div>
@@ -2498,8 +2628,8 @@ class EditForm extends React.Component {
                             "کیا آپ سوشل میڈیا پر سلسلے کرتےہیں؟"
                           ]
                         }
-                        value={socialMediaPrograms[1]["دیگر سلسلوں میں شرکت"]}
-                        checked={(value) =>
+                        checked={socialMediaPrograms[1]["دیگر سلسلوں میں شرکت"]}
+                        onChange={(value) =>
                           this.onchangetext(
                             "دیگر سلسلوں میں شرکت",
                             !socialMediaPrograms[1]["دیگر سلسلوں میں شرکت"],
@@ -2689,7 +2819,6 @@ class EditForm extends React.Component {
                           }
                           value={tanzeemWork[0]["عرصہ ذمہ داری"]}
                           className={"tableInput"}
-                          type={"number"}
                         />{" "}
                       </td>
                       <td>
@@ -2792,49 +2921,73 @@ class EditForm extends React.Component {
                       return (
                         <tr>
                           <td style={{ width: 120 }}>
-                            {" "}
-                            <Select
-                              className={"tdSelect"}
-                              onChange={(value) =>
-                                this.onchangetext(
-                                  keys[4],
-                                  value,
-                                  "outOfCountry",
-                                  index
-                                )
-                              }
-                              name="گروپ"
-                              value={outOfCountry[index][keys[4]]}
-                              defaultValue={""}
-                            >
-                              <Option value="">سفر کا مقصد</Option>
-                              <Option value="ذاتی">ذاتی</Option>
-                              <Option value="تنظیمی">تنظیمی</Option>
-                              <Option value=" اپنی طرف سے ">
-                                {" "}
-                                اپنی طرف سے{" "}
-                              </Option>
-                              <Option value="دعوتِ اسلامی کی طرف سے ">
-                                دعوتِ اسلامی کی طرف سے{" "}
-                              </Option>
-                              <Option value="کسی اور تنظیم کی طرف سے">
-                                کسی اور تنظیم کی طرف سے
-                              </Option>
-                            </Select>{" "}
+                            {outOfCountry[index].showOther ? (
+                              <Input
+                                onChange={(e) =>
+                                  this.onchangetext(
+                                   'سفر کا مقصد',
+                                    e.target.value,
+                                    "outOfCountry",
+                                    index
+                                  )
+                                }
+                                value={data['سفر کا مقصد']}
+                                className={"tableInput"}
+                                type={"text"}
+                              />
+                            ) : (
+                              <Select
+                                className={"tdSelect"}
+                                onChange={(value) => {
+                                  if (value === "other") {
+                                    let outOfCountryVal = this.state
+                                      .outOfCountry;
+                                    outOfCountryVal[index].showOther = true;
+                                    this.setState({
+                                      outOfCountry: outOfCountryVal,
+                                    });
+                                  } else {
+                                    this.onchangetext(
+                                      'سفر کا مقصد',
+                                      value,
+                                      "outOfCountry",
+                                      index
+                                    );
+                                  }
+                                }}
+                                name="گروپ"
+                                value={data['سفر کا مقصد']}
+                                defaultValue={""}
+                              >
+                                <Option value="">سفر کا مقصد</Option>
+                                <Option value="ذاتی">ذاتی</Option>
+                                <Option value="تنظیمی">تنظیمی</Option>
+                                <Option value=" اپنی طرف سے ">
+                                  اپنی طرف سے{" "}
+                                </Option>
+                                <Option value="دعوتِ اسلامی کی طرف سے ">
+                                  دعوتِ اسلامی کی طرف سے{" "}
+                                </Option>
+                                <Option value="کسی اور تنظیم کی طرف سے">
+                                  کسی اور تنظیم کی طرف سے
+                                </Option>
+                                <Option value="other">other</Option>
+                              </Select>
+                            )}
                           </td>
                           <td>
                             {" "}
                             <Input
                               onChange={(e) =>
                                 this.onchangetext(
-                                  keys[3],
+                                  'سفر کا دورانیہ',
                                   e.target.value,
                                   "outOfCountry",
                                   index
                                 )
                               }
                               className={"tableInput"}
-                              value={outOfCountry[index][keys[3]]}
+                              value={data['سفر کا دورانیہ']}
                               type={"text"}
                             />
                           </td>
@@ -2843,13 +2996,13 @@ class EditForm extends React.Component {
                             <Input
                               onChange={(e) =>
                                 this.onchangetext(
-                                  keys[2],
+                                  'سفر کا سال',
                                   e.target.value,
                                   "outOfCountry",
                                   index
                                 )
                               }
-                              value={outOfCountry[index][keys[2]]}
+                              value={data['سفر کا سال']}
                               className={"tableInput"}
                               type={"text"}
                             />
@@ -2859,7 +3012,7 @@ class EditForm extends React.Component {
                             <Input
                               onChange={(e) =>
                                 this.onchangetext(
-                                  keys[1],
+                                  'شہر',
                                   e.target.value,
                                   "outOfCountry",
                                   index
@@ -2867,7 +3020,7 @@ class EditForm extends React.Component {
                               }
                               className={"tableInput"}
                               type={"text"}
-                              value={outOfCountry[index][keys[1]]}
+                              value={data['شہر']}
                             />
                           </td>
                           <td>
@@ -2875,7 +3028,7 @@ class EditForm extends React.Component {
                             <Input
                               onChange={(e) =>
                                 this.onchangetext(
-                                  keys[0],
+                                  'ملک',
                                   e.target.value,
                                   "outOfCountry",
                                   index
@@ -2883,6 +3036,7 @@ class EditForm extends React.Component {
                               }
                               className={"tableInput"}
                               type={"text"}
+                              value={data['ملک']}
                             />
                           </td>
                           <td>{index}</td>
@@ -2893,7 +3047,195 @@ class EditForm extends React.Component {
                 </div>
               </div>
             ) : null}
-            {countNumber === 12 ? (
+            {countNumber === 12 && (
+              <div className={"table-div"}>
+                <table>
+                  <tr>
+                    <td className={"tableHeading"} colSpan={"7"}>
+                      رشتے دار
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>کتنے عرصے سے سروس کررہے ہیں؟</td>
+                    <td>کس شہر میں ہیں؟</td>
+                    <td>کس پوسٹ پر ہیں؟</td>
+                    <td>سرکاری ادارہ </td>
+                    <td>پرائیویٹ ادارہ</td>
+                    <td style={{ width: 120 }} rowSpan={2}>
+                      <YesnoDropDown
+                        value={
+                          relationShip[0]["رشتےد اروں میں کوئی اہم پوسٹ پر ہے"]
+                        }
+                        onChange={(value) =>
+                          this.onchangetext(
+                            "رشتےد اروں میں کوئی اہم پوسٹ پر ہے",
+                            value,
+                            "relationShip",
+                            0
+                          )
+                        }
+                      />
+                    </td>
+                    <td rowSpan={2}>رشتےد اروں میں کوئی اہم پوسٹ پر ہے</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      {" "}
+                      <Input
+                        disabled={
+                          !relationShip[0]["رشتےد اروں میں کوئی اہم پوسٹ پر ہے"]
+                        }
+                        value={relationShip[0]["کتنے عرصے سے سروس کررہے ہیں؟"]}
+                        onChange={(e) =>
+                          this.onchangetext(
+                            "کتنے عرصے سے سروس کررہے ہیں؟",
+                            e.target.value,
+                            "relationShip",
+                            0
+                          )
+                        }
+                        className={"tableInput"}
+                      />
+                    </td>
+                    <td>
+                      {" "}
+                      <Input
+                        disabled={
+                          !relationShip[0]["رشتےد اروں میں کوئی اہم پوسٹ پر ہے"]
+                        }
+                        value={relationShip[0]["کس شہر میں ہیں؟"]}
+                        onChange={(e) =>
+                          this.onchangetext(
+                            "کس شہر میں ہیں؟",
+                            e.target.value,
+                            "relationShip",
+                            0
+                          )
+                        }
+                        className={"tableInput"}
+                      />
+                    </td>
+                    <td>
+                      {" "}
+                      <Input
+                        disabled={
+                          !relationShip[0]["رشتےد اروں میں کوئی اہم پوسٹ پر ہے"]
+                        }
+                        value={relationShip[0]["کس پوسٹ پر ہیں؟"]}
+                        onChange={(e) =>
+                          this.onchangetext(
+                            "کس پوسٹ پر ہیں؟",
+                            e.target.value,
+                            "relationShip",
+                            0
+                          )
+                        }
+                        className={"tableInput"}
+                      />
+                    </td>
+                    <td>
+                      {" "}
+                      <Input
+                        disabled={
+                          !relationShip[0]["رشتےد اروں میں کوئی اہم پوسٹ پر ہے"]
+                        }
+                        value={relationShip[0]["سرکاری ادارہ"]}
+                        onChange={(e) =>
+                          this.onchangetext(
+                            "سرکاری ادارہ",
+                            e.target.value,
+                            "relationShip",
+                            0
+                          )
+                        }
+                        className={"tableInput"}
+                      />
+                    </td>
+                    <td>
+                      {" "}
+                      <Input
+                        disabled={
+                          !relationShip[0]["رشتےد اروں میں کوئی اہم پوسٹ پر ہے"]
+                        }
+                        value={relationShip[0]["پرائیویٹ ادارہ"]}
+                        onChange={(e) =>
+                          this.onchangetext(
+                            "پرائیویٹ ادارہ",
+                            e.target.value,
+                            "relationShip",
+                            0
+                          )
+                        }
+                        className={"tableInput"}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <th colSpan={2}>کس شہر میں کرتےہیں؟ </th>
+                    <th colSpan={3}>کیا کاروبار کرتےہیں؟</th>
+                    <td style={{ width: 120 }} rowSpan={2}>
+                      <YesnoDropDown
+                        value={
+                          relationShip[1][
+                            "رشتےد اروں میں سے کوئی بڑا بزنس مین ہے"
+                          ]
+                        }
+                        onChange={(value) =>
+                          this.onchangetext(
+                            "رشتےد اروں میں سے کوئی بڑا بزنس مین ہے",
+                            value,
+                            "relationShip",
+                            1
+                          )
+                        }
+                      />
+                    </td>
+                    <td rowSpan={2}>رشتےد اروں میں سے کوئی بڑا بزنس مین ہے</td>
+                  </tr>
+                  <tr>
+                    <td colSpan={2}>
+                      <Input
+                        disabled={
+                          !relationShip[1][
+                            "رشتےد اروں میں سے کوئی بڑا بزنس مین ہے"
+                          ]
+                        }
+                        value={relationShip[1]["کیا کاروبار کرتےہیں؟"]}
+                        onChange={(e) =>
+                          this.onchangetext(
+                            "کیا کاروبار کرتےہیں؟",
+                            e.target.value,
+                            "relationShip",
+                            1
+                          )
+                        }
+                        className={"tableInput"}
+                      />
+                    </td>
+                    <td colSpan={3}>
+                      <Input
+                        disabled={
+                          !relationShip[1][
+                            "رشتےد اروں میں سے کوئی بڑا بزنس مین ہے"
+                          ]
+                        }
+                        value={relationShip[1]["کس شہر میں کرتےہیں؟"]}
+                        onChange={(e) =>
+                          this.onchangetext(
+                            "کس شہر میں کرتےہیں؟",
+                            e.target.value,
+                            "relationShip",
+                            1
+                          )
+                        }
+                        className={"tableInput"}
+                      />
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            )}
+            {countNumber === 13 ? (
               <div className={"table-div"}>
                 <table>
                   <tr>
@@ -3136,7 +3478,7 @@ class EditForm extends React.Component {
                 size={"large"}
                 type="primary"
                 onClick={() => {
-                  if (countNumber < 13) {
+                  if (countNumber < 14) {
                     if (countNumber === 0) {
                       allData["personalInfo"] = personalInfo;
                     }
@@ -3176,19 +3518,22 @@ class EditForm extends React.Component {
                       allData["outOfCountry"] = outOfCountry;
                     }
                     if (countNumber === 12) {
+                      allData["relationShip"] = relationShip;
+                    }
+                    if (countNumber === 13) {
                       allData["officeDetail"] = officeDetail;
+                      console.log(allData, "allData");
                       updateUser(allData, this.state.branch, userId);
                       this.props.history.push("/");
                       this.setState({ countNumber: 0 });
                     }
-
                     this.setState({ countNumber: countNumber + 1 });
                   } else {
                     this.setState({ countNumber: 0 });
                   }
                 }}
               >
-                {countNumber === 12 ? "Submit" : "Next"}
+                {countNumber === 13 ? "Submit" : "Next"}
                 <Icon type="right" />
               </Button>
             </div>
