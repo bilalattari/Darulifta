@@ -60,6 +60,7 @@ class Home extends React.Component {
     this.setState({ allBrothers: AllDaruliftaBrothers });
     this.allUsers = AllDaruliftaBrothers;
   };
+
   handleChange = async (array, value) => {
     let { allBrothers } = this.state;
     if (value !== "") {
@@ -90,6 +91,8 @@ class Home extends React.Component {
       this.setState({ allUsers: this.allUsers });
     }
   };
+
+  
   handleChangeTanzeem = async (array, value) => {
     let { allBrothers } = this.state;
     if (value !== "") {
@@ -270,7 +273,7 @@ class Home extends React.Component {
                                       alt="example"
                                       height={200}
                                       src={
-                                        item[9]["image"]
+                                         item?.[9]["image"]
                                           ? item[9]["image"]
                                           : require("./download (7).jpg")
                                       }
@@ -278,8 +281,8 @@ class Home extends React.Component {
                                   }
                                 >
                                   <Meta
-                                    title={item[1]["Name-نام"]}
-                                    description={item[0]["موجودہ منصب"]}
+                                    title={item?.[1]["Name-نام"]}
+                                    description={item?.[0]["موجودہ منصب"]}
                                   />
                                 </Card>
                               </div>

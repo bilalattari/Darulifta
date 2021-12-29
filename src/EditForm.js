@@ -1,8 +1,7 @@
-import React from "react";
-import logo from "./logo.svg";
+import React  , {useEffect ,} from "react";
 import "antd/dist/antd.css";
 import "./App.css";
-import { addUser, updateUser } from "./firebase";
+import {  updateUser } from "./firebase";
 import { Steps, Input, Button, Icon, Select, Radio, Checkbox } from "antd";
 import { Upload, Modal } from "antd";
 import firebase from "firebase";
@@ -20,82 +19,7 @@ const { Step } = Steps;
 const { Option } = Select;
 const { TextArea } = Input;
 
-const YearDropDown = (props) => (
-  <Select
-    disabled={props.disabled}
-    onChange={(value) => props.onChange(value)}
-    style={{ width: 80 }}
-    defaultValue={"1999"}
-    value={props.value}
-    className={"tdSelect"}
-    name="گریڈ"
-  >
-    <Option value="1990">1990</Option>
-    <Option value="1991">1991</Option>
-    <Option value="1992">1992</Option>
-    <Option value="1993">1993</Option>
-    <Option value="1994">1994</Option>
-    <Option value="1995">1995</Option>
-    <Option value="1996">1996</Option>
-    <Option value="1997">1997</Option>
-    <Option value="1998">1998</Option>
-    <Option value="1999">1999</Option>
-    <Option value="2000">2000</Option>
-    <Option value="2001">2001</Option>
-    <Option value="2002">2002</Option>
-    <Option value="2003">2003</Option>
-    <Option value="2004">2004</Option>
-    <Option value="2005">2005</Option>
-    <Option value="2006">2006</Option>
-    <Option value="2007">2007</Option>
-    <Option value="2008">2008</Option>
-    <Option value="2009">2009</Option>
-    <Option value="2010">2010</Option>
-    <Option value="2011">2011</Option>
-    <Option value="2012">2012</Option>
-    <Option value="2013">2013</Option>
-    <Option value="2014">2014</Option>
-    <Option value="2015">2015</Option>
-    <Option value="2016">2016</Option>
-    <Option value="2017">2017</Option>
-    <Option value="2018">2018</Option>
-    <Option value="2019">2019</Option>
-  </Select>
-);
 
-const GradeDropDown = (props) => (
-  <Select
-    disabled={props.disabled}
-    onChange={(value) => props.onChange(value)}
-    defaultValue={"A"}
-    value={props.value}
-    className={"tdSelect"}
-    name="گریڈ"
-  >
-    <Option value="A*">A*</Option>
-    <Option value="A">A</Option>
-    <Option value="B">B</Option>
-    <Option value="C">C</Option>
-    <Option value="D">D</Option>
-    <Option value="E">E</Option>
-  </Select>
-);
-const Duration = (props) => (
-  <Select
-    onChange={(value) => props.onChange(value)}
-    defaultValue={"1"}
-    value={props.value}
-    className={"tdSelect"}
-    name="گریڈ"
-  >
-    <Option value="1">1</Option>
-    <Option value="2">2</Option>
-    <Option value="3">3</Option>
-    <Option value="4">4</Option>
-    <Option value="5">5</Option>
-    <Option value="6">6</Option>
-  </Select>
-);
 
 const YesnoDropDown = (props) => (
   <Select
@@ -665,7 +589,7 @@ class EditForm extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     let { relationShip } = this.state;
     if (this.props.history) {
       let allVals = this.props.history.location.state.data;
@@ -771,6 +695,9 @@ class EditForm extends React.Component {
     }
   };
 
+
+
+
   render() {
     let {
       countNumber,
@@ -794,6 +721,9 @@ class EditForm extends React.Component {
       allData,
       socialMediaPrograms,
     } = this.state;
+
+
+    console.log(this.state)
     const { previewVisible, previewImage, imageUrl, userId } = this.state;
 
     return (
@@ -907,7 +837,7 @@ class EditForm extends React.Component {
                     value={branch}
                     onChange={(value) => this.setState({ branch: value })}
                   >
-                    <Option value="افتاء مکتب کراچی">افتاء مکتب کراچی</Option>
+                   <Option value="افتاء مکتب کراچی">افتاء مکتب کراچی</Option>
                     <Option value="نارتھ کراچی">نارتھ کراچی</Option>
                     <Option value="صدر">صدر</Option>
                     <Option value="کورنگی">کورنگی</Option>
@@ -915,34 +845,12 @@ class EditForm extends React.Component {
                     <Option value="بابری چوک">بابری چوک</Option>
                     <Option value="حیدر آباد">حیدر آباد</Option>
                     <Option value="لاہور">لاہور</Option>
+                    <Option value="ملتان">ملتان</Option>
+                    <Option value="گجرانوالہ">گجرانوالہ</Option>
+                    <Option value="جوہر ٹاون لاہور">جوہر ٹاون لاہور</Option>
                     <Option value="فیصل آباد">فیصل آباد</Option>
                     <Option value="گلزار طیبہ">گلزار طیبہ</Option>
                     <Option value="راولپنڈی">راولپنڈی</Option>
-                    <Option value=" یوکے-برمنگھم"> یوکے-برمنگھم</Option>
-                    <Option value=" تخصص فی الفقہ لاہور سال اول">
-                      {" "}
-                      تخصص فی الفقہ لاہور سال اول
-                    </Option>
-                    <Option value=" تخصص فی الفقہ لاہور سال دوم">
-                      {" "}
-                      تخصص فی الفقہ لاہور سال دوم
-                    </Option>
-                    <Option value=" تخصص فی الفقہ کراچی سال اول">
-                      {" "}
-                      تخصص فی الفقہ کراچی سال اول
-                    </Option>
-                    <Option value=" تخصص فی الفقہ کراچی سال دوم">
-                      {" "}
-                      تخصص فی الفقہ کراچی سال دوم
-                    </Option>
-                    <Option value=" تخصص فی الفقہ فیصل آباد سال اول">
-                      {" "}
-                      تخصص فی الفقہ فیصل آباد سال اول
-                    </Option>
-                    <Option value=" تخصص فی الفقہ فیصل آباد سال دوم">
-                      {" "}
-                      تخصص فی الفقہ فیصل آباد سال دوم
-                    </Option>
                   </Select>
                 </div>
 

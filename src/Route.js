@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Router, Link } from "react-router-dom";
-import createBrowserHistory from "history/createBrowserHistory";
+import {createBrowserHistory} from "history";
 import Home from "./Home";
 import EditForm from "./EditForm";
 import Form from "./Form";

@@ -17,7 +17,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.1",
     "react-spinners": "^0.8.3",
-    "react-to-print": "^2.6.1"
+    "react-to-print": "^2.14.3"
   },
   "scripts": {
     "start": "react-scripts start",

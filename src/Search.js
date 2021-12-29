@@ -285,7 +285,7 @@ class Search extends React.Component {
                 <Option value="1">بیانات کرتے ہیں</Option>
               </Select>
             </div>
-            <div className={"selector"}>
+            {/* <div className={"selector"}>
               <Select
                 defaultValue=""
                 style={{ width: "80%" }}
@@ -301,7 +301,7 @@ class Search extends React.Component {
                   سوشل میڈیا
                 </Option>
               </Select>
-            </div>
+            </div> */}
             <div className={"selector"}>
               <Select
                 defaultValue=""

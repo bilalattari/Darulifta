@@ -54,6 +54,9 @@ const YearDropDown = (props) => (
     <Option value="2017">2017</Option>
     <Option value="2018">2018</Option>
     <Option value="2019">2019</Option>
+    <Option value="2019">2020</Option>
+    <Option value="2019">2021</Option>
+    <Option value="2019">2022</Option>
   </Select>
 );
 
@@ -645,15 +648,14 @@ class App extends React.Component {
   handleArrayChange = (value, index, propert, array) => {
     let arr = this.state[array];
     arr[index][propert] = value;
-    console.log(arr, "arrarrarr");
-    this.setState({ [array]: arr });
+      this.setState({ [array]: arr });
   };
   onchangetext = (name, val, arr, row) => {
     let array = this.state[arr];
     array[row][name] = val;
-    console.log(array, "arayyyyyyyyyyyyyyyyyyyyyyyyy");
     this.setState({ [arr]: array });
   };
+
   beforeUpload(file) {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
@@ -665,6 +667,7 @@ class App extends React.Component {
     }
     return isJpgOrPng && isLt2M;
   }
+
   onDrop = async (picture) => {
     let allPictures = [];
     this.setState({ pictureUploadingToServer: true });
@@ -685,6 +688,7 @@ class App extends React.Component {
       this.setState({ personalInfo: info });
     });
   };
+  
   handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = async (file) => {
@@ -808,7 +812,7 @@ class App extends React.Component {
                   <span className={"inputHeading"}>موجودہ شاخ</span> <br />
                   <Select
                     className="input dropdown"
-                    defaultValue="موجودہ شاخ"
+                    defaultValue="افتاء مکتب کراچی"
                     onChange={(value) => this.setState({ branch: value })}
                   >
                     <Option value="افتاء مکتب کراچی">افتاء مکتب کراچی</Option>
@@ -819,34 +823,13 @@ class App extends React.Component {
                     <Option value="بابری چوک">بابری چوک</Option>
                     <Option value="حیدر آباد">حیدر آباد</Option>
                     <Option value="لاہور">لاہور</Option>
+                    <Option value="ملتان">ملتان</Option>
+                    <Option value="گجرانوالہ">گجرانوالہ</Option>
+                    <Option value="جوہر ٹاون لاہور">جوہر ٹاون لاہور</Option>
                     <Option value="فیصل آباد">فیصل آباد</Option>
                     <Option value="گلزار طیبہ">گلزار طیبہ</Option>
                     <Option value="راولپنڈی">راولپنڈی</Option>
-                    <Option value=" یوکے-برمنگھم"> یوکے-برمنگھم</Option>
-                    <Option value=" تخصص فی الفقہ لاہور سال اول">
-                      {" "}
-                      تخصص فی الفقہ لاہور سال اول
-                    </Option>
-                    <Option value=" تخصص فی الفقہ لاہور سال دوم">
-                      {" "}
-                      تخصص فی الفقہ لاہور سال دوم
-                    </Option>
-                    <Option value=" تخصص فی الفقہ کراچی سال اول">
-                      {" "}
-                      تخصص فی الفقہ کراچی سال اول
-                    </Option>
-                    <Option value=" تخصص فی الفقہ کراچی سال دوم">
-                      {" "}
-                      تخصص فی الفقہ کراچی سال دوم
-                    </Option>
-                    <Option value=" تخصص فی الفقہ فیصل آباد سال اول">
-                      {" "}
-                      تخصص فی الفقہ فیصل آباد سال اول
-                    </Option>
-                    <Option value=" تخصص فی الفقہ فیصل آباد سال دوم">
-                      {" "}
-                      تخصص فی الفقہ فیصل آباد سال دوم
-                    </Option>
+                    
                   </Select>
                 </div>
 

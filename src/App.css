@@ -1,3 +1,5 @@
+
+
 @font-face {
   font-family: "Jameel";
   src: url("Jameel\ Noori\ Nastaleeq.ttf");
@@ -86,18 +88,40 @@ h2 {
   min-width: 50px;
   max-width: 80px;
   text-align: center;
+  border: 1px solid rgb(63, 60, 60);
+  color: #000000;
+
+}
+.user_img{
+  height: 140px;
+  width: 140px;
+  position: absolute;
+  top: -90px;
+  left: 0;
+}
+.social_icons {
+  margin-top: 12px;
 }
 .pdfHeading {
-  background-color: #cccc;
+  background-color:#D9E1F2;
   color: #000000;
+  border: 1px solid rgb(63, 60, 60);
+}
+.check_icon {
+  font-size: 18px;
+  color:black;
+  margin-top:  8px;
+  
 }
 .pdfHeader {
-  background-color: black;
+  /* background-color: black; */
   color: white;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 26px;
   height: 40px;
   font-family: "Jameel";
+  border: 1px solid #203764;
+  background-color: #203764;
 }
 .steps {
   font-size: 25px;
@@ -132,7 +156,7 @@ h2 {
   display: flex;
   position: fixed;
   bottom: 25px;
-  margin-left:  41px;
+  margin-left: 41px;
   width: 70%;
   justify-content: space-between;
 }
@@ -283,6 +307,8 @@ th {
 .table-div-pdf {
   width: 90%;
   margin: 0 auto;
+  margin-top: 12px;
+  margin-bottom:  12px;
 }
 .table-div-pdf > table {
   width: 100%;
