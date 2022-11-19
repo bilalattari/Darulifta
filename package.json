@@ -15,7 +15,7 @@
     "react-icons": "^3.10.0",
     "react-images-upload": "^1.2.8",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.1",
+    "react-scripts": "5.0.1",
     "react-spinners": "^0.8.3",
     "react-to-print": "^2.14.3"
   },
